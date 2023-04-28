@@ -3,13 +3,14 @@ package model;
  * Owner of the app information.
  * 
  * @author Bairu Li
+ * @version 0.1
  */
 public class User {
 	String myName;
 	String myEmail;
 	
     public User(final String theName, final String theEmail) {
-    	myName = theName;
+    	myName = theName; 
     	myEmail = theEmail;
     }
 
