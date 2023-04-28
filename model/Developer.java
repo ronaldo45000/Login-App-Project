@@ -1,5 +1,10 @@
 package model;
-
+/**
+ * A class to hold information about the developers of the FileNtro project.
+ *
+ * @author Thinh Le
+ * @version 0.1
+ */
 public class Developer {
 
 
