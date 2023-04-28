@@ -23,7 +23,10 @@ public class Developer {
 		
 		
 	}
-	//Main GUI call this class and type name and email
-	
-
+	public string getName(){
+		return name;
+	}
+	public string getEmail(){
+		return email;
+	}
 }
