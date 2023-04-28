@@ -1,10 +1,12 @@
 package model;
+
 /**
  * A class to hold information about the developers of the FileNtro project.
  *
  * @author Thinh Le
  * @version 0.1
  */
+
 public class Developer {
 
 
@@ -27,7 +29,16 @@ public class Developer {
 		
 		
 	}
+
+	public string getName(){
+		return name;
+	}
+	public string getEmail(){
+		return email;
+	}
+=======
 	//Main GUI call this class and type name and email
 	
 
+}
 }
