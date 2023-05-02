@@ -1,6 +1,5 @@
 package view;
 
-import model.About;
 import model.User;
 
 import javax.swing.*;
@@ -92,9 +91,10 @@ public class OwnerProfileForm extends JPanel {
                 //Tin Phu
                 //AboutScreen is created with new User() as argument
                 //cardPanel, cardLayout are passed to AboutScreen, so we can switch back to previous JPanel.
-                cardPanel.add(new AboutScreen(new User(name, address), cardPanel, cardLayout));
+
+                cardPanel.add(new HomeScreen(new User(name, address), cardPanel, cardLayout), "HomeScreen");
                 //Switch Trigger Here.
-                cardLayout.next(cardPanel);
+                cardLayout.show(cardPanel, "HomeScreen");
 
             }
         });
