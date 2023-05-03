@@ -4,7 +4,8 @@ package model;
  * A class to store information about accounts in the FileNtro app.
  *
  * @author Thinh Le
- * @Author Riley Bennett
+ * @author Riley Bennett
+ * @version 2023-5-2
  */
 public class Account {
   
