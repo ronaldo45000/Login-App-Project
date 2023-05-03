@@ -5,7 +5,7 @@ package model;
  *
  * @author Thinh Le
  * @author Riley Bennett
- * @version 2023-5-2
+ * @version 0.1
  */
 public class Account {
   
