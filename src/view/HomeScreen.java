@@ -7,27 +7,43 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * A class to create the Home screen of the FileNtro project.
+ *
+ * @author Riley Bennett
+ * @version 0.1
+ */
 public class HomeScreen extends JPanel {
 
+    /**
+     * Constructor to create the Home screen.
+     *
+     * @param user The user of the app
+     * @param cardPanel The panels to swap to/from
+     * @param cardLayout The layout used to swap to/from panels
+     */
     public HomeScreen(User user, JPanel cardPanel, CardLayout cardLayout){
 
         setLayout(new BorderLayout());
 
-
+        // Creating labels/button
         JLabel homeLabel = new JLabel("Welcome " + user.getName() + "!");
         JButton projectButton = new JButton("Go to projects...");
         JButton aboutButton = new JButton("About...");
 
+        // Setting up look of GUI
         homeLabel.setHorizontalAlignment(SwingConstants.CENTER);
         homeLabel.setFont(new Font("Arial", Font.BOLD, 30));
         add(homeLabel,BorderLayout.NORTH);
-
+    
+        // Use GridBagLayout to organize buttons in a panel
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         GridBagConstraints cons = new GridBagConstraints();
         cons.gridx = 0;
         cons.gridy = 0;
         buttonPanel.add(projectButton, cons);
 
+        // Add about screen to cards, switch to about screen when button is pressed
         cardPanel.add(new AboutScreen(user, cardPanel, cardLayout), "AboutScreen");
         cons.insets = new Insets(30, 0, 0, 0);
         cons.gridy = 1;
@@ -38,13 +54,13 @@ public class HomeScreen extends JPanel {
         }));
         buttonPanel.add(aboutButton, cons);
         
+        // Switch back to log in screen when logout button is pressed
         JButton logoutButton = new JButton("Logout");
         logoutButton.addActionListener((new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(cardPanel, "LogInScreen");
             }
         }));
-        
         cons.gridy = 2;
         cons.insets = new Insets(100, 0, 0, 0);
         buttonPanel.add(logoutButton, cons);
