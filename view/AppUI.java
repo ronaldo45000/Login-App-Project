@@ -36,7 +36,7 @@ public class AppUI {
         // Set the size of the frame to medium
         int width = 400;
         int height = 300;
-        frame.setSize(width, height);
+        frame.setSize(2 * width, 2 * height);
         //Setup cardLayout and carPanel.
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
