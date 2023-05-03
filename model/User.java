@@ -8,15 +8,15 @@ package model;
  */
 public class User extends Account {
 	
-    	public User(final String theName, final String theEmail) {
-    		super();
-    	}
+	public User(final String theName, final String theEmail) {
+		super(theEmail, theEmail);
+	}
 	
 	public void setName(final String theName) {
-		myName = theName;
+		name = theName;
 	}
 	
 	public void setEmail(final String theEmail) {
-		myEmail = theEmail;
+		email = theEmail;
 	}
 }
