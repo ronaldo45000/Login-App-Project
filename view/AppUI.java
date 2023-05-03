@@ -2,8 +2,6 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author Tin Phu
@@ -38,7 +36,7 @@ public class AppUI {
         // Set the size of the frame to medium
         int width = 400;
         int height = 300;
-        frame.setSize(width, height);
+        frame.setSize(2 * width, 2 * height);
         //Setup cardLayout and carPanel.
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
@@ -47,7 +45,7 @@ public class AppUI {
         //cardPanel, cardLayout are passed to OwnerProfileForm because the button need to access them to switch
         //to AboutScreen()
         JPanel mainPanel = new OwnerProfileForm(cardPanel, cardLayout);
-        cardPanel.add(mainPanel);
+        cardPanel.add(mainPanel, "LogInScreen");
 
 
 
