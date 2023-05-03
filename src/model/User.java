@@ -1,26 +1,16 @@
 package model;
 /**
- * Owner of the app information.
+ * A class to store information of the user of the app/
  * 
  * @author Bairu Li
+ * @author Riley Bennett
  * @version 0.1
  */
-public class User {
-	String myName;
-	String myEmail;
+public class User extends Account {
 	
-    public User(final String theName, final String theEmail) {
-    	myName = theName; 
-    	myEmail = theEmail;
-    }
-
-	public String getName() {
-		return myName;
-	}
-
-	public String getEmail() {
-		return myEmail;
-	}
+    	public User(final String theName, final String theEmail) {
+    		super();
+    	}
 	
 	public void setName(final String theName) {
 		myName = theName;
