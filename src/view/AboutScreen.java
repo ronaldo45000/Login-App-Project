@@ -9,7 +9,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
-public class AboutScreen extends JPanel {
+
+/**
+ * A class to create the About screen of the FileNtro project.
+ *
+ * @author Riley Bennett
+ * @version 0.1
+ */
+public class AboutScreen extends JPanel { 
     
     /** Object to store app info. */
     private final AppInfo info;
