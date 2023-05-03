@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  * @author Hassan Abbas
  * @author Riley Bennett
- * @version 2023-5-2
+ * @version 0.1
  */
 public class AppInfo {
     
@@ -18,7 +18,7 @@ public class AppInfo {
     private final String teamName = "Team Mauve";
     
     /** A list to store each developer. */
-    private final ArrayList<Developer> teamMembers = new ArrayList<>(); 
+    private final ArrayList<Account> teamMembers = new ArrayList<>(); 
     
     /** The current user of the app. */
     private User user;
@@ -30,11 +30,11 @@ public class AppInfo {
      */
     public AppInfo(final User user) {
         this.user = user;      
-        teamMembers.add(new Developer("Hassan Abbas", "habbas91@uw.edu"));
-        teamMembers.add(new Developer("Riley Bennett", "benn3230@uw.edu"));
-        teamMembers.add(new Developer("Tin Phu", "phuhutin@uw.edu"));
-        teamMembers.add(new Developer("Bairu Li", "bairul@uw.edu"));
-        teamMembers.add(new Developer("Thinh Le", "lenguyenducthinh2003@gmail.com"));
+        teamMembers.add(new Account("Hassan Abbas", "habbas91@uw.edu"));
+        teamMembers.add(new Account("Riley Bennett", "benn3230@uw.edu"));
+        teamMembers.add(new Account("Thinh Le", "lenguyenducthinh2003@gmail.com"));
+        teamMembers.add(new Account("Bairu Li", "bairul@uw.edu"));
+        teamMembers.add(new Account("Tin Phu", "phuhutin@uw.edu"));
     }
     
     /**
@@ -69,8 +69,8 @@ public class AppInfo {
      *
      * @return List of the developers
      */
-    public ArrayList<Developer> getDevelopers() {
-        ArrayList<Developer> copy = new ArrayList<>(teamMembers);
+    public ArrayList<Account> getDevelopers() {
+        ArrayList<Account> copy = new ArrayList<>(teamMembers);
         return copy;
     }
 }
