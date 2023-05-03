@@ -18,7 +18,7 @@ public class Account {
 	/**
 	 * Constructor that creates an account with the given name and email.
 	 */
-	public Developer(String name, String email) {
+	public Account(String name, String email) {
 		this.name = name;
 		this.email = email;
 	}
@@ -43,4 +43,4 @@ public class Account {
 }
 
 
-}
+
