@@ -15,7 +15,7 @@ public class User extends Account {
 	 * @param theEmail
 	 */
 	public User(final String theName, final String theEmail) {
-		super(theEmail, theEmail);
+		super(theName, theEmail);
 	}
 	
 	/**
