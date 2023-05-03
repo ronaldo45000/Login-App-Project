@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 /**
  * @Author Tin Phu
  * @Version 0.1
- * OwnerProfileForm JPanel is responsible to create Ower Profile.
+ * OwnerProfileForm JPanel is responsible to create Owner Profile.
  * BorderLayout and GridBagLayout are used in this JPanel.
  */
 public class OwnerProfileForm extends JPanel {
@@ -99,21 +99,5 @@ public class OwnerProfileForm extends JPanel {
             }
         });
         add(createButton, BorderLayout.SOUTH);
-    }
-
-    /**
-     * NameField getter
-     * @return
-     */
-    public String getNameField() {
-        return nameField.getText();
-    }
-
-    /**
-     * AddressField getter
-     * @return
-     */
-    public String getAddressField() {
-        return emailArea.getText();
     }
 }
