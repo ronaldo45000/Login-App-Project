@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @Author Tin Phu
@@ -80,11 +82,17 @@ public class OwnerProfileForm extends JPanel {
             public void actionPerformed(ActionEvent e) {
 
                 String name = nameField.getText();
-                String address = emailArea.getText();
+                String email = emailArea.getText();
                 //Tin Phu
                 //Show Error message if one of user inputs isEmty()
-                if(name.isEmpty() || address.isEmpty()){
+                if(name.isEmpty() || email.isEmpty()){
                     JOptionPane.showMessageDialog(OwnerProfileForm.this, "Please fill in all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                //TinPhu
+                //Email Validation
+                if(!emailValidation(email)){
+                    JOptionPane.showMessageDialog(OwnerProfileForm.this, "Invalid Email", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
@@ -92,12 +100,37 @@ public class OwnerProfileForm extends JPanel {
                 //AboutScreen is created with new User() as argument
                 //cardPanel, cardLayout are passed to AboutScreen, so we can switch back to previous JPanel.
 
-                cardPanel.add(new HomeScreen(new User(name, address), cardPanel, cardLayout), "HomeScreen");
+                cardPanel.add(new HomeScreen(new User(name, email), cardPanel, cardLayout), "HomeScreen");
                 //Switch Trigger Here.
                 cardLayout.show(cardPanel, "HomeScreen");
 
             }
         });
         add(createButton, BorderLayout.SOUTH);
+    }
+
+    /**
+     * Tin Phu
+     * Email Validation using regex Expression
+     * Cases Cover:
+     * user@domain.com : 				true
+     * user@domain.co.in : 			    true
+     * user.name@domain.com : 			true
+     * user_name@domain.com : 			true
+     * username@yahoo.corporate.in : 	true
+     *
+     * .username@yahoo.com : 			false
+     * username@yahoo.com. : 			false
+     * username@yahoo..com : 			false
+     * username@yahoo.c : 				false
+     * username@yahoo.corporate : 		false
+     * @param emailString
+     * @return
+     */
+    public boolean emailValidation(String emailString){
+        String regex = "^[\\w!#$%&amp;'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&amp;'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(emailString);
+        return matcher.matches();
     }
 }
