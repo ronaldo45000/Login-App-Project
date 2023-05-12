@@ -9,36 +9,35 @@ import repository.AboutAppRepository;
 /**
  * @Author Tin Phu
  * @version 0.1
- *
- * Message to my teammates:
- * Why Do we need controller ? Why can't GUIs interact directly with database (Entity_Repositoty)?
- * Those are the questions I had when I first started learning MVC Architectural.
- * 1, Sometimes data need to be cooked and modified before saving to the database.
- * 2, Exception Handling !!! We are working with database, so there is big chance an exception will be thrown
- * and Controller is the best place to catch and handle it, rather than throw the exception to the GUIs.
- *
- *
+ * AppInfoController will help connect GUIs and Data Repository.
  */
 public class AppInfoController {
-
+    /**
+     * Final Static aboutAppRepository which has access to data in Json file.
+     */
     private final static AboutAppRepository aboutAppRepository = new AboutAppRepository();
 
-
+    /**
+     * get App Information
+     * @return
+     */
     public static AppInfo getAppInfo() {
 
         return aboutAppRepository.getAppInfo();
     }
 
 
-
+    /**
+     * Set User to aboutAppRepository
+     * @param theUser
+     */
     public static void setUser(User theUser){
         aboutAppRepository.getAppInfo().setUser(theUser);
-
     }
 
 
     public static void addNewDeveloper(Account theDeveloper){
-
+        aboutAppRepository.getAppInfo().addNewDeveloper(theDeveloper);
     }
 
 }

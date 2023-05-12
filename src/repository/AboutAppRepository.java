@@ -37,7 +37,7 @@ public class AboutAppRepository {
 
             for(int i = 0; i < arr.size(); i++){
                 String currentMemberName = (String) ((JsonObject)arr.get(i)).get("name");
-                String currentMemberEmail = (String) ((JsonObject)arr.get(i)).get("name");
+                String currentMemberEmail = (String) ((JsonObject)arr.get(i)).get("email");
                 appInfo.addNewDeveloper(new Account(currentMemberName,currentMemberEmail ));
             }
 

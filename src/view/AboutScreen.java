@@ -35,7 +35,6 @@ public class AboutScreen extends JPanel {
 
 
 
-
         //AppInfoController.setUser(new User("TTTT","TTT"));
         // Create basic GUI elements
         setLayout(new BorderLayout());

@@ -20,12 +20,6 @@ public class AppInfo implements Jsonable {
         this.user = user;
     }
 
-    public static void main(String[] args) throws IOException, JsonException {
-        AboutAppRepository aboutAppRepository = new AboutAppRepository();
-        AppInfo currentInfo = aboutAppRepository.getAppInfo();
-        System.out.println(currentInfo.versionNumber);
-    }
-    
     /** The version number of the app. */
     private  double versionNumber;
     
