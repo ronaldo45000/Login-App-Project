@@ -1,5 +1,10 @@
 package model;
 
+import com.github.cliftonlabs.json_simple.*;
+import controller.AppInfoController;
+import repository.AboutAppRepository;
+
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -9,10 +14,15 @@ import java.util.ArrayList;
  * @author Riley Bennett
  * @version 0.1
  */
-public class AppInfo {
-    
+public class AppInfo implements Jsonable {
+
+
+    public AppInfo(User user) {
+        this.user = user;
+    }
+
     /** The version number of the app. */
-    private final double versionNumber = 0.1;
+    private  double versionNumber;
     
     /** The developers' team name. */
     private final String teamName = "Team Mauve";
@@ -26,15 +36,29 @@ public class AppInfo {
     /**
      * Constructor to add developer names and set the user.
      *
-     * @param user The user of the app
+     * @param versionNumber
+     * @param user          The user of the app
      */
-    public AppInfo(final User user) {
+    public AppInfo(double versionNumber, final User user) {
+        this.versionNumber = versionNumber;
         this.user = user;      
-        teamMembers.add(new Account("Hassan Abbas", "habbas91@uw.edu"));
-        teamMembers.add(new Account("Riley Bennett", "benn3230@uw.edu"));
-        teamMembers.add(new Account("Thinh Le", "lenguyenducthinh2003@gmail.com"));
-        teamMembers.add(new Account("Bairu Li", "bairul@uw.edu"));
-        teamMembers.add(new Account("Tin Phu", "phuhutin@uw.edu"));
+//        teamMembers.add(new Account("Hassan Abbas", "habbas91@uw.edu"));
+//        teamMembers.add(new Account("Riley Bennett", "benn3230@uw.edu"));
+//        teamMembers.add(new Account("Thinh Le", "lenguyenducthinh2003@gmail.com"));
+//        teamMembers.add(new Account("Bairu Li", "bairul@uw.edu"));
+//        teamMembers.add(new Account("Tin Phu", "phuhutin@uw.edu"));
+    }
+
+    /**
+     *
+     */
+    public AppInfo(double versionNumber) {
+
+        this.versionNumber = versionNumber;
+    }
+    public AppInfo() {
+
+
     }
     
     /**
@@ -70,7 +94,63 @@ public class AppInfo {
      * @return List of the developers
      */
     public ArrayList<Account> getDevelopers() {
-        ArrayList<Account> copy = new ArrayList<>(teamMembers);
+        ArrayList<Account> copy = (ArrayList<Account>)(teamMembers.clone());
         return copy;
     }
+
+    public void addNewDeveloper(Account theAccount){
+        this.teamMembers.add(theAccount);
+    }
+
+
+    /**
+     * User Setter.
+     * @param user
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+
+    @Override
+    public String toJson() {
+        final StringWriter writable = new StringWriter();
+        try {
+            this.toJson(writable);
+        } catch (final IOException e) {
+        }
+        return writable.toString();
+    }
+
+    public double getVersionNumber() {
+        return versionNumber;
+    }
+
+    public void setVersionNumber(double versionNumber) {
+        this.versionNumber = versionNumber;
+    }
+
+    @Override
+    public void toJson(Writer writer) throws IOException {
+        final JsonObject json = new JsonObject();
+        json.put("versionNumber", this.versionNumber);
+        json.put("teamName", this.teamName);
+        json.put("teamMembers", this.teamMembers);
+
+        json.toJson(writer);
+    }
+    public void addMember(Account theMember){
+        this.teamMembers.add(theMember);
+    }
+
+    public void removeDevByName(String theName){
+        for(int i = 0; i < this.teamMembers.size(); i++){
+            if(this.teamMembers.get(i).getName().equals(theName)){
+                System.out.println("remove" + this.teamMembers.get(i).getName() );
+                this.teamMembers.remove(i);
+
+            }
+        }
+    }
+
 }
