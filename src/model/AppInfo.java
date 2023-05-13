@@ -1,6 +1,7 @@
 package model;
 
 import com.github.cliftonlabs.json_simple.*;
+import controller.AppInfoController;
 import repository.AboutAppRepository;
 
 import java.io.*;
@@ -141,4 +142,15 @@ public class AppInfo implements Jsonable {
     public void addMember(Account theMember){
         this.teamMembers.add(theMember);
     }
+
+    public void removeDevByName(String theName){
+        for(int i = 0; i < this.teamMembers.size(); i++){
+            if(this.teamMembers.get(i).getName().equals(theName)){
+                System.out.println("remove" + this.teamMembers.get(i).getName() );
+                this.teamMembers.remove(i);
+
+            }
+        }
+    }
+
 }

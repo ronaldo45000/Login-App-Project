@@ -32,10 +32,8 @@ public class AboutScreen extends JPanel {
     public AboutScreen(User user, JPanel cardPanel, CardLayout cardLayout) {
         AppInfoController.setUser(user);
         info = AppInfoController.getAppInfo();
+       // AppInfoController.addNewDeveloper(new Account("Dummy", "Dummy@gmail.com"));
 
-
-
-        //AppInfoController.setUser(new User("TTTT","TTT"));
         // Create basic GUI elements
         setLayout(new BorderLayout());
         JLabel aboutLabel = new JLabel("About");
