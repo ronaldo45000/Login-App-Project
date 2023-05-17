@@ -12,6 +12,7 @@ import java.util.ArrayList;
  *
  * @author Hassan Abbas
  * @author Riley Bennett
+ * @author Tin Phu
  * @version 0.1
  */
 public class AppInfo implements Jsonable {
@@ -37,11 +38,11 @@ public class AppInfo implements Jsonable {
      * Constructor to add developer names and set the user.
      *
      * @param versionNumber
-     * @param user          The user of the app
+     * @param user
      */
     public AppInfo(double versionNumber, final User user) {
         this.versionNumber = versionNumber;
-        this.user = user;      
+        this.user = user;
 //        teamMembers.add(new Account("Hassan Abbas", "habbas91@uw.edu"));
 //        teamMembers.add(new Account("Riley Bennett", "benn3230@uw.edu"));
 //        teamMembers.add(new Account("Thinh Le", "lenguyenducthinh2003@gmail.com"));
@@ -90,7 +91,7 @@ public class AppInfo implements Jsonable {
     
     /**
      * A getter for the developers of the app.
-     *
+     * @Author Tin Phu
      * @return List of the developers
      */
     public ArrayList<Account> getDevelopers() {
@@ -111,13 +112,17 @@ public class AppInfo implements Jsonable {
         this.user = user;
     }
 
-
+    /**
+     * @Author Tin Phu
+     * @return
+     */
     @Override
     public String toJson() {
         final StringWriter writable = new StringWriter();
         try {
             this.toJson(writable);
         } catch (final IOException e) {
+            throw new RuntimeException();
         }
         return writable.toString();
     }
@@ -130,12 +135,18 @@ public class AppInfo implements Jsonable {
         this.versionNumber = versionNumber;
     }
 
+    /**
+     * @Author Tin Phu
+     * @param writer
+     * @throws IOException
+     */
     @Override
     public void toJson(Writer writer) throws IOException {
         final JsonObject json = new JsonObject();
         json.put("versionNumber", this.versionNumber);
         json.put("teamName", this.teamName);
         json.put("teamMembers", this.teamMembers);
+        json.put("user", this.user);
 
         json.toJson(writer);
     }
@@ -143,6 +154,9 @@ public class AppInfo implements Jsonable {
         this.teamMembers.add(theMember);
     }
 
+    /**
+     * @Author Tin Phu
+     */
     public void removeDevByName(String theName){
         for(int i = 0; i < this.teamMembers.size(); i++){
             if(this.teamMembers.get(i).getName().equals(theName)){

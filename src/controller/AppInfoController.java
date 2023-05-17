@@ -7,14 +7,14 @@ import repository.AboutAppRepository;
 
 
 /**
- * @author uthor Tin Phu
- * @version 0.1
  * AppInfoController will help connect GUIs and Data Repository.
- * Messagee to Team Members:
- * Please call this class if you want to make any change to database,
- * else call .clone() which is not defined yet.
+ * Message to Team Members:
+ * Please call this class if you want to make any change to database.
+ * GUIs are not allowed to directly Data Repository, because Data Repository potentially throws Exception
+ * ,and we may want to handle them here.
  * this class's methods are STATIC
- * WARNING! PlEASE READ getAppInfo().
+ * @author Tin Phu
+ * @version 0.1
  *
  */
 public class AppInfoController {
@@ -34,6 +34,7 @@ public class AppInfoController {
      *      35: AppInfoController.addNewDeveloper(new Account("Dummy", "Dummy@gmail.com"));
      * adding new Developer to the original data, and info (bz info points to og data's address)
      * so the GUI will automatically update.
+     * @Author Tin Phu
      */
     public static AppInfo getAppInfo() {
 
@@ -43,15 +44,17 @@ public class AppInfoController {
 
     /**
      * Set User to aboutAppRepository
-     * @param theUser
+     * @Author Tin Phu
      */
     public static void setUser(User theUser){
+
         aboutAppRepository.getAppInfo().setUser(theUser);
+        aboutAppRepository.exportData();
     }
 
     /**
      * Adding new developer and export current state to json file.
-     * @param theDeveloper
+     * @Author Tin Phu
      */
     public static void addNewDeveloper(Account theDeveloper){
         aboutAppRepository.getAppInfo().addNewDeveloper(theDeveloper);
@@ -61,7 +64,7 @@ public class AppInfoController {
     /**
      * remove Devs
      * this is created for testing of exportData()
-     * @param theName
+     * @Author Tin Phu
      */
     public static void removeDeveloperByName(String theName){
        aboutAppRepository.getAppInfo().removeDevByName("Phu");
@@ -69,9 +72,20 @@ public class AppInfoController {
 
     }
 
+    /**
+     * @Author Tin Phu
+     */
     public  static void setVersion(double theVer){
         aboutAppRepository.getAppInfo().setVersionNumber(theVer);
         aboutAppRepository.exportData();
+    }
+
+    /**
+     * @Author Tin Phu
+     * @return User
+     */
+    public static User getCurrentUser(){
+        return aboutAppRepository.getAppInfo().getUser();
     }
 
 }
