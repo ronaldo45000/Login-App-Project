@@ -10,8 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @Author Tin Phu
- * @Version 0.1
+ * @author Tin Phu
+ * @version 0.1
  * OwnerProfileForm JPanel is responsible to create Owner Profile.
  * BorderLayout and GridBagLayout are used in this JPanel.
  */
@@ -110,22 +110,9 @@ public class OwnerProfileForm extends JPanel {
     }
 
     /**
-     * Tin Phu
      * Email Validation using regex Expression
-     * Cases Cover:
-     * user@domain.com : 				true
-     * user@domain.co.in : 			    true
-     * user.name@domain.com : 			true
-     * user_name@domain.com : 			true
-     * username@yahoo.corporate.in : 	true
-     *
-     * .username@yahoo.com : 			false
-     * username@yahoo.com. : 			false
-     * username@yahoo..com : 			false
-     * username@yahoo.c : 				false
-     * username@yahoo.corporate : 		false
-     * @param emailString
-     * @return
+     * @Author Tin Phu
+     * @return boolean
      */
     public boolean emailValidation(String emailString){
         String regex = "^[\\w!#$%&amp;'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&amp;'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";

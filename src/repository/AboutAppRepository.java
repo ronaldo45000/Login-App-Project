@@ -6,6 +6,8 @@ import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
 import model.Account;
 import model.AppInfo;
+import model.User;
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,6 +20,7 @@ import java.io.IOException;
  *
  */
 public class AboutAppRepository {
+
     /**
      * Path to the AppInfo.json
      */
@@ -29,14 +32,15 @@ public class AboutAppRepository {
 
     /**
      * No-arg constructor.
-     * which will simple importData() and populate data to this.appInfo.
+     * which will simply importData() and populate data from json file to this.appInfo.
      */
     public AboutAppRepository()  {
         importData();
     }
 
     /**
-     * Data is imported and mapped to this.appInfo
+     * Data is imported and then mapped to this.appInfo
+     * @Author Tin Phu
      */
     public void importData() {
 
@@ -44,8 +48,11 @@ public class AboutAppRepository {
             JsonArray objects = Jsoner.deserializeMany(fileReader);
             JsonObject o = (JsonObject) objects.get(0);
             appInfo.setVersionNumber(Double.parseDouble(o.get("versionNumber").toString()));
-            JsonArray  arr = (JsonArray)o.get("teamMembers");
+            //Mapping CurrentUser
+            JsonObject currentUserJObject =  (JsonObject) o.get("user");
+            appInfo.setUser(new User(currentUserJObject.get("name").toString(),currentUserJObject.get("email").toString()));
 
+            JsonArray  arr = (JsonArray)o.get("teamMembers");
             //Mapping List of Devs information.
             for(int i = 0; i < arr.size(); i++){
                 String currentMemberName = (String) ((JsonObject)arr.get(i)).get("name");
@@ -59,6 +66,7 @@ public class AboutAppRepository {
 
     /**
      * exporting or serialize this.appInfo to AppInfor.json.
+     * @Author Tin Phu
      */
     public void exportData(){
 
@@ -71,13 +79,12 @@ public class AboutAppRepository {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        throw new RuntimeException("test");
 
 
     }
 
     /**
-     * getter.
+     * @Author Tin Phu
      * @return
      */
     public AppInfo getAppInfo() {
