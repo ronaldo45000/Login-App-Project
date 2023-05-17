@@ -1,7 +1,7 @@
 package model;
 
 /**
- * This class helps to see the username, email and name of the user.
+ * This class helps to see the username, email and name of the users.
  *
  * @author Thinh Le
  * @version 0.1
