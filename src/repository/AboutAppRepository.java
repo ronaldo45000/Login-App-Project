@@ -24,7 +24,7 @@ public class AboutAppRepository {
     /**
      * Path to the AppInfo.json
      */
-     private final String FILEPATH="C:\\Users\\Riley Bennett\\Documents\\VSCode\\Repos\\OfficialProject\\AppInfo.json";
+     private final String FILEPATH="AppInfo.json";
     /**
      * appInfo holds data.
      */

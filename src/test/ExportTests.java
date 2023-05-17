@@ -87,8 +87,7 @@ public class ExportTests {
     @Test
     public void testImport() {
         info.setUser(new User("Test 2 User", "test2@gmail.com"));
-        try (FileWriter fileWriter = new FileWriter("C:\\Users\\Riley Bennett\\Documents\\VSCode\\Repos\\OfficialProject" +
-        "\\AppInfo.json")) {
+        try (FileWriter fileWriter = new FileWriter("AppInfo.json")) {    // Change to direct file path to get working
             Jsoner.serialize(info, fileWriter);
         } catch (IOException e) {}
         AppInfoController.importData();
