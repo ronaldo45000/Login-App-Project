@@ -24,7 +24,7 @@ public class AboutAppRepository {
     /**
      * Path to the AppInfo.json
      */
-     private final String FILEPATH="AppInfo.json";
+     private final String FILEPATH="C:\\Users\\Riley Bennett\\Documents\\VSCode\\Repos\\OfficialProject\\AppInfo.json";
     /**
      * appInfo holds data.
      */
@@ -73,7 +73,7 @@ public class AboutAppRepository {
 
         String json = Jsoner.serialize(this.appInfo);
 //        json = Jsoner.prettyPrint(json);
-//        System.out.println(json); print out JSON to check before writing to json file.
+//        System.out.println(json);   // print out JSON to check before writing to json file.
         try (FileWriter fileWriter = new FileWriter(this.FILEPATH)) {
             Jsoner.serialize(this.appInfo, fileWriter);
         } catch (IOException e) {

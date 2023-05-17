@@ -127,10 +127,6 @@ public class AppInfo implements Jsonable {
         return writable.toString();
     }
 
-    public double getVersionNumber() {
-        return versionNumber;
-    }
-
     public void setVersionNumber(double versionNumber) {
         this.versionNumber = versionNumber;
     }
@@ -149,10 +145,7 @@ public class AppInfo implements Jsonable {
         json.put("user", this.user);
 
         json.toJson(writer);
-    }
-    public void addMember(Account theMember){
-        this.teamMembers.add(theMember);
-    }
+     }
 
     /**
      * @Author Tin Phu
