@@ -9,7 +9,65 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8601f8e0-3e8b-4422-8383-2e8c7082147e" name="Changes" comment="Fixed Repository Import() bugs to handle null key" />
+    <list default="true" id="8601f8e0-3e8b-4422-8383-2e8c7082147e" name="Changes" comment="Fixed Repository Import() bugs to handle null key">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/github_cliftonlabs_json_simple.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfficialProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/OfficialProject.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/json-simple-3.1.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/.idea/OfficialProject.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/.idea/artifacts/OfficialProject_jar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/.idea/jpa-buddy.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/.idea/libraries/github_cliftonlabs_json_simple.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/.idea/libraries/net_sf_dozer.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/AppInfo.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/OfficialProject.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/controller/AppInfoController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/lib/apiguardian-api-1.1.2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/lib/commons-beanutils-1.9.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/lib/commons-collections-3.2.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/lib/commons-lang3-3.2.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/lib/dozer-5.5.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/lib/hamcrest-core-1.3.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/lib/jcl-over-slf4j-1.7.5.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/lib/json-simple-3.1.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/lib/junit-4.13.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/lib/junit-jupiter-5.8.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/lib/junit-jupiter-api-5.8.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/lib/junit-jupiter-engine-5.8.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/lib/junit-jupiter-params-5.8.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/lib/junit-platform-commons-1.8.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/lib/junit-platform-console-standalone-1.10.0-M1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/lib/junit-platform-engine-1.8.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/lib/opentest4j-1.2.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/lib/slf4j-api-1.7.5.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/model/Account.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/model/AppInfo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/model/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/repository/AboutAppRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/repository/UserRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/test/ExportTests.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/view/AboutScreen$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/view/AboutScreen.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/view/AppUI.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/view/HomeScreen$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/view/HomeScreen$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/view/HomeScreen.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/view/OwnerProfileForm$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/view/OwnerProfileForm.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/OfficialProject/view/ProfileScreen.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/AppInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/AppInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Document.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Document.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Project.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Project.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,7 +87,6 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -52,6 +109,7 @@
     &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;TODO_SCOPE&quot;: &quot;All Places&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;openjdk-19&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/Projects/360/QuickTest&quot;,
@@ -106,6 +164,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Project" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="model.Project" />
+      <module name="OfficialProject" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ExportTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="OfficialProject" />
       <extension name="coverage">
@@ -121,22 +192,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="OfficialProject" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="OfficialProject" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.AppUI" />
+        <item itemvalue="Application.Project" />
         <item itemvalue="JUnit.ExportTests" />
         <item itemvalue="Application.AboutAppRepository" />
         <item itemvalue="Application.AppInfo" />
@@ -178,6 +237,12 @@
       <workItem from="1684432185926" duration="100000" />
       <workItem from="1684432296335" duration="26000" />
       <workItem from="1684432342569" duration="109000" />
+      <workItem from="1684432466886" duration="301000" />
+      <workItem from="1684432784732" duration="291000" />
+      <workItem from="1684433097939" duration="17000" />
+      <workItem from="1684434402364" duration="504000" />
+      <workItem from="1684434922343" duration="419000" />
+      <workItem from="1684435686653" duration="2200000" />
     </task>
     <task id="LOCAL-00001" summary="OwnerProfileForm JPanel is added to create User() profile based on user inputs. After clicking the button the current JFrame will switch to AboutScreen() JPanel.">
       <created>1682898396284</created>
@@ -249,7 +314,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684388500018</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Fixed Repository Import() bugs to handle null key">
+      <created>1684432603346</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1684432603346</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -266,7 +338,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/TestingBranch" />
+                        <option value="main" />
                       </list>
                     </value>
                   </entry>

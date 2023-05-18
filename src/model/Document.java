@@ -1,6 +1,8 @@
 package model;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.util.UUID;
 
 /**
  * This class has information about document such as document name, file path, document description, and id.
@@ -9,10 +11,7 @@ import java.io.File;
  * @version 0.1
  */
 public class Document {
-    /**
-     * This is counter for id.
-     */
-    private static int idCounter=0;
+
     /**
      * This is name of document.
      */
@@ -21,30 +20,37 @@ public class Document {
     /**
      * This is the file path to open.
      */
-    private File filepath;
-/**
-This is description about document.
- */
-private String documentDescription;
+    //private String filepath;
+    /**
+        This is description about document.
+     */
+    private String documentDescription;
+    /**
+     * Total cost of anything that comes with this documents.
+     */
+    private BigDecimal totalCost;
+    /**
+     * this is the projectID which this document belongs to.
+     */
+    private String projectID;
 
-/**
-This is the id for document
- */
-private int id;
+    /**
+        This is the id for document
+     */
+    private String id;
 
     /**
      * This constructor creates Document witt id, document name, document description and file path.
-     * @param id
      * @param documentName
      * @param documentDescription
-     * @param filepath
+
      */
-    public Document(int id,String documentName, String documentDescription, File filepath){
+    public Document( String documentName, String documentDescription, String theProjectId){
     this.documentName = documentName;
     this.documentDescription = documentDescription;
-    this.id = idCounter;
-    this.filepath = filepath;
-    idCounter+=1;
+    this.id =   UUID.randomUUID().toString();
+    this.projectID = theProjectId;
+
 }
 
     /**
@@ -52,7 +58,7 @@ private int id;
      *
      * @return
      */
-    public int id(){
+    public String id(){
     return id;
 }
 
@@ -69,9 +75,9 @@ private int id;
      * This is the getter for file path.
      * @return
      */
-    public File getFilepath(){
-        return filepath;
-    }
+//    public String getFilepath(){
+//        return filepath;
+//    }
 
     /**
      * this is the getter for document description.
@@ -81,13 +87,6 @@ private int id;
         return documentDescription;
     }
 
-    /**
-     * this is the setter for document id.
-     * @param id
-     */
-    public void setId(int id){
-        this.id = id;
-    }
 
     /**
      * This is the setter for document name.
@@ -101,9 +100,9 @@ private int id;
      * This is the setter for file path.
      * @param filepath
      */
-    public void setFilepath(File filepath){
-        this.filepath = filepath;
-    }
+   // public String setFilepath(File filepath){
+    //    this.filepath = filepath;
+   // }
 
     /**
      * This is the setter for document description
@@ -112,4 +111,16 @@ private int id;
     public void setDocumentDescription(String documentDescription){
         this.documentDescription = documentDescription;
     }
+    public String getId() {
+        return id;
+    }
+    public void setTotalCost(BigDecimal totalCost) {
+        this.totalCost = totalCost;
+    }
+
+    public String getProjectID() {
+        return projectID;
+    }
+
+
 }

@@ -2,7 +2,9 @@ package model;
 
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * This Project is to handle the budget for the user.
@@ -11,12 +13,15 @@ import java.util.Date;
  * @version 0.1
  */
 public class Project {
-
-    /**
+     /**
      * id for project
      */
-   private int id;
-    /**
+
+   private String id;
+
+
+
+ /**
      * this is the total cost
      */
     private BigDecimal totalCost;
@@ -24,61 +29,52 @@ public class Project {
      * This is the budget of a user.
      */
     private BigDecimal budget;
-    /**
-     * This is amount of money.
-     */
-    private BigDecimal balance;
-    /**
-     * Name of item.
-     */
 
-    private String itemName;
-    /**
+   /**
+   * this ownerName is used to find the owerName information who this project belongs to.
+   */
+  private String ownerName;
+
+
+
+ /**
      * The date that users buy item.
      */
-    private Date date;
+    private LocalDate  date;
 
 
     /**
      * This constructor helps to calculate the cost of item for user, and let the uses to see the current
-     *  budget, and this is also helps them to track item by date and total cost.
-     * @param id
+     * budget, and this is also helps them to track item by date and total cost.
+     *
+
      * @param totalCost
      * @param budget
-     * @param balance
-     * @param date
-     * @param itemName
+     * @param ownerName
      */
-    public Project(int id,BigDecimal totalCost, BigDecimal budget, BigDecimal balance, Date date, String itemName){
-    this.totalCost = totalCost;
-    this.budget = budget;
-    this.balance = balance;
-    this.id = id;
-    this.date = date;
-    this.itemName = itemName;
+    public Project( BigDecimal totalCost, BigDecimal budget, String ownerName){
+     this.totalCost = totalCost;
+     this.budget = budget;
+     this.id =  UUID.randomUUID().toString();
+     this.date = LocalDate.now();
+     this.ownerName = ownerName;
     }
 
     /**
      * Getter for id.
      * @return
      */
-    public int getId(){
+    public String getId(){
         return id;
     }
 
-    /**
-     * Getter for item name.
-     * @return
-     */
-    public String getItemName(){
-        return itemName;
-    }
+
 
     /**
      * Getter for date.
      * @return
      */
-    public Date getDate(){
+    public LocalDate  getDate(){
         return date;
     }
 
@@ -103,40 +99,13 @@ public class Project {
      * @return
      */
     public BigDecimal getBalance(){
-    return balance;
+    return budget.subtract(totalCost);
     }
 
-    /**
-     * This is the setter for item name.
-     * @param itemName
-     */
-    public void setItemName(String itemName){
-        this.itemName = itemName;
-    }
 
-    /**
-     * This is the setter for balance
-     * @param balance
-     */
-    public void setBalance(BigDecimal balance){
-        this.balance = balance;
-    }
 
-    /**
-     * This is the setter for Date.
-     * @param date
-     */
-    public void setDate(Date date){
-        this.date = date;
-    }
 
-    /**
-     * This is the setter for id.
-     * @param id
-     */
-    public void setId(int id){
-        this.id = id;
-    }
+
 
     /**
      * This is the setter for budget
@@ -154,5 +123,14 @@ public class Project {
     public void setTotalCost(BigDecimal totalCost){
         this.totalCost = totalCost;
     }
+
+   /**
+    * OwnerName getter
+    * @return
+     */
+     public String getOwnerName() {
+     return ownerName;
+    }
+
 
 }
