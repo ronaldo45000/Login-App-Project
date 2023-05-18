@@ -1,5 +1,6 @@
 package view;
 
+import controller.AppInfoController;
 import model.AppInfo;
 import model.Account;
 import model.User;
@@ -29,8 +30,9 @@ public class AboutScreen extends JPanel {
      * @param cardLayout The cardlayout used to swap between panels
      */
     public AboutScreen(User user, JPanel cardPanel, CardLayout cardLayout) {
-        
-        info = new AppInfo(user);
+        AppInfoController.setUser(user);
+        info = AppInfoController.getAppInfo();
+       // AppInfoController.addNewDeveloper(new Account("Dummy", "Dummy@gmail.com"));
 
         // Create basic GUI elements
         setLayout(new BorderLayout());
