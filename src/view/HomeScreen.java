@@ -42,7 +42,15 @@ public class HomeScreen extends JPanel {
         cons.gridx = 0;
         cons.gridy = 0;
         buttonPanel.add(projectButton, cons);
-
+        
+        //Add project screen to card, switch to project screen when button is pressed
+        cardPanel.add(new ProjectScreen(user, cardPanel, cardLayout), "ProjectScreen");
+        projectButton.addActionListener((new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(cardPanel, "ProjectScreen");
+            }
+        }));
+        
         // Add about screen to cards, switch to about screen when button is pressed
         cardPanel.add(new AboutScreen(user, cardPanel, cardLayout), "AboutScreen");
         cons.insets = new Insets(30, 0, 0, 0);
