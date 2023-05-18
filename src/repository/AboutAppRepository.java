@@ -4,6 +4,7 @@ import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonException;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
+import controller.AppInfoController;
 import model.Account;
 import model.AppInfo;
 import model.User;
@@ -46,19 +47,36 @@ public class AboutAppRepository {
 
         try (FileReader fileReader = new FileReader(FILEPATH)) {
             JsonArray objects = Jsoner.deserializeMany(fileReader);
-            JsonObject o = (JsonObject) objects.get(0);
-            appInfo.setVersionNumber(Double.parseDouble(o.get("versionNumber").toString()));
-            //Mapping CurrentUser
-            JsonObject currentUserJObject =  (JsonObject) o.get("user");
-            appInfo.setUser(new User(currentUserJObject.get("name").toString(),currentUserJObject.get("email").toString()));
+            System.out.println(objects.toString());
+            System.out.println(objects);
 
-            JsonArray  arr = (JsonArray)o.get("teamMembers");
-            //Mapping List of Devs information.
-            for(int i = 0; i < arr.size(); i++){
-                String currentMemberName = (String) ((JsonObject)arr.get(i)).get("name");
-                String currentMemberEmail = (String) ((JsonObject)arr.get(i)).get("email");
-                appInfo.addNewDeveloper(new Account(currentMemberName,currentMemberEmail ));
-            }
+
+                JsonObject o = (JsonObject) objects.get(0);
+                System.out.println(o);
+                if(o.get("versionNumber") != null){
+                    appInfo.setVersionNumber(Double.parseDouble(o.get("versionNumber").toString()));
+                }
+
+                //Mapping CurrentUser
+                 if(o.get("user") != null){
+                    JsonObject currentUserJObject =  (JsonObject) o.get("user");
+                    appInfo.setUser(new User(currentUserJObject.get("name").toString(),currentUserJObject.get("email").toString()));
+                }
+
+
+
+                JsonArray  arr = (JsonArray)o.get("teamMembers");
+                 if(arr != null){
+                     //Mapping List of Devs information.
+                     for(int i = 0; i < arr.size(); i++){
+                         String currentMemberName = (String) ((JsonObject)arr.get(i)).get("name");
+                         String currentMemberEmail = (String) ((JsonObject)arr.get(i)).get("email");
+                         appInfo.addNewDeveloper(new Account(currentMemberName,currentMemberEmail ));
+                     }
+                 }
+
+
+
         } catch (IOException | JsonException e) {
             throw new RuntimeException(e);
         }
