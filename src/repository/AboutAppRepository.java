@@ -4,7 +4,6 @@ import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonException;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
-import controller.AppInfoController;
 import model.Account;
 import model.AppInfo;
 import model.User;
@@ -47,12 +46,12 @@ public class AboutAppRepository {
 
         try (FileReader fileReader = new FileReader(FILEPATH)) {
             JsonArray objects = Jsoner.deserializeMany(fileReader);
-            System.out.println(objects.toString());
-            System.out.println(objects);
+//            System.out.println(objects.toString());
+//            System.out.println(objects);
 
 
                 JsonObject o = (JsonObject) objects.get(0);
-                System.out.println(o);
+//                System.out.println(o);
                 if(o.get("versionNumber") != null){
                     appInfo.setVersionNumber(Double.parseDouble(o.get("versionNumber").toString()));
                 }
@@ -89,7 +88,7 @@ public class AboutAppRepository {
     public void exportData(){
 
 
-        String json = Jsoner.serialize(this.appInfo);
+//        String json = Jsoner.serialize(this.appInfo);
 //        json = Jsoner.prettyPrint(json);
 //        System.out.println(json);   // print out JSON to check before writing to json file.
         try (FileWriter fileWriter = new FileWriter(this.FILEPATH)) {
