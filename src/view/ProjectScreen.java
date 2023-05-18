@@ -124,12 +124,12 @@ public class ProjectScreen extends JPanel {
         
         //Adding action listeners to the exit, documents, budget, and members buttons.
         //Adding members screen to cards
-        cardPanel.add(new MembersScreen(), "MembersScreen");
-        membersButton.addActionListener((new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "MembersScreen");
-            }
-        }));
+        //  cardPanel.add(new MembersScreen(), "MembersScreen");
+        // membersButton.addActionListener((new ActionListener() {
+        //     public void actionPerformed(ActionEvent e) {
+        //         cardLayout.show(cardPanel, "MembersScreen");
+        //     }
+        // }));
         //Adding documents screen to cards
         cardPanel.add(new DocumentsScreen(), "DocumentsScreen");
         documentsButton.addActionListener((new ActionListener() {
