@@ -4,14 +4,12 @@ import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonException;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
-import model.Account;
 import model.User;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,7 +26,7 @@ public class UserRepository {
     /**
      * Hashmap to be mapped with json data.
      */
-    private HashMap<String, User> userProfiles = new HashMap<String, User>();
+    private final HashMap<String, User> listOfuserProfile = new HashMap<String, User>();
 
     public UserRepository(){
         importData();
@@ -39,8 +37,8 @@ public class UserRepository {
      *
      * @return the reference of this.userProfiles.
      */
-    public HashMap<String, User> getUserProfiles(){
-        return this.userProfiles;
+    public HashMap<String, User> getListOfuserProfile(){
+        return this.listOfuserProfile;
     }
 
     /**
@@ -55,14 +53,14 @@ public class UserRepository {
 
                 JsonObject u = (JsonObject) entry.getValue();
                 if(u.get("email") != null ){
-                    this.userProfiles.put(entry.getKey(), new User(entry.getKey(),u.get("email").toString()));
+                    this.listOfuserProfile.put(entry.getKey(), new User(entry.getKey(),u.get("email").toString()));
                 }
 
 
             }
 
         System.out.println("Import Data from UserProfile.json");
-        System.out.println(this.userProfiles.toString());
+        System.out.println(this.listOfuserProfile.toString());
 
 
         } catch (IOException | JsonException e){
@@ -79,9 +77,9 @@ public class UserRepository {
 //        json = Jsoner.prettyPrint(json);
 //        System.out.println(json);   // print out JSON to check before writing to json file.
         try (FileWriter fileWriter = new FileWriter(this.FILEPATH)) {
-            Jsoner.serialize(this.userProfiles, fileWriter);
+            Jsoner.serialize(this.listOfuserProfile, fileWriter);
             System.out.println("Export Data to UserProfile.json");
-            System.out.println(this.userProfiles.toString());
+            System.out.println(this.listOfuserProfile.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
     }
@@ -94,7 +92,7 @@ public class UserRepository {
      * @return the reference of that User in hashmap !!!.
      */
     public User findUserByName(String theName){
-        return this.userProfiles.get(theName);
+        return this.listOfuserProfile.get(theName);
 
     }
 
@@ -104,7 +102,7 @@ public class UserRepository {
      * @param theName
      */
     public void deleteUserByName(String theName){
-        this.userProfiles.remove(theName);
+        this.listOfuserProfile.remove(theName);
         this.exportData();
     }
 
@@ -114,7 +112,7 @@ public class UserRepository {
      * @param theUser
      */
     public void addUser(User theUser){
-        this.userProfiles.put(theUser.getName(), theUser);
+        this.listOfuserProfile.put(theUser.getName(), theUser);
         this.exportData();
     }
 

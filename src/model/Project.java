@@ -1,6 +1,12 @@
 package model;
 
 
+import com.github.cliftonlabs.json_simple.JsonObject;
+import com.github.cliftonlabs.json_simple.Jsonable;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
@@ -12,23 +18,25 @@ import java.util.UUID;
  * @author Thinh Le
  * @version 0.1
  */
-public class Project {
+public class Project implements Jsonable {
      /**
      * id for project
      */
 
    private String id;
-
-
+    /**
+     * project name
+     */
+    private  String projectName;
 
  /**
      * this is the total cost
      */
-    private BigDecimal totalCost;
+    private BigDecimal totalCost = BigDecimal.valueOf(0);
     /**
      * This is the budget of a user.
      */
-    private BigDecimal budget;
+    private BigDecimal budget = BigDecimal.valueOf(0);
 
    /**
    * this ownerName is used to find the owerName information who this project belongs to.
@@ -47,17 +55,39 @@ public class Project {
      * This constructor helps to calculate the cost of item for user, and let the uses to see the current
      * budget, and this is also helps them to track item by date and total cost.
      *
-
-     * @param totalCost
+     * @param theProjectName
+      * @param totalCost
      * @param budget
      * @param ownerName
+     *
      */
-    public Project( BigDecimal totalCost, BigDecimal budget, String ownerName){
+    public Project( String theProjectName, BigDecimal totalCost, BigDecimal budget, String ownerName){
      this.totalCost = totalCost;
      this.budget = budget;
      this.id =  UUID.randomUUID().toString();
      this.date = LocalDate.now();
      this.ownerName = ownerName;
+     this.projectName = theProjectName;
+    }
+
+    /**
+     * DO NOT CALL THIS CONSTRUCTOR TO CREATE A NEW PROJECT.
+     * THIS IS FOR DATA MAPPING ONLY.
+     * @author Tin Phu
+     * @param theId
+     * @param theProjectName
+     * @param totalCost
+     * @param budget
+     * @param ownerName
+     */
+    public Project( String theId, String theProjectName, BigDecimal totalCost, BigDecimal budget, String ownerName){
+        this.totalCost = totalCost;
+        this.budget = budget;
+        this.id =  UUID.randomUUID().toString();
+        this.date = LocalDate.now();
+        this.ownerName = ownerName;
+        this.projectName = theProjectName;
+        this.id = theId;
     }
 
     /**
@@ -133,4 +163,38 @@ public class Project {
     }
 
 
+    @Override
+    public String toJson() {
+        final StringWriter writable = new StringWriter();
+        try {
+            this.toJson(writable);
+        } catch (final IOException e) {
+            throw new RuntimeException();
+        }
+        return writable.toString();
+    }
+
+    @Override
+    public void toJson(Writer writer) throws IOException {
+        final JsonObject json = new JsonObject();
+        json.put("id", this.id);
+        json.put("totalCost", this.totalCost.toString());
+        json.put("budget", this.budget.toString());
+        json.put("ownerName", this.ownerName);
+        json.put("date",  this.date.toString());
+        json.put("projectName", this.projectName);
+        json.toJson(writer);
+
+    }
+
+    /**
+     * Overide toString()
+     * @author Tin Phu
+     * @return
+     */
+    @Override
+    public String toString(){
+         return "id:" + this.id + "|" + "projectName:" + this.projectName + "|owerName:" + this.ownerName + "| totalCost" + this.totalCost + "| budget:" + this.budget + "\n";
+
+    }
 }
