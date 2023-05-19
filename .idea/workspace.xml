@@ -9,11 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8601f8e0-3e8b-4422-8383-2e8c7082147e" name="Changes" comment="Making many changes to Models.">
+    <list default="true" id="8601f8e0-3e8b-4422-8383-2e8c7082147e" name="Changes" comment="added UserRepository and UserProfile.json">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AppInfo.json" beforeDir="false" afterPath="$PROJECT_DIR$/AppInfo.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Account.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/repository/AboutAppRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/AboutAppRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserProfile.json" beforeDir="false" afterPath="$PROJECT_DIR$/UserProfile.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/UserRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -192,7 +190,8 @@
       <workItem from="1684434922343" duration="419000" />
       <workItem from="1684435686653" duration="2284000" />
       <workItem from="1684438737816" duration="367000" />
-      <workItem from="1684452740479" duration="2884000" />
+      <workItem from="1684452740479" duration="3013000" />
+      <workItem from="1684471007289" duration="689000" />
     </task>
     <task id="LOCAL-00001" summary="OwnerProfileForm JPanel is added to create User() profile based on user inputs. After clicking the button the current JFrame will switch to AboutScreen() JPanel.">
       <created>1682898396284</created>
@@ -285,7 +284,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684437989056</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="added UserRepository and UserProfile.json">
+      <created>1684455743545</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1684455743545</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -326,6 +332,7 @@
     <MESSAGE value="AppInforRepository now includes CurrentUser when import() and export() to Json File.&#10;Add setCurrentUser() and getCurrentUser() to AppInfoController." />
     <MESSAGE value="Fixed Repository Import() bugs to handle null key" />
     <MESSAGE value="Making many changes to Models." />
-    <option name="LAST_COMMIT_MESSAGE" value="Making many changes to Models." />
+    <MESSAGE value="added UserRepository and UserProfile.json" />
+    <option name="LAST_COMMIT_MESSAGE" value="added UserRepository and UserProfile.json" />
   </component>
 </project>
