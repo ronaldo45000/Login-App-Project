@@ -67,6 +67,12 @@ public class Account implements Jsonable {
 
 		json.toJson(writer);
 	}
+
+
+	@Override
+	public String toString(){
+		return this.name + "|" + this.email;
+	}
 }
 
 
