@@ -41,7 +41,6 @@ public class AppInfoController {
         return aboutAppRepository.getAppInfo();
     }
 
-
     /**
      * Set User to aboutAppRepository
      * @Author Tin Phu
@@ -88,4 +87,21 @@ public class AppInfoController {
         return aboutAppRepository.getAppInfo().getUser();
     }
 
+    /**
+     * Exports app info to a JSON file.
+     *  
+     * @author Riley Bennett
+     */
+    public static void exportData() {
+        aboutAppRepository.exportData();
+    }
+
+    /**
+     * Imports app info from a JSON file to the program.
+     *  
+     * @author Riley Bennett
+     */
+    public static void importData() {
+        aboutAppRepository.importData();
+    }
 }
