@@ -6,18 +6,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import controller.UserController;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * @author Tin Phu
- * @author Riley Bennett
  * @version 0.1
- * CreateProfile JPanel allows the user to create a profile.
+ * OwnerProfileForm JPanel is responsible to create Owner Profile.
  * BorderLayout and GridBagLayout are used in this JPanel.
  */
-public class CreateProfile extends JPanel {
+public class OwnerProfileForm extends JPanel {
     /**
      * State of nameFields
      */
@@ -27,7 +25,7 @@ public class CreateProfile extends JPanel {
      */
     private JTextField emailArea;
 
-    public CreateProfile(JPanel cardPanel, CardLayout  cardLayout  ){
+    public OwnerProfileForm(JPanel cardPanel, CardLayout  cardLayout  ){
         setLayout(new BorderLayout());
 
         // Create and add the application name label
@@ -69,32 +67,14 @@ public class CreateProfile extends JPanel {
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weighty = 0.5;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
 
         emailArea = new JTextField();
         formPanel.add(emailArea, gbc);
 
-        gbc.insets = new Insets(20, 20, 0, 20);
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        JLabel logInTxt = new JLabel("Already have an account?");
-        formPanel.add(logInTxt, gbc);
-
-        gbc.gridx = 1;
-        gbc.fill = 0;
-        JButton logInButton = new JButton("Log In");
-        logInButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "LogInScreen");
-            }
-        });
-
-        formPanel.add(logInButton, gbc);
-
         // Add the form panel to the center of the UserInfoPanel
         add(formPanel, BorderLayout.CENTER);
-
-        
 
         // Create and add the create button
         JButton createButton = new JButton("Create Profile");
@@ -105,32 +85,25 @@ public class CreateProfile extends JPanel {
                 String email = emailArea.getText();
                 //Tin Phu
                 //Show Error message if one of user inputs isEmty()
-                if(name.isEmpty() || email.isEmpty()){
-                    JOptionPane.showMessageDialog(CreateProfile.this, "Please fill in all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                //TinPhu
-                //Email Validation
-                if(!emailValidation(email)){
-                    JOptionPane.showMessageDialog(CreateProfile.this, "Invalid Email", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                if (UserController.userExists(name, email)) {
-                    JOptionPane.showMessageDialog(CreateProfile.this, "User already exists!", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
+//                if(name.isEmpty() || email.isEmpty()){
+//                    JOptionPane.showMessageDialog(OwnerProfileForm.this, "Please fill in all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
+//                    return;
+//                }
+//                //TinPhu
+//                //Email Validation
+//                if(!emailValidation(email)){
+//                    JOptionPane.showMessageDialog(OwnerProfileForm.this, "Invalid Email", "Error", JOptionPane.ERROR_MESSAGE);
+//                    return;
+//                }
 
                 //Tin Phu
                 //AboutScreen is created with new User() as argument
                 //cardPanel, cardLayout are passed to AboutScreen, so we can switch back to previous JPanel.
 
-                User theUser = UserController.addUser(name,email);
-                cardPanel.add(new HomeScreen(theUser, cardPanel, cardLayout), "HomeScreen");
-                JOptionPane.showMessageDialog(CreateProfile.this, "Account successfully created!", "Success", JOptionPane.INFORMATION_MESSAGE);
-
+                cardPanel.add(new HomeScreen(new User(name, email), cardPanel, cardLayout), "HomeScreen");
                 //Switch Trigger Here.
                 cardLayout.show(cardPanel, "HomeScreen");
+
             }
         });
         add(createButton, BorderLayout.SOUTH);
