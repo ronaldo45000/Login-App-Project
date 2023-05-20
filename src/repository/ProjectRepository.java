@@ -22,16 +22,30 @@ import java.util.Map;
 public class ProjectRepository {
 
 
-    public static void main(String[] args) {
-        ProjectRepository rep = new ProjectRepository();
-        rep.importData();
+    /**
+     * no-arg constructor
+     * which automatically importData()
+     */
+    public ProjectRepository(){
+        importData();
     }
-    private final String FILEPATH="ProjectList.json";
 
+    /**
+     * File name
+     */
+    private final String FILEPATH="ProjectList.json";
+    /**
+     * Hashmap<Srting, Project> to hold importData();
+     * Keep in mind that the key id.
+     */
     private final HashMap<String, Project> listOfProject = new HashMap<String, Project>();
 
 
-
+    /**
+     * Import data from FILEPATH.json and map to hashMap.
+     * @author Tin Phu
+     *
+     */
     public void importData(){
         try (FileReader fileReader = new FileReader(FILEPATH)) {
             JsonArray objects = Jsoner.deserializeMany(fileReader);
@@ -53,7 +67,7 @@ public class ProjectRepository {
                     ownerName = currentProject.get("ownerName").toString();
                 }
 
-                LocalDate date;
+                LocalDate date = null;
                 if(currentProject.get("date") != null){
                     date = LocalDate.parse(currentProject.get("date").toString());
                 }
@@ -68,7 +82,7 @@ public class ProjectRepository {
                     id = currentProject.get("id").toString();
                 }
 
-                this.listOfProject.put(entry.getKey(), new Project(id, projectName, totalCost, budget, ownerName));
+                this.listOfProject.put(entry.getKey(), new Project(id, projectName, totalCost, budget, ownerName, date));
 
 
             }
@@ -82,7 +96,10 @@ public class ProjectRepository {
         }
     }
 
-
+    /**
+     * export the hashmap to FILEPATH.json file.
+     * @author Tin Phu
+     */
     public void exportData(){
         try (FileWriter fileWriter = new FileWriter(this.FILEPATH)) {
             Jsoner.serialize(this.listOfProject, fileWriter);
@@ -95,27 +112,55 @@ public class ProjectRepository {
 
     }
 
+    /**
+     * get FILEPATH
+     * @return
+     */
     public String getFILEPATH() {
         return FILEPATH;
     }
 
+    /**
+     * Return the reference of the hashmap.
+     * @return
+     */
     public HashMap<String, Project> getListOfProject() {
         return listOfProject;
     }
 
+    /**
+     * Add a project
+     * @param theProject
+     */
     public void addProject( Project theProject){
         this.listOfProject.put(theProject.getId(), theProject);
         this.exportData();
     }
+
+    /**
+     * Delete Project by id
+     * @param id
+     */
     public void deleteProject(String id){
         this.listOfProject.remove(id);
         this.exportData();
     }
 
+    /**
+     * Delete Project by Project
+     * @param theProject
+     */
     public void deleteProject(Project theProject){
         this.listOfProject.remove(theProject.getId());
+        this.exportData();
     }
 
+    /**
+     * findProjectbyId
+     * which return the reference of the element of the hashmap.
+     * @param theId
+     * @return
+     */
     public Project findProjectbyId(String theId){
         return this.listOfProject.get(theId);
     }

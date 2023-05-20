@@ -19,6 +19,8 @@ import java.util.Map;
  */
 public class UserRepository {
 
+
+
     /**
      * File name
      */
@@ -28,6 +30,10 @@ public class UserRepository {
      */
     private final HashMap<String, User> listOfuserProfile = new HashMap<String, User>();
 
+    /**
+     * no-arg constructor
+     * which automatically importData()
+     */
     public UserRepository(){
         importData();
     }
@@ -51,10 +57,29 @@ public class UserRepository {
             JsonObject o = (JsonObject) objects.get(0);
             for (Map.Entry<String, Object> entry : o.entrySet()) {
 
-                JsonObject u = (JsonObject) entry.getValue();
-                if(u.get("email") != null ){
-                    this.listOfuserProfile.put(entry.getKey(), new User(entry.getKey(),u.get("email").toString()));
+                JsonObject currentUser  = (JsonObject) entry.getValue();
+
+
+                String id = "notFound";
+                if(currentUser.get("id") != null){
+                    id = currentUser.get("id").toString();
                 }
+                String email = "notFound";
+                if(currentUser.get("email") != null){
+                    email = currentUser.get("email").toString();
+                }
+
+                String name = "notFound";
+                if(currentUser.get("name") != null){
+                    name = currentUser.get("name").toString();
+                }
+
+                this.listOfuserProfile.put(id, new User(name, email, id));
+
+
+                
+
+
 
 
             }
@@ -91,7 +116,7 @@ public class UserRepository {
      * @param theName
      * @return the reference of that User in hashmap !!!.
      */
-    public User findUserByName(String theName){
+    public User findUserById(String theName){
         return this.listOfuserProfile.get(theName);
 
     }
@@ -101,7 +126,7 @@ public class UserRepository {
      * Delete a User from the hashmap and then exportData().
      * @param theName
      */
-    public void deleteUserByName(String theName){
+    public void deleteUserById(String theName){
         this.listOfuserProfile.remove(theName);
         this.exportData();
     }
@@ -112,7 +137,7 @@ public class UserRepository {
      * @param theUser
      */
     public void addUser(User theUser){
-        this.listOfuserProfile.put(theUser.getName(), theUser);
+        this.listOfuserProfile.put(theUser.getId(), theUser);
         this.exportData();
     }
 

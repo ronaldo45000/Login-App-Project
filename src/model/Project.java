@@ -23,7 +23,7 @@ public class Project implements Jsonable {
      * id for project
      */
 
-   private String id;
+   private final String id;
     /**
      * project name
      */
@@ -38,10 +38,10 @@ public class Project implements Jsonable {
      */
     private BigDecimal budget = BigDecimal.valueOf(0);
 
-   /**
-   * this ownerName is used to find the owerName information who this project belongs to.
-   */
-  private String ownerName;
+    /**
+     * this is the User Id which this document belongs to.
+     */
+    private final String userID;
 
 
 
@@ -58,15 +58,15 @@ public class Project implements Jsonable {
      * @param theProjectName
       * @param totalCost
      * @param budget
-     * @param ownerName
+     * @param theUserID
      *
      */
-    public Project( String theProjectName, BigDecimal totalCost, BigDecimal budget, String ownerName){
+    public Project( String theProjectName, BigDecimal totalCost, BigDecimal budget, String theUserID){
      this.totalCost = totalCost;
      this.budget = budget;
      this.id =  UUID.randomUUID().toString();
      this.date = LocalDate.now();
-     this.ownerName = ownerName;
+     this.userID = theUserID;
      this.projectName = theProjectName;
     }
 
@@ -78,14 +78,13 @@ public class Project implements Jsonable {
      * @param theProjectName
      * @param totalCost
      * @param budget
-     * @param ownerName
+     * @param theUserID
      */
-    public Project( String theId, String theProjectName, BigDecimal totalCost, BigDecimal budget, String ownerName){
+    public Project( String theId, String theProjectName, BigDecimal totalCost, BigDecimal budget, String theUserID, LocalDate theDate){
         this.totalCost = totalCost;
         this.budget = budget;
-        this.id =  UUID.randomUUID().toString();
-        this.date = LocalDate.now();
-        this.ownerName = ownerName;
+        this.date = theDate;
+        this.userID = theUserID;
         this.projectName = theProjectName;
         this.id = theId;
     }
@@ -158,8 +157,8 @@ public class Project implements Jsonable {
     * OwnerName getter
     * @return
      */
-     public String getOwnerName() {
-     return ownerName;
+     public String getUserID() {
+        return this.userID;
     }
 
 
@@ -180,7 +179,7 @@ public class Project implements Jsonable {
         json.put("id", this.id);
         json.put("totalCost", this.totalCost.toString());
         json.put("budget", this.budget.toString());
-        json.put("ownerName", this.ownerName);
+        json.put("userID", this.userID);
         json.put("date",  this.date.toString());
         json.put("projectName", this.projectName);
         json.toJson(writer);
@@ -194,7 +193,7 @@ public class Project implements Jsonable {
      */
     @Override
     public String toString(){
-         return "id:" + this.id + "|" + "projectName:" + this.projectName + "|owerName:" + this.ownerName + "| totalCost" + this.totalCost + "| budget:" + this.budget + "\n";
+         return "id:" + this.id + "|" + "projectName:" + this.projectName + "|userID:" + this.userID + "| totalCost" + this.totalCost + "| budget:" + this.budget + "\n";
 
     }
 }
