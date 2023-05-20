@@ -85,16 +85,16 @@ public class OwnerProfileForm extends JPanel {
                 String email = emailArea.getText();
                 //Tin Phu
                 //Show Error message if one of user inputs isEmty()
-                if(name.isEmpty() || email.isEmpty()){
-                    JOptionPane.showMessageDialog(OwnerProfileForm.this, "Please fill in all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                //TinPhu
-                //Email Validation
-                if(!emailValidation(email)){
-                    JOptionPane.showMessageDialog(OwnerProfileForm.this, "Invalid Email", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
+//                if(name.isEmpty() || email.isEmpty()){
+//                    JOptionPane.showMessageDialog(OwnerProfileForm.this, "Please fill in all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
+//                    return;
+//                }
+//                //TinPhu
+//                //Email Validation
+//                if(!emailValidation(email)){
+//                    JOptionPane.showMessageDialog(OwnerProfileForm.this, "Invalid Email", "Error", JOptionPane.ERROR_MESSAGE);
+//                    return;
+//                }
 
                 //Tin Phu
                 //AboutScreen is created with new User() as argument
