@@ -68,7 +68,9 @@ public class HomeScreen extends JPanel {
         JButton logoutButton = new JButton("Logout");
         logoutButton.addActionListener((new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
                 cardLayout.show(cardPanel, "LogInScreen");
+                AppInfoController.logout();
             }
         }));
         cons.gridy = 2;
