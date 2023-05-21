@@ -35,7 +35,7 @@ public class AboutAppRepository {
      * which will simply importData() and populate data from json file to this.appInfo.
      */
     public AboutAppRepository()  {
-        importData();
+//        importData();
     }
 
     /**
@@ -65,6 +65,7 @@ public class AboutAppRepository {
 
 
                 JsonArray  arr = (JsonArray)o.get("teamMembers");
+                appInfo.clearDevelopers();
                  if(arr != null){
                      //Mapping List of Devs information.
                      for(int i = 0; i < arr.size(); i++){
@@ -79,6 +80,7 @@ public class AboutAppRepository {
         } catch (IOException | JsonException e) {
             throw new RuntimeException(e);
         }
+        System.out.println("Import Data from AppInfo.json");
     }
 
     /**
@@ -97,7 +99,7 @@ public class AboutAppRepository {
             throw new RuntimeException(e);
         }
 
-
+        System.out.println("Export Data to AppInfo.json");
     }
 
     /**

@@ -37,7 +37,7 @@ public class UserRepository {
      * which automatically importData()
      */
     public UserRepository(){
-        importData();
+//        importData();
     }
 
     /**
@@ -87,7 +87,7 @@ public class UserRepository {
             }
 
         System.out.println("Import Data from UserProfile.json");
-        System.out.println(this.listOfuserProfile.toString());
+//        System.out.println(this.listOfuserProfile.toString());
 
 
         } catch (IOException | JsonException e){
@@ -106,7 +106,7 @@ public class UserRepository {
         try (FileWriter fileWriter = new FileWriter(this.FILEPATH)) {
             Jsoner.serialize(this.listOfuserProfile, fileWriter);
             System.out.println("Export Data to UserProfile.json");
-            System.out.println(this.listOfuserProfile.toString());
+//            System.out.println(this.listOfuserProfile.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
     }

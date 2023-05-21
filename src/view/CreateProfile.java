@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import controller.AppInfoController;
 import controller.UserController;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -72,6 +73,7 @@ public class CreateProfile extends JPanel {
                 //cardPanel, cardLayout are passed to AboutScreen, so we can switch back to previous JPanel.
 
                 User theUser = UserController.addUser(name,email);
+                AppInfoController.setUser(theUser);
                 cardPanel.add(new HomeScreen(theUser, cardPanel, cardLayout), "HomeScreen");
                 JOptionPane.showMessageDialog(CreateProfile.this, "Account successfully created!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
