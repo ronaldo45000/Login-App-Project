@@ -76,11 +76,14 @@ public class HomeScreen extends JPanel {
         JButton importButton = new JButton("Import Data");
         importButton.addActionListener((new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(buttonPanel, "While importing data, you will be logged out.\nContinue?", 
-                "Warning", JOptionPane.OK_CANCEL_OPTION);
-                cardLayout.show(cardPanel, "LogInScreen");
-                AppInfoController.importData();
-                UserController.importData();
+                int confirm = JOptionPane.showConfirmDialog(buttonPanel, "While importing data, you will be logged out.\nContinue?", 
+                "Warning", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    cardLayout.show(cardPanel, "LogInScreen");
+                    AppInfoController.importData();
+                    UserController.importData();
+                }
             }
         }));
         buttonPanel.add(importButton, cons);
