@@ -44,7 +44,7 @@ public class AppUI {
         //Tin Phu:
         //cardPanel, cardLayout are passed to OwnerProfileForm because the button need to access them to switch
         //to AboutScreen()
-        JPanel mainPanel = new OwnerProfileForm(cardPanel, cardLayout);
+        JPanel mainPanel = new LogInScreen(cardPanel, cardLayout);
         cardPanel.add(mainPanel, "LogInScreen");
 
 
