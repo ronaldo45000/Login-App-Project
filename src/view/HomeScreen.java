@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import controller.AppInfoController;
+import controller.UserController;
 
 /**
  * A class to create the Home screen of the FileNtro project.
@@ -75,8 +76,11 @@ public class HomeScreen extends JPanel {
         JButton importButton = new JButton("Import Data");
         importButton.addActionListener((new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(buttonPanel, "While importing data, you will be logged out.\nContinue?", 
+                "Warning", JOptionPane.OK_CANCEL_OPTION);
+                cardLayout.show(cardPanel, "LogInScreen");
                 AppInfoController.importData();
-                JOptionPane.showMessageDialog(buttonPanel, "JSON files imported.");
+                UserController.importData();
             }
         }));
         buttonPanel.add(importButton, cons);
@@ -86,7 +90,8 @@ public class HomeScreen extends JPanel {
         JButton exportButton = new JButton("Export Data");
         exportButton.addActionListener((new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AppInfoController.importData();
+                AppInfoController.exportData();
+                UserController.exportData();
                 JOptionPane.showMessageDialog(buttonPanel, "Check program folder for exported JSON files.");
             }
         }));

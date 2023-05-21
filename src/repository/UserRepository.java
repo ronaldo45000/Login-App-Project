@@ -9,12 +9,14 @@ import model.User;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author Tin Phu
- * @version 0.1
+ * @author Riley Bennett
+ * @version 0.2
  * Keep in mind that we use Hashmap<String, User> to hold data. the key is user's name.
  */
 public class UserRepository {
@@ -94,7 +96,7 @@ public class UserRepository {
     }
 
     /**
-     * @Author
+     * @Author Tin Phu
      * export this.userProfiles hashmap to UserProfile.json
      */
     public void exportData(){
@@ -113,32 +115,49 @@ public class UserRepository {
     /**
      * findUserByName.
      *
+     * @Author Riley Bennett
      * @param theName
      * @return the reference of that User in hashmap !!!.
      */
-    public User findUserById(String theName){
-        return this.listOfuserProfile.get(theName);
-
+    public User findUserByName(String theName){
+        Iterator<User> itr = this.listOfuserProfile.values().iterator();
+        while (itr.hasNext()) {
+            User tempUser = itr.next();
+            if (tempUser.getName().equals(theName)) {
+                return tempUser;
+            }
+        }
+        return null;
     }
 
     /**
      * @Author Tin Phu
+     * @author Riley Bennett
      * Delete a User from the hashmap and then exportData().
      * @param theName
      */
-    public void deleteUserById(String theName){
-        this.listOfuserProfile.remove(theName);
-        this.exportData();
+    public boolean deleteUserByName(String theName){
+        Iterator<User> itr = this.listOfuserProfile.values().iterator();
+        while (itr.hasNext()) {
+            User tempUser = itr.next();
+            if (tempUser.getName().equals(theName)) {
+                listOfuserProfile.remove(tempUser.getId());
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
-     * @Author Tin Phu
+     * @author Tin Phu
+     * @author Riley Bennett
      * Add the User to the hasmap and then exportData()
      * @param theUser
      */
-    public void addUser(User theUser){
+    public User addUser(User theUser){
         this.listOfuserProfile.put(theUser.getId(), theUser);
         this.exportData();
+        return theUser;
     }
 
 }

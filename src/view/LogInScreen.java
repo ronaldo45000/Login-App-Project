@@ -6,16 +6,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import controller.UserController;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author Tin Phu
+ * @author Riley Bennett
  * @version 0.1
  * OwnerProfileForm JPanel is responsible to create Owner Profile.
  * BorderLayout and GridBagLayout are used in this JPanel.
  */
-public class OwnerProfileForm extends JPanel {
+public class LogInScreen extends JPanel {
     /**
      * State of nameFields
      */
@@ -25,7 +26,7 @@ public class OwnerProfileForm extends JPanel {
      */
     private JTextField emailArea;
 
-    public OwnerProfileForm(JPanel cardPanel, CardLayout  cardLayout  ){
+    public LogInScreen(JPanel cardPanel, CardLayout  cardLayout  ){
         setLayout(new BorderLayout());
 
         // Create and add the application name label
@@ -67,18 +68,37 @@ public class OwnerProfileForm extends JPanel {
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
+         gbc.weighty = 0.5;
 
         emailArea = new JTextField();
         formPanel.add(emailArea, gbc);
 
+        gbc.insets = new Insets(20, 20, 0, 20);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        JLabel createAcctTxt = new JLabel("New to FileNtro?");
+        formPanel.add(createAcctTxt, gbc);
+
+        gbc.gridx = 1;
+        gbc.fill = 0;
+        JButton createAcct = new JButton("Create Account");
+        createAcct.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cardPanel.add(new CreateProfile(cardPanel, cardLayout), "CreateProfileScreen");
+                nameField.setText("");
+                emailArea.setText("");
+                cardLayout.show(cardPanel, "CreateProfileScreen");
+            }
+        });
+
+        formPanel.add(createAcct, gbc);
+
         // Add the form panel to the center of the UserInfoPanel
         add(formPanel, BorderLayout.CENTER);
 
-        // Create and add the create button
-        JButton createButton = new JButton("Create Profile");
-        createButton.addActionListener(new ActionListener() {
+        // Create and add the login button
+        JButton logInButton = new JButton("Log In");
+        logInButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
                 String name = nameField.getText();
@@ -86,13 +106,14 @@ public class OwnerProfileForm extends JPanel {
                 //Tin Phu
                 //Show Error message if one of user inputs isEmty()
                 if(name.isEmpty() || email.isEmpty()){
-                    JOptionPane.showMessageDialog(OwnerProfileForm.this, "Please fill in all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(LogInScreen.this, "Please fill in all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                //TinPhu
-                //Email Validation
-                if(!emailValidation(email)){
-                    JOptionPane.showMessageDialog(OwnerProfileForm.this, "Invalid Email", "Error", JOptionPane.ERROR_MESSAGE);
+                
+                User theUser = UserController.findUser(name, email);
+
+                if (theUser == null) {
+                    JOptionPane.showMessageDialog(LogInScreen.this, "User does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
@@ -100,24 +121,16 @@ public class OwnerProfileForm extends JPanel {
                 //AboutScreen is created with new User() as argument
                 //cardPanel, cardLayout are passed to AboutScreen, so we can switch back to previous JPanel.
 
-                cardPanel.add(new HomeScreen(new User(name, email), cardPanel, cardLayout), "HomeScreen");
-                //Switch Trigger Here.
+                cardPanel.add(new HomeScreen(theUser, cardPanel, cardLayout), "HomeScreen");
+
+                nameField.setText("");
+                emailArea.setText("");
+                //Switch Trigger Here
+
                 cardLayout.show(cardPanel, "HomeScreen");
 
             }
         });
-        add(createButton, BorderLayout.SOUTH);
-    }
-
-    /**
-     * Email Validation using regex Expression
-     * @Author Tin Phu
-     * @return boolean
-     */
-    public boolean emailValidation(String emailString){
-        String regex = "^[\\w!#$%&amp;'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&amp;'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(emailString);
-        return matcher.matches();
+        add(logInButton, BorderLayout.SOUTH);
     }
 }
