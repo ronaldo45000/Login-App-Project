@@ -22,14 +22,18 @@ public class DocumentTab extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
 
         JButton addButton = new JButton("Add Document");
+
+
+
+
+
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String newItem = JOptionPane.showInputDialog(DocumentTab.this, "Enter Document name:");
-                if (newItem != null && !newItem.isEmpty()) {
-                    items.add(newItem);
-                    listModel.addElement(newItem);
-                }
+
+
+                new DocumentCreationFormPopUp() ;
+
             }
         });
         add(addButton, BorderLayout.SOUTH);

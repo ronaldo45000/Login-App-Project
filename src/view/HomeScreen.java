@@ -54,7 +54,7 @@ public class HomeScreen extends JPanel {
         }));
         
         // Add about screen to cards, switch to about screen when button is pressed
-        cardPanel.add(new AboutScreen(user, cardPanel, cardLayout), "AboutScreen");
+        cardPanel.add(new AboutScreen(user, cardPanel, cardLayout,"HomeScreen"), "AboutScreen");
         cons.insets = new Insets(30, 0, 0, 0);
         cons.gridy = 1;
         aboutButton.addActionListener((new ActionListener() {
