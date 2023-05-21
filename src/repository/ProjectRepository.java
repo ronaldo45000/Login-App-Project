@@ -5,7 +5,6 @@ import com.github.cliftonlabs.json_simple.JsonException;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
 import model.Project;
-import model.User;
 
 import java.io.FileReader;
 import java.io.FileWriter;

@@ -4,7 +4,6 @@ import controller.AppInfoController;
 import controller.DocumentController;
 import controller.ProjectController;
 import controller.UserController;
-import model.User;
 
 import javax.swing.*;
 import java.awt.*;
