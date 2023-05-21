@@ -27,7 +27,7 @@ public class ProjectRepository {
      * which automatically importData()
      */
     public ProjectRepository(){
-        importData();
+//        importData();
     }
 
     /**
@@ -47,6 +47,7 @@ public class ProjectRepository {
      *
      */
     public void importData(){
+        listOfProject.clear();
         try (FileReader fileReader = new FileReader(FILEPATH)) {
             JsonArray objects = Jsoner.deserializeMany(fileReader);
             JsonObject o = (JsonObject) objects.get(0);
@@ -87,8 +88,8 @@ public class ProjectRepository {
 
             }
 
-            System.out.println("Import Data from UserProfile.json");
-            System.out.println(this.listOfProject.toString());
+            System.out.println("Import Data from ProjectList.json");
+//            System.out.println(this.listOfProject.toString());
 
 
         } catch (IOException | JsonException e){
@@ -103,8 +104,8 @@ public class ProjectRepository {
     public void exportData(){
         try (FileWriter fileWriter = new FileWriter(this.FILEPATH)) {
             Jsoner.serialize(this.listOfProject, fileWriter);
-            System.out.println("Export Data to UserProfile.json");
-            System.out.println(this.listOfProject.toString());
+            System.out.println("Export Data to ProjectList.json");
+//            System.out.println(this.listOfProject.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -7,6 +7,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import controller.AppInfoController;
+import controller.DocumentController;
+import controller.ProjectController;
 import controller.UserController;
 
 /**
@@ -64,15 +66,6 @@ public class HomeScreen extends JPanel {
         }));
         buttonPanel.add(aboutButton, cons);
         
-        // Switch back to log in screen when logout button is pressed
-        JButton logoutButton = new JButton("Logout");
-        logoutButton.addActionListener((new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-                cardLayout.show(cardPanel, "LogInScreen");
-                AppInfoController.logout();
-            }
-        }));
         cons.gridy = 2;
         cons.insets = new Insets(60, 0, 0, 0);
         JButton importButton = new JButton("Import Data");
@@ -97,10 +90,22 @@ public class HomeScreen extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 AppInfoController.exportData();
                 UserController.exportData();
+                DocumentController.exportData();
+                ProjectController.exportData();
                 JOptionPane.showMessageDialog(buttonPanel, "Check program folder for exported JSON files.");
             }
         }));
         buttonPanel.add(exportButton, cons);
+
+         // Switch back to log in screen when logout button is pressed
+         JButton logoutButton = new JButton("Logout");
+         logoutButton.addActionListener((new ActionListener() {
+             public void actionPerformed(ActionEvent e) {
+ 
+                 cardLayout.show(cardPanel, "LogInScreen");
+                 AppInfoController.logout();
+             }
+         }));
 
         cons.gridy = 4;
         cons.insets = new Insets(100, 0, 0, 0);

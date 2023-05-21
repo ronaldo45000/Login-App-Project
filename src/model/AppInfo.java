@@ -104,6 +104,14 @@ public class AppInfo implements Jsonable {
 
 
     /**
+     * Clears list of developers.
+     * @author Riley Bennett
+     */
+    public void clearDevelopers() {
+        teamMembers.clear();
+    }
+
+    /**
      * User Setter.
      * @param user
      */

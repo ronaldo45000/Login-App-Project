@@ -1,6 +1,9 @@
 package view;
 
 import controller.AppInfoController;
+import controller.DocumentController;
+import controller.ProjectController;
+import controller.UserController;
 import model.User;
 
 import javax.swing.*;
@@ -31,6 +34,7 @@ public class AppUI {
      * The main JFrame and other components are created and then run in main().
      */
     public void createAndShowGUI() {
+        initialImports();
         // Create the frame
         frame = new JFrame("FileNtro");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,12 +59,6 @@ public class AppUI {
         JPanel mainPanel = new LogInScreen(cardPanel, cardLayout);
         cardPanel.add(mainPanel, "LogInScreen");
 
-        if(AppInfoController.getCurrentUser() != null){
-            cardPanel.add(new HomeScreen(AppInfoController.getCurrentUser(), cardPanel, cardLayout), "HomeScreen");
-            cardLayout.show(cardPanel, "HomeScreen");
-        }
-
-
        frame.add(cardPanel);
 
         // Create the menu bar
@@ -70,19 +68,32 @@ public class AppUI {
         JMenu fileMenu = new JMenu("File");
         //Adding Import Menu Item
         JMenuItem importMenuItem = new JMenuItem("Import");
+        JMenuItem exportMenuItem = new JMenuItem("Export");
         importMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Importing");
+                int confirm = JOptionPane.showConfirmDialog(frame, "While importing data, you will be logged out.\nContinue?", 
+                "Warning", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    cardLayout.show(cardPanel, "LogInScreen");
+                    AppInfoController.logout();
+                    AppInfoController.importData();
+                    UserController.importData();
+                    DocumentController.importData();
+                    ProjectController.importData();
+                }
             }
         });
-        fileMenu.add(importMenuItem);
-
-        JMenuItem exportMenuItem = new JMenuItem("Export");
+       fileMenu.add(importMenuItem);
         exportMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Exporting");
+                AppInfoController.exportData();
+                UserController.exportData();
+                DocumentController.exportData();
+                ProjectController.exportData();
+                JOptionPane.showMessageDialog(frame, "Check program folder for exported JSON files.");
             }
         });
         fileMenu.add(exportMenuItem);
@@ -113,8 +124,19 @@ public class AppUI {
 
         // Show the frame
         frame.setVisible(true);
+
+        if(AppInfoController.getCurrentUser() != null){
+            cardPanel.add(new HomeScreen(AppInfoController.getCurrentUser(), cardPanel, cardLayout), "HomeScreen");
+            cardLayout.show(cardPanel, "HomeScreen");
+        }
     }
 
+    public void initialImports() {
+        AppInfoController.importData();
+        UserController.importData();
+        ProjectController.importData();
+        DocumentController.importData();
+    }
     public static void main(String[] args) {
         // Run the GUI code in the Event Dispatch Thread
         SwingUtilities.invokeLater(() -> {
