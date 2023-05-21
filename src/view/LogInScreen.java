@@ -38,7 +38,7 @@ public class LogInScreen extends JPanel {
         nameField = new JTextField(20);
         JLabel passwordLabel = new JLabel("Email:");
         emailArea = new JTextField(20);
-        JButton loginButton = new JButton("Login");
+        JButton loginButton = new JButton("Log In");
         /**
          * @author Riley Bennett
          * @author Tin Phu

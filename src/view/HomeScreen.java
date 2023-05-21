@@ -52,7 +52,7 @@ public class HomeScreen extends JPanel {
         }));
         
          // Switch back to log in screen when logout button is pressed
-         JButton logoutButton = new JButton("Logout");
+         JButton logoutButton = new JButton("Log Out");
          logoutButton.addActionListener((new ActionListener() {
              public void actionPerformed(ActionEvent e) {
  

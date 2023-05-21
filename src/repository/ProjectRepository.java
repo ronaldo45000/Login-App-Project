@@ -26,7 +26,7 @@ public class ProjectRepository {
      * which automatically importData()
      */
     public ProjectRepository(){
-//        importData();
+        importData();
     }
 
     /**

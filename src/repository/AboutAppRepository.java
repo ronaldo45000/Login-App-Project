@@ -35,7 +35,7 @@ public class AboutAppRepository {
      * which will simply importData() and populate data from json file to this.appInfo.
      */
     public AboutAppRepository()  {
-//        importData();
+        importData();
     }
 
     /**
