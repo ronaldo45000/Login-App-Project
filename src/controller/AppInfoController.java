@@ -104,4 +104,14 @@ public class AppInfoController {
     public static void importData() {
         aboutAppRepository.importData();
     }
+
+    /**
+     * Log out
+     * @Author Tin Phu
+     */
+    public static void logout(){
+        aboutAppRepository.getAppInfo().setUser(null);
+        aboutAppRepository.exportData();
+
+    }
 }

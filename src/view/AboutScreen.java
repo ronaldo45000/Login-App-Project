@@ -55,11 +55,16 @@ public class AboutScreen extends JPanel {
         aboutInfo.add(versionLabel, cons);
 
         // User text
-        JLabel userLabel = new JLabel("This app is registered to: " + user.getName() + " (" + user.getEmail() + ")");
-        userLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        cons.gridy = 1;
-        cons.insets = new Insets(50, 0, 0, 0);
-        aboutInfo.add(userLabel, cons);
+        if(user != null ){
+            JLabel userLabel = new JLabel("This app is registered to: " + user.getName() + " (" + user.getEmail() + ")");
+            userLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+            cons.gridy = 1;
+            cons.insets = new Insets(50, 0, 0, 0);
+            aboutInfo.add(userLabel, cons);
+        }
+
+
+
 
         // Developer label text
         JLabel devLabel = new JLabel("This app is provided by " + info.getTeamName() + ":");
@@ -90,7 +95,10 @@ public class AboutScreen extends JPanel {
         JButton backButton = new JButton("Back");
         backButton.addActionListener((new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "HomeScreen");
+                if(AppInfoController.getCurrentUser() == null)
+                    cardLayout.show(cardPanel, "LogInScreen");
+                else
+                    cardLayout.show(cardPanel, "HomeScreen");
             }
         }));
 
