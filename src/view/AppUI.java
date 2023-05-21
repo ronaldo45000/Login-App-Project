@@ -1,7 +1,12 @@
 package view;
 
+import controller.AppInfoController;
+import model.User;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author Tin Phu
@@ -44,12 +49,62 @@ public class AppUI {
         //Tin Phu:
         //cardPanel, cardLayout are passed to OwnerProfileForm because the button need to access them to switch
         //to AboutScreen()
+
+
+
         JPanel mainPanel = new LogInScreen(cardPanel, cardLayout);
         cardPanel.add(mainPanel, "LogInScreen");
 
+        if(AppInfoController.getCurrentUser() != null){
+            cardPanel.add(new HomeScreen(AppInfoController.getCurrentUser(), cardPanel, cardLayout), "HomeScreen");
+            cardLayout.show(cardPanel, "HomeScreen");
+        }
 
 
        frame.add(cardPanel);
+
+        // Create the menu bar
+        JMenuBar menuBar = new JMenuBar();
+
+        // Create the "File" menu
+        JMenu fileMenu = new JMenu("File");
+        //Adding Import Menu Item
+        JMenuItem importMenuItem = new JMenuItem("Import");
+        importMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Importing");
+            }
+        });
+        fileMenu.add(importMenuItem);
+
+        JMenuItem exportMenuItem = new JMenuItem("Export");
+        exportMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Exporting");
+            }
+        });
+        fileMenu.add(exportMenuItem);
+
+        // Create the "About" menu
+        JMenu aboutMenu = new JMenu("About");
+        JMenuItem aboutMenuItem = new JMenuItem("About");
+        aboutMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                cardPanel.add(new AboutScreen(AppInfoController.getCurrentUser(), cardPanel, cardLayout ), "AboutScreen");
+                cardLayout.show(cardPanel, "AboutScreen");
+            }
+        });
+        aboutMenu.add(aboutMenuItem);
+        // Add menus to the menu bar
+        menuBar.add(fileMenu);
+        menuBar.add(aboutMenu);
+
+        // Set the menu bar to the frame
+        frame.setJMenuBar(menuBar);
 
 
         // Pack and center the frame

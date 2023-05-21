@@ -28,76 +28,22 @@ public class CreateProfile extends JPanel {
     private JTextField emailArea;
 
     public CreateProfile(JPanel cardPanel, CardLayout  cardLayout  ){
-        setLayout(new BorderLayout());
-
-        // Create and add the application name label
-        JLabel appNameLabel = new JLabel("Welcome to FileNtro");
-        appNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        appNameLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        add(appNameLabel, BorderLayout.NORTH);
-
-        // Create the form panel
-        JPanel formPanel = new JPanel(new GridBagLayout());
+        setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10); // Set padding
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.insets = new Insets(20, 20, 0, 20);
-        gbc.anchor = GridBagConstraints.WEST;
+        JLabel titleLabel = new JLabel("Welcome to FileNtro");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
-        JLabel nameLabel = new JLabel("Name:");
-        formPanel.add(nameLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1;
-        nameField = new JTextField();
-        formPanel.add(nameField, gbc);
-
-
-
-        gbc.insets = new Insets(0, 20, 0, 20);
-
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 0.0;
-
-        JLabel addressLabel = new JLabel("Email:");
-        formPanel.add(addressLabel, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weighty = 0.5;
-
-        emailArea = new JTextField();
-        formPanel.add(emailArea, gbc);
-
-        gbc.insets = new Insets(20, 20, 0, 20);
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        JLabel logInTxt = new JLabel("Already have an account?");
-        formPanel.add(logInTxt, gbc);
-
-        gbc.gridx = 1;
-        gbc.fill = 0;
-        JButton logInButton = new JButton("Log In");
-        logInButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "LogInScreen");
-            }
-        });
-
-        formPanel.add(logInButton, gbc);
-
-        // Add the form panel to the center of the UserInfoPanel
-        add(formPanel, BorderLayout.CENTER);
-
-        
-
-        // Create and add the create button
-        JButton createButton = new JButton("Create Profile");
+        JLabel usernameLabel = new JLabel("Username:");
+        nameField = new JTextField(20);
+        JLabel passwordLabel = new JLabel("Email:");
+        emailArea = new JTextField(20);
+        JButton createButton = new JButton("Create");
+        /**
+         * @author Riley Bennett
+         * @author Tin Phu
+         */
         createButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -133,7 +79,63 @@ public class CreateProfile extends JPanel {
                 cardLayout.show(cardPanel, "HomeScreen");
             }
         });
-        add(createButton, BorderLayout.SOUTH);
+
+        JLabel newUserLabel = new JLabel("Already have an account?");
+        JButton logInButton = new JButton("Log in");
+        /**
+         * @author Riley Bennett
+         * @author Tin Phu
+         */
+        logInButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(cardPanel, "LogInScreen");
+            }
+        });
+
+
+        // Add components to the panel using GridBagConstraints
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        add(titleLabel, gbc);
+
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        add(usernameLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        add(nameField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        add(passwordLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        add(emailArea, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        add(createButton, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        add(newUserLabel, gbc);
+
+        gbc.gridy = 5;
+        add(logInButton, gbc);
+
+
+
+
     }
 
     /**
