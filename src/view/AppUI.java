@@ -1,7 +1,11 @@
 package view;
 
+import model.User;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author Tin Phu
@@ -50,6 +54,52 @@ public class AppUI {
 
 
        frame.add(cardPanel);
+
+        // Create the menu bar
+        JMenuBar menuBar = new JMenuBar();
+
+        // Create the "File" menu
+        JMenu fileMenu = new JMenu("File");
+        //Adding Import Menu Item
+        JMenuItem importMenuItem = new JMenuItem("Import");
+        importMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Importing");
+            }
+        });
+        fileMenu.add(importMenuItem);
+
+        JMenuItem exportMenuItem = new JMenuItem("Export");
+        exportMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Exporting");
+            }
+        });
+        fileMenu.add(exportMenuItem);
+
+        // Create the "About" menu
+        JMenu aboutMenu = new JMenu("About");
+        JMenuItem aboutMenuItem = new JMenuItem("About");
+        aboutMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardPanel.add(new AboutScreen( new User("",""), cardPanel, cardLayout, "LogInScreen" ), "AboutScreen");
+                cardLayout.show(cardPanel, "AboutScreen");
+            }
+        });
+        aboutMenu.add(aboutMenuItem);
+        // Add menus to the menu bar
+        menuBar.add(fileMenu);
+        menuBar.add(aboutMenu);
+
+        // Set the menu bar to the frame
+        frame.setJMenuBar(menuBar);
+
+
+
+
 
 
         // Pack and center the frame

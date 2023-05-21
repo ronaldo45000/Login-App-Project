@@ -29,7 +29,7 @@ public class AboutScreen extends JPanel {
      * @param cardPanel The panels to swap to/from
      * @param cardLayout The cardlayout used to swap between panels
      */
-    public AboutScreen(User user, JPanel cardPanel, CardLayout cardLayout) {
+    public AboutScreen(User user, JPanel cardPanel, CardLayout cardLayout, String previousCardName) {
         AppInfoController.setUser(user);
         info = AppInfoController.getAppInfo();
        // AppInfoController.addNewDeveloper(new Account("Dummy", "Dummy@gmail.com"));
@@ -90,7 +90,9 @@ public class AboutScreen extends JPanel {
         JButton backButton = new JButton("Back");
         backButton.addActionListener((new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "HomeScreen");
+
+                cardLayout.show(cardPanel, previousCardName);
+                //cardLayout.previous(getContentPane());
             }
         }));
 
