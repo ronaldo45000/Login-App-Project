@@ -27,7 +27,7 @@ public class DocumentRepository {
      * which automatically importData()
      */
     public DocumentRepository(){
-//        importData();
+        importData();
     }
     /**
      * File name

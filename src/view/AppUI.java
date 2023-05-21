@@ -33,7 +33,6 @@ public class AppUI {
      * The main JFrame and other components are created and then run in main().
      */
     public void createAndShowGUI() {
-        initialImports();
         // Create the frame
         frame = new JFrame("FileNtro");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -130,12 +129,6 @@ public class AppUI {
         }
     }
 
-    public void initialImports() {
-        AppInfoController.importData();
-        UserController.importData();
-        ProjectController.importData();
-        DocumentController.importData();
-    }
     public static void main(String[] args) {
         // Run the GUI code in the Event Dispatch Thread
         SwingUtilities.invokeLater(() -> {

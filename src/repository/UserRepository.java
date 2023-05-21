@@ -37,7 +37,7 @@ public class UserRepository {
      * which automatically importData()
      */
     public UserRepository(){
-//        importData();
+        importData();
     }
 
     /**
