@@ -1,23 +1,23 @@
 package view;
 
-import model.User;
-
-import javax.swing.*;
+import controller.AppInfoController;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.*;
+import model.User;
 
 /**
  * A class to create the Home screen of the FileNtro project.
  *
  * @author Riley Bennett
- * @version 0.1
+ * @version 0.2
  */
 public class HomeScreen extends JPanel {
 
     /**
      * Constructor to create the Home screen.
-     *
+     * @author Riley Bennett
      * @param user The user of the app
      * @param cardPanel The panels to swap to/from
      * @param cardLayout The layout used to swap to/from panels
@@ -29,7 +29,6 @@ public class HomeScreen extends JPanel {
         // Creating labels/button
         JLabel homeLabel = new JLabel("Welcome " + user.getName() + "!");
         JButton projectButton = new JButton("Go to projects...");
-        JButton aboutButton = new JButton("About...");
 
         // Setting up look of GUI
         homeLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -51,26 +50,18 @@ public class HomeScreen extends JPanel {
             }
         }));
         
-        // Add about screen to cards, switch to about screen when button is pressed
-        cardPanel.add(new AboutScreen(user, cardPanel, cardLayout), "AboutScreen");
-        cons.insets = new Insets(30, 0, 0, 0);
-        cons.gridy = 1;
-        aboutButton.addActionListener((new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel,"AboutScreen");
-            }
-        }));
-        buttonPanel.add(aboutButton, cons);
-        
-        // Switch back to log in screen when logout button is pressed
-        JButton logoutButton = new JButton("Logout");
-        logoutButton.addActionListener((new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "LogInScreen");
-            }
-        }));
-        cons.gridy = 2;
-        cons.insets = new Insets(100, 0, 0, 0);
+         // Switch back to log in screen when logout button is pressed
+         JButton logoutButton = new JButton("Log Out");
+         logoutButton.addActionListener((new ActionListener() {
+             public void actionPerformed(ActionEvent e) {
+ 
+                 cardLayout.show(cardPanel, "LogInScreen");
+                 AppInfoController.logout();
+             }
+         }));
+
+        cons.gridx  = 1;
+        cons.insets = new Insets(0, 40, 0, 0);
         buttonPanel.add(logoutButton, cons);
 
         add(buttonPanel, BorderLayout.CENTER);

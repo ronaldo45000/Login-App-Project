@@ -46,7 +46,7 @@ public class ProjectScreen extends JPanel {
         JPanel projectSelectionPanel = new JPanel();
         
         //Setting color for panels
-        projectsPanel.setBackground(Color.lightGray);
+        projectsPanel.setBackground(Color.red);
         topPanel.setBackground(Color.darkGray);
         folderPanel.setBackground(Color.yellow);
         projectBtnPanel.setBackground(Color.white);
@@ -150,10 +150,13 @@ public class ProjectScreen extends JPanel {
                 cardLayout.show(cardPanel, "HomeScreen");
             }
         });
-        
+
+
         //Adding other panels on the main panel
         add(topPanel, BorderLayout.NORTH);
-        add(folderPanel, BorderLayout.WEST);
-        add(projectsPanel, BorderLayout.CENTER);
+        //add(folderPanel, BorderLayout.WEST);
+        //add(new ProjectSelector(), BorderLayout.WEST);
+        //add(projectsPanel, BorderLayout.CENTER);
+       add(new TabsPanels(), BorderLayout.CENTER);
     }
 }
