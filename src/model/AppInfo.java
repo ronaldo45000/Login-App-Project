@@ -2,7 +2,6 @@ package model;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsonable;
-
 import java.io.*;
 import java.util.ArrayList;
 
@@ -12,14 +11,9 @@ import java.util.ArrayList;
  * @author Hassan Abbas
  * @author Riley Bennett
  * @author Tin Phu
- * @version 0.1
+ * @version 0.2
  */
 public class AppInfo implements Jsonable {
-
-
-    public AppInfo(User user) {
-        this.user = user;
-    }
 
     /** The version number of the app. */
     private  double versionNumber;
@@ -34,36 +28,41 @@ public class AppInfo implements Jsonable {
     private User user;
 
     /**
+     * Constructor to create an AppInfo object with the current user
+     * @param user The current user of the app
+     */
+    public AppInfo(User user) {
+        this.user = user;
+    }
+
+    /**
      * Constructor to add developer names and set the user.
-     *
-     * @param versionNumber
-     * @param user
+     * @param versionNumber The version number of the app
+     * @param user The current user of the app
      */
     public AppInfo(double versionNumber, final User user) {
         this.versionNumber = versionNumber;
         this.user = user;
-//        teamMembers.add(new Account("Hassan Abbas", "habbas91@uw.edu"));
-//        teamMembers.add(new Account("Riley Bennett", "benn3230@uw.edu"));
-//        teamMembers.add(new Account("Thinh Le", "lenguyenducthinh2003@gmail.com"));
-//        teamMembers.add(new Account("Bairu Li", "bairul@uw.edu"));
-//        teamMembers.add(new Account("Tin Phu", "phuhutin@uw.edu"));
     }
 
     /**
-     *
+     * Constructor to create an AppInfo object with the version number of the app.
      */
     public AppInfo(double versionNumber) {
 
         this.versionNumber = versionNumber;
     }
-    public AppInfo() {
-
-
-    }
     
     /**
+     * Empty constructor
+     */
+    public AppInfo() {
+        // Empty Constructor
+    }
+
+    /**
      * A getter for the user object.
-     *
+     * @author Hassan Abbas
      * @return The current user
      */
     public User getUser() {
@@ -72,8 +71,8 @@ public class AppInfo implements Jsonable {
     
     /**
      * A getter for the developer team name.
-     *
-     * @return The developer team name.
+     * @author Hassan Abbas
+     * @return The developer team name
      */
     public String getTeamName() {
         return teamName;
@@ -81,7 +80,7 @@ public class AppInfo implements Jsonable {
     
     /**
      * A getter for the app version number.
-     *
+     * @author Hassan Abbas
      * @return The version of the app
      */
     public double getVersion() {
@@ -90,14 +89,18 @@ public class AppInfo implements Jsonable {
     
     /**
      * A getter for the developers of the app.
-     * @Author Tin Phu
-     * @return List of the developers
+     * @author Tin Phu
+     * @return ArrayList of the developers
      */
     public ArrayList<Account> getDevelopers() {
         ArrayList<Account> copy = (ArrayList<Account>)(teamMembers.clone());
         return copy;
     }
 
+    /**
+     * Adds an account to the developers list.
+     * @param theAccount The account to be added
+     */
     public void addNewDeveloper(Account theAccount){
         this.teamMembers.add(theAccount);
     }
@@ -112,16 +115,17 @@ public class AppInfo implements Jsonable {
     }
 
     /**
-     * User Setter.
-     * @param user
+     * Sets the current user to the specified user.
+     * @param user The current user to be set
      */
     public void setUser(User user) {
         this.user = user;
     }
 
     /**
-     * @Author Tin Phu
-     * @return
+     * Converts this AppInfo object to JSON formatted stream.
+     * @author Tin Phu
+     * @return String JSON formatted stream of this AppInfo object
      */
     @Override
     public String toJson() {
@@ -134,13 +138,18 @@ public class AppInfo implements Jsonable {
         return writable.toString();
     }
 
+    /**
+     * Sets the version number of the app.
+     * @param versionNumber The version number to be set to
+     */
     public void setVersionNumber(double versionNumber) {
         this.versionNumber = versionNumber;
     }
 
     /**
-     * @Author Tin Phu
-     * @param writer
+     * Converts this account to JSON formatted stream.
+     * @author Tin Phu
+     * @param writer Writer to write to stream with
      * @throws IOException
      */
     @Override
@@ -155,7 +164,9 @@ public class AppInfo implements Jsonable {
      }
 
     /**
-     * @Author Tin Phu
+     * Removes a developer by their name.
+     * @author Tin Phu
+     * @param theName The name of the developer to be removed
      */
     public void removeDevByName(String theName){
         for(int i = 0; i < this.teamMembers.size(); i++){

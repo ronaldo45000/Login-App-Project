@@ -1,21 +1,20 @@
 package view;
 
 import controller.AppInfoController;
-import model.AppInfo;
-import model.Account;
-import model.User;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
+import model.Account;
+import model.AppInfo;
+import model.User;
 
 /**
  * A class to create the About screen of the FileNtro project.
  *
  * @author Riley Bennett
- * @version 0.1
+ * @version 0.2
  */
 public class AboutScreen extends JPanel { 
     
@@ -24,7 +23,7 @@ public class AboutScreen extends JPanel {
 
     /**
      * Constructor to create the About screen GUI.
-     *
+     * @author Riley Bennett
      * @param user The user of the app
      * @param cardPanel The panels to swap to/from
      * @param cardLayout The cardlayout used to swap between panels

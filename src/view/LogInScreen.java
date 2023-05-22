@@ -1,17 +1,16 @@
 package view;
 
 import controller.AppInfoController;
-import model.User;
-
-import javax.swing.*;
+import controller.UserController;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import controller.UserController;
+import javax.swing.*;
+import model.User;
 
 /**
  * @author Riley Bennett
- * @version 0.1
+ * @version 0.2
  * OwnerProfileForm JPanel is responsible to create Owner Profile.
  * BorderLayout and GridBagLayout are used in this JPanel.
  */
@@ -25,6 +24,13 @@ public class LogInScreen extends JPanel {
      */
     private JTextField emailArea;
 
+    /**
+     * Creates the panel for the user to log in.
+     * @author Riley Bennett
+     * @author Tin Phu
+     * @param cardPanel The cardpanel to be used
+     * @param cardLayout The cardlayout to be used
+     */
     public LogInScreen(JPanel cardPanel, CardLayout  cardLayout  ){
 
         setLayout(new GridBagLayout());
@@ -39,17 +45,14 @@ public class LogInScreen extends JPanel {
         JLabel passwordLabel = new JLabel("Email:");
         emailArea = new JTextField(20);
         JButton loginButton = new JButton("Log In");
-        /**
-         * @author Riley Bennett
-         * @author Tin Phu
-         */
+
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
                 String name = nameField.getText();
                 String email = emailArea.getText();
-                //Tin Phu
-                //Show Error message if one of user inputs isEmty()
+
+                //Show Error message if one of user inputs isEmpty()
                 if(name.isEmpty() || email.isEmpty()){
                     JOptionPane.showMessageDialog(LogInScreen.this, "Please fill in all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -62,7 +65,6 @@ public class LogInScreen extends JPanel {
                     return;
                 }
 
-                //Tin Phu
                 //AboutScreen is created with new User() as argument
                 //cardPanel, cardLayout are passed to AboutScreen, so we can switch back to previous JPanel.
 
@@ -79,10 +81,7 @@ public class LogInScreen extends JPanel {
 
         JLabel newUserLabel = new JLabel("New to FileNtro?");
         JButton createAcct = new JButton("Sign Up");
-        /**
-         * @author Riley Bennett
-         * @author Tin Phu
-         */
+
         createAcct.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cardPanel.add(new CreateProfile(cardPanel, cardLayout), "CreateProfileScreen");

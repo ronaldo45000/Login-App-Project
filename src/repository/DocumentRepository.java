@@ -4,8 +4,6 @@ import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonException;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
-import model.Document;
-
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,39 +11,48 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import model.Document;
 
 /**
- * DocumentRepository
- * @Author  Tin Phu
- * @version 0.1
+ * A repository for the documents of the program.
+ * @author Tin Phu
+ * @version 0.2
  */
 public class DocumentRepository {
 
+    /**
+     * File path
+     */
+    private final String FILEPATH = "DocumentList.json";
+
+    /**
+     * Hashmap<String, Document> to hold importData();
+     * Keep in mind that the key id.
+     * @author Tin Phu
+     */
+    private final  HashMap<String, Document> listOfDocument = new HashMap<String, Document>();
 
     /**
      * no-arg constructor
      * which automatically importData()
+     * @author Tin Phu
      */
     public DocumentRepository(){
         importData();
     }
-    /**
-     * File name
-     */
-    private final String FILEPATH = "DocumentList.json";
-    /**
-     * Hashmap<Srting, Document> to hold importData();
-     * Keep in mind that the key id.
-     */
-    private final  HashMap<String, Document> listOfDocument = new HashMap<String, Document>();
 
+    /**
+     * Returns a hashmap of ids to documents.
+     * @author Tin Phu
+     * @return Hashmap of id/document pairs
+     */
     public HashMap<String, Document> getListOfDocument(){
         return this.listOfDocument;
     }
+
     /**
-     * Import data from FILEPATH.json and map to hashMap.
+     * Import data from DocumentList.json and map to hashMap.
      * @author Tin Phu
-     *
      */
     public void importData() {
         listOfDocument.clear();
@@ -103,8 +110,9 @@ public class DocumentRepository {
             throw new RuntimeException(e);
         }
     }
+
     /**
-     * export the hashmap to FILEPATH.json file.
+     * Export the hashmap to DocumentList.json file.
      * @author Tin Phu
      */
     public void exportData(){
@@ -118,25 +126,28 @@ public class DocumentRepository {
 
     }
     /**
-     * get FILEPATH
-     * @return FILEPATH
+     * Returns the file path of DocumentList.json
+     * @author Tin Phu
+     * @return FILEPATH The file path of the json file
      */
-    public String getFILEPATH() {
+    public String getFilepath() {
         return FILEPATH;
     }
 
     /**
-     * add Document
-     * @param theDoc
+     * Adds a document to the list of documents.
+     * @author Tin Phu
+     * @param theDoc The document to add
      */
-    public void addDocument( Document theDoc){
+    public void addDocument(Document theDoc){
         this.listOfDocument.put(theDoc.getId(), theDoc);
         this.exportData();
     }
 
     /**
      * Delete a Document by id
-     * @param id
+     * @author Tin Phu
+     * @param id The id of the document to be removed
      */
     public void deleteDocument(String id){
         this.listOfDocument.remove(id);
@@ -144,24 +155,22 @@ public class DocumentRepository {
     }
 
     /**
-     * delete a document by document.
-     * @param theDoc
+     * Deletes the given document.
+     * @author Tin Phu
+     * @param theDoc The document to be deleted
      */
     public void deleteDocument(Document theDoc){
         this.listOfDocument.remove(theDoc.getId());
         this.exportData();
     }
 
-
     /**
-     * Find document by id
-     * @param id
-     * @return
+     * Finds document by id.
+     * @author Tin Phu
+     * @param id The id of the document to be found
+     * @return The document the id is associated with
      */
     public Document findDocumentById(String id){
         return this.listOfDocument.get(id);
     }
-
-
-
 }

@@ -4,33 +4,32 @@ import controller.AppInfoController;
 import controller.DocumentController;
 import controller.ProjectController;
 import controller.UserController;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
+ * AppUI is the main class of the FileNtro application.
  * @author Tin Phu
- * @version 0.1
- * AppUI is the main class of the application
- * Messeges to Team members: Please do a quick research on CardLayout which helps switch between JPanels in Swing.
+ * @author Riley Bennett
+ * @version 0.2
  */
 public class AppUI {
     private JFrame frame;
     /**
-     * Tin Phu
-     * cardPanel will contain all the JPanels we want to switch.
+     * Panel containing every JPanel of the app.
      */
     private JPanel cardPanel;
     /**
-     * Tin Phu
-     * cardLayout.next() will switch the next JPanel of cardPanel above.
+     * The overall cardlayout of the app.
      */
     private CardLayout cardLayout;
 
     /**
-     * The main JFrame and other components are created and then run in main().
+     * Creates the JFrame() of the app.
+     * @author Tin Phu
+     * @author Riley Bennett
      */
     public void createAndShowGUI() {
         // Create the frame
@@ -57,7 +56,7 @@ public class AppUI {
         JPanel mainPanel = new LogInScreen(cardPanel, cardLayout);
         cardPanel.add(mainPanel, "LogInScreen");
 
-       frame.add(cardPanel);
+        frame.add(cardPanel);
 
         // Create the menu bar
         JMenuBar menuBar = new JMenuBar();
