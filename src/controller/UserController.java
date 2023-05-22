@@ -1,6 +1,8 @@
 package controller;
-import repository.UserRepository;
+
+import java.util.Collection;
 import model.User;
+import repository.UserRepository;
 
 /**
  * A controller for the user accounts between the UI and repository.
@@ -12,28 +14,30 @@ public class UserController {
     private final static UserRepository userRepository = new UserRepository();
 
     /**
-     * Finds the specified user in the database.
+     * Returns a list of users in the database.
      * @author Riley Bennett
-     * @param theName
-     * @param theEmail
-     * @return The specified user, or null if not found.
+     * @return Collection of User objects.
      */
-    public static User findUser(final String theName, final String theEmail) {
-        User theUser = userRepository.findUserByName(theName);
-        if (theUser == null) {
-            return null;
-        } else if (!theUser.getEmail().equalsIgnoreCase(theEmail)) {
-            return null;
-        } else {
-            return theUser;
-        }
+    public static Collection<User> getUsers() {
+        return userRepository.getListOfuserProfile().values();
     }
 
     /**
      * Finds the specified user in the database.
      * @author Riley Bennett
-     * @param theUser
-     * @return The specified user, or null if not found.
+     * @param theName String name of the user
+     * @param theEmail String email of the user
+     * @return The specified user, or null if not found
+     */
+    public static User findUser(final String theName, final String theEmail) {
+        return userRepository.findUserByName(theName, theEmail);
+    }
+
+    /**
+     * Finds the specified user in the database.
+     * @author Riley Bennett
+     * @param theUser User object to be found
+     * @return The specified user, or null if not found
      */
     public static User findUser(final User theUser) {
         return findUser(theUser.getName(), theUser.getEmail());
@@ -42,8 +46,8 @@ public class UserController {
     /**
      * Adds the specified user to the database.
      * @author Riley Bennett
-     * @param theName
-     * @param theEmail
+     * @param theName String name of the user
+     * @param theEmail String email of the user
      * @return The user object that was added
      */
     public static User addUser(final String theName, final String theEmail) {
@@ -53,7 +57,7 @@ public class UserController {
     /**
      * Adds the specified user to the database.
      * @author Riley Bennett
-     * @param theUser
+     * @param theUser User object to be added
      * @return The user object that was added
      */
     public static User addUser(final User theUser) {
@@ -61,10 +65,28 @@ public class UserController {
     }
 
     /**
+     * Deletes the user with the specified name and email from the database.
+     * @author Riley Bennett
+     * @param theName String name of the user
+     */
+    public static void deleteUser(final String theName, final String theEmail) {
+        userRepository.deleteUser(theName, theEmail);
+    }
+
+    /**
+     * Deletes the specified user from the database.
+     * @author Riley Bennett
+     * @param theUser The User object to be deleted
+     */
+    public static void deleteUser(final User theUser) {
+        userRepository.deleteUser(theUser.getName(), theUser.getEmail());
+    }
+
+    /**
      * Determines if the specified user exists in the database.
      * @author Riley Bennett
-     * @param theName
-     * @param theEmail
+     * @param theName String name of the user
+     * @param theEmail String email of the user
      * @return True if the user was found, false otherwise
      */
     public static boolean userExists(final String theName, final String theEmail) {
@@ -74,7 +96,7 @@ public class UserController {
     /**
      * Determines if the specified user exists in the database.
      * @author Riley Bennett
-     * @param theUser
+     * @param theUser User object to be searched for
      * @return True if the user was found, false otherwise
      */
     public static boolean userExists(final User theUser) {

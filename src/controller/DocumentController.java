@@ -2,6 +2,11 @@ package controller;
 
 import repository.DocumentRepository;
 
+/**
+ * A controller for the list of documents in every project.
+ * @author Riley Bennett
+ * @version 0.2
+ */
 public class DocumentController {
     private final static DocumentRepository documentRepository = new DocumentRepository();
 

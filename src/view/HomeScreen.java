@@ -1,12 +1,11 @@
 package view;
 
-import model.User;
-
-import javax.swing.*;
+import controller.AppInfoController;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import controller.AppInfoController;
+import javax.swing.*;
+import model.User;
 
 /**
  * A class to create the Home screen of the FileNtro project.
@@ -18,7 +17,7 @@ public class HomeScreen extends JPanel {
 
     /**
      * Constructor to create the Home screen.
-     *
+     * @author Riley Bennett
      * @param user The user of the app
      * @param cardPanel The panels to swap to/from
      * @param cardLayout The layout used to swap to/from panels
