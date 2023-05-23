@@ -207,4 +207,8 @@ public class Document implements Jsonable {
     public String getUserID() {
         return userID;
     }
+
+    public LocalDate getDate() {
+        return date;
+    }
 }
