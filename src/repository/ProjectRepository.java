@@ -4,9 +4,6 @@ import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonException;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
-import model.Project;
-import model.User;
-
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,39 +11,39 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
-
+import model.Project;
 /**
+ * A repository for a user's projects.
  * @author Tin Phu
- * @version 0.1
+ * @version 0.2
  */
 public class ProjectRepository {
-
-
-    /**
-     * no-arg constructor
-     * which automatically importData()
-     */
-    public ProjectRepository(){
-        importData();
-    }
-
     /**
      * File name
      */
     private final String FILEPATH="ProjectList.json";
+
     /**
      * Hashmap<Srting, Project> to hold importData();
      * Keep in mind that the key id.
      */
     private final HashMap<String, Project> listOfProject = new HashMap<String, Project>();
 
+    /**
+     * no-arg constructor
+     * which automatically importData()
+     * @author Tin Phu
+     */
+    public ProjectRepository(){
+        importData();
+    }
 
     /**
-     * Import data from FILEPATH.json and map to hashMap.
+     * Import data from ProjectList.json and map to hashMap.
      * @author Tin Phu
-     *
      */
     public void importData(){
+        listOfProject.clear();
         try (FileReader fileReader = new FileReader(FILEPATH)) {
             JsonArray objects = Jsoner.deserializeMany(fileReader);
             JsonObject o = (JsonObject) objects.get(0);
@@ -87,8 +84,8 @@ public class ProjectRepository {
 
             }
 
-            System.out.println("Import Data from UserProfile.json");
-            System.out.println(this.listOfProject.toString());
+            System.out.println("Import Data from ProjectList.json");
+//            System.out.println(this.listOfProject.toString());
 
 
         } catch (IOException | JsonException e){
@@ -97,14 +94,14 @@ public class ProjectRepository {
     }
 
     /**
-     * export the hashmap to FILEPATH.json file.
+     * Export the hashmap to ProjectList.json file.
      * @author Tin Phu
      */
     public void exportData(){
         try (FileWriter fileWriter = new FileWriter(this.FILEPATH)) {
             Jsoner.serialize(this.listOfProject, fileWriter);
-            System.out.println("Export Data to UserProfile.json");
-            System.out.println(this.listOfProject.toString());
+            System.out.println("Export Data to ProjectList.json");
+//            System.out.println(this.listOfProject.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -113,8 +110,9 @@ public class ProjectRepository {
     }
 
     /**
-     * get FILEPATH
-     * @return
+     * Returns the file path of ProjectList.json
+     * @author Tin Phu
+     * @return The file path of the json file
      */
     public String getFILEPATH() {
         return FILEPATH;
@@ -122,24 +120,27 @@ public class ProjectRepository {
 
     /**
      * Return the reference of the hashmap.
-     * @return
+     * @author Tin Phu
+     * @return A hashmap of id/project pairs
      */
     public HashMap<String, Project> getListOfProject() {
         return listOfProject;
     }
 
     /**
-     * Add a project
-     * @param theProject
+     * Add a project to the list
+     * @author Tin Phu
+     * @param theProject The project to be added
      */
-    public void addProject( Project theProject){
+    public void addProject(Project theProject){
         this.listOfProject.put(theProject.getId(), theProject);
         this.exportData();
     }
 
     /**
-     * Delete Project by id
-     * @param id
+     * Deletes project by id
+     * @author Tin Phu
+     * @param id The id of the project to be deleted
      */
     public void deleteProject(String id){
         this.listOfProject.remove(id);
@@ -147,8 +148,9 @@ public class ProjectRepository {
     }
 
     /**
-     * Delete Project by Project
-     * @param theProject
+     * Deletes the specified project.
+     * @author Tin Phu
+     * @param theProject The project to be deleted
      */
     public void deleteProject(Project theProject){
         this.listOfProject.remove(theProject.getId());
@@ -156,13 +158,12 @@ public class ProjectRepository {
     }
 
     /**
-     * findProjectbyId
-     * which return the reference of the element of the hashmap.
-     * @param theId
-     * @return
+     * Returns the project associated with the given id.
+     * @author Tin Phu
+     * @param theId The id of the project to be searched for
+     * @return The project associated with the id
      */
     public Project findProjectbyId(String theId){
         return this.listOfProject.get(theId);
     }
-
 }

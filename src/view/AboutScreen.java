@@ -1,21 +1,20 @@
 package view;
 
 import controller.AppInfoController;
-import model.AppInfo;
-import model.Account;
-import model.User;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
+import model.Account;
+import model.AppInfo;
+import model.User;
 
 /**
  * A class to create the About screen of the FileNtro project.
  *
  * @author Riley Bennett
- * @version 0.1
+ * @version 0.2
  */
 public class AboutScreen extends JPanel { 
     
@@ -24,12 +23,12 @@ public class AboutScreen extends JPanel {
 
     /**
      * Constructor to create the About screen GUI.
-     *
+     * @author Riley Bennett
      * @param user The user of the app
      * @param cardPanel The panels to swap to/from
      * @param cardLayout The cardlayout used to swap between panels
      */
-    public AboutScreen(User user, JPanel cardPanel, CardLayout cardLayout, String previousCardName) {
+    public AboutScreen(User user, JPanel cardPanel, CardLayout cardLayout) {
         AppInfoController.setUser(user);
         info = AppInfoController.getAppInfo();
        // AppInfoController.addNewDeveloper(new Account("Dummy", "Dummy@gmail.com"));
@@ -55,11 +54,16 @@ public class AboutScreen extends JPanel {
         aboutInfo.add(versionLabel, cons);
 
         // User text
-        JLabel userLabel = new JLabel("This app is registered to: " + user.getName() + " (" + user.getEmail() + ")");
-        userLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        cons.gridy = 1;
-        cons.insets = new Insets(50, 0, 0, 0);
-        aboutInfo.add(userLabel, cons);
+        if(user != null ){
+            JLabel userLabel = new JLabel("This app is registered to: " + user.getName() + " (" + user.getEmail() + ")");
+            userLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+            cons.gridy = 1;
+            cons.insets = new Insets(50, 0, 0, 0);
+            aboutInfo.add(userLabel, cons);
+        }
+
+
+
 
         // Developer label text
         JLabel devLabel = new JLabel("This app is provided by " + info.getTeamName() + ":");
@@ -90,9 +94,10 @@ public class AboutScreen extends JPanel {
         JButton backButton = new JButton("Back");
         backButton.addActionListener((new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
-                cardLayout.show(cardPanel, previousCardName);
-                //cardLayout.previous(getContentPane());
+                if(AppInfoController.getCurrentUser() == null)
+                    cardLayout.show(cardPanel, "LogInScreen");
+                else
+                    cardLayout.show(cardPanel, "HomeScreen");
             }
         }));
 

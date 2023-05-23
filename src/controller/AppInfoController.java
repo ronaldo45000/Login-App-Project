@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import model.Account;
 import model.AppInfo;
 import model.User;
@@ -14,7 +15,8 @@ import repository.AboutAppRepository;
  * ,and we may want to handle them here.
  * this class's methods are STATIC
  * @author Tin Phu
- * @version 0.1
+ * @author Riley Bennett
+ * @version 0.2
  *
  */
 public class AppInfoController {
@@ -50,6 +52,24 @@ public class AppInfoController {
         aboutAppRepository.getAppInfo().setUser(theUser);
         aboutAppRepository.exportData();
     }
+    
+    /**
+     * Change User name in aboutAppRepository
+     * @Author Bairu Li
+     */
+    public static void changeUserName(String theName) {
+        aboutAppRepository.getAppInfo().getUser().setName(theName);
+        aboutAppRepository.exportData();
+    }
+    
+    /**
+     * Change User email in aboutAppRepository
+     * @Author Bairu Li
+     */
+    public static void changeUserEmail(String theEmail) {
+        aboutAppRepository.getAppInfo().getUser().setEmail(theEmail);
+        aboutAppRepository.exportData();
+    }
 
     /**
      * Adding new developer and export current state to json file.
@@ -66,15 +86,24 @@ public class AppInfoController {
      * @Author Tin Phu
      */
     public static void removeDeveloperByName(String theName){
-       aboutAppRepository.getAppInfo().removeDevByName("Phu");
+       aboutAppRepository.getAppInfo().removeDevByName(theName);
        aboutAppRepository.exportData();
 
     }
 
     /**
+     * Returns the version of the app.
+     * @author Riley Bennett
+     * @return A double version number of the app
+     */
+    public static double getVersion() {
+        return aboutAppRepository.getAppInfo().getVersion();
+    }
+
+    /**
      * @Author Tin Phu
      */
-    public  static void setVersion(double theVer){
+    public static void setVersion(double theVer){
         aboutAppRepository.getAppInfo().setVersionNumber(theVer);
         aboutAppRepository.exportData();
     }
@@ -85,6 +114,15 @@ public class AppInfoController {
      */
     public static User getCurrentUser(){
         return aboutAppRepository.getAppInfo().getUser();
+    }
+
+    /**
+     * Returns a list of the developers.
+     * @author Riley Bennett
+     * @return ArrayList of Account objects
+     */
+    public static ArrayList<Account> getDevelopers() {
+        return aboutAppRepository.getAppInfo().getDevelopers();
     }
 
     /**
@@ -103,5 +141,15 @@ public class AppInfoController {
      */
     public static void importData() {
         aboutAppRepository.importData();
+    }
+
+    /**
+     * Log out
+     * @Author Tin Phu
+     */
+    public static void logout(){
+        aboutAppRepository.getAppInfo().setUser(null);
+        aboutAppRepository.exportData();
+
     }
 }
