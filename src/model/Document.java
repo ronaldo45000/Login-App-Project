@@ -249,4 +249,18 @@ public class Document implements Jsonable {
         return "id: " + this.id + "|documentName:"+this.documentName + "|documentDescription:" + this.documentDescription +"|projectID:" + this.projectID
                 + "|userID:"+ this.userID+"|totalCost:" + this.totalCost + "|filePath:" + this.filePath + "|date:" + this.date + "\n" ;
     }
+
+
+    public BigDecimal getTotalCost() {
+        return totalCost;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
 }
