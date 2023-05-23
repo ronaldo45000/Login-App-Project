@@ -116,11 +116,30 @@ public class UserRepository {
         Iterator<User> itr = this.listOfuserProfile.values().iterator();
         while (itr.hasNext()) {
             User tempUser = itr.next();
+            System.out.println(tempUser.getName() + " " + tempUser.getEmail());
             if (tempUser.getName().equals(theName) && tempUser.getEmail().equals(theEmail)) {
                 return tempUser;
             }
         }
         return null;
+    }
+    
+    /**
+     * Changes the user information in the databse with specified new information
+     *
+     * @author Bairu Li
+     * @param theOldName The old name of the user to be changed
+     * @param theOldEmail The old email of the user to be changed
+     * @param theName The new name of the user to be changed
+     * @param theEmail The new email of the user to be changed
+     */
+    public void changeUserInfo(String theOldName, String theOldEmail, 
+    		                   String theName, String theEmail){
+        User tempUser = findUserByName(theOldName, theOldEmail);
+        
+        listOfuserProfile.get(tempUser.getId()).setName(theName);
+        listOfuserProfile.get(tempUser.getId()).setEmail(theEmail);
+        this.exportData();
     }
 
     /**

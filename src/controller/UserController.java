@@ -102,6 +102,28 @@ public class UserController {
     public static boolean userExists(final User theUser) {
         return findUser(theUser) != null;
     }
+    
+    /**
+     * Changes specified user's name in the database.
+     * 
+     * @author Bairu Li
+     * @param theUser User object to be changed
+     * @param theNewName the new name of the user
+     */
+    public static void changeUserName(final User theUser, final String theNewName) {
+    	userRepository.changeUserInfo(theUser.getName(), theUser.getEmail(), theNewName, theUser.getEmail());
+    }
+    
+    /**
+     * Changes specified user's email in the database.
+     * 
+     * @author Bairu Li
+     * @param theUser User object to be changed
+     * @param theNewEmail the new email of the user
+     */
+    public static void changeUserEmail(final User theUser, final String theNewEmail) {
+    	userRepository.changeUserInfo(theUser.getName(), theUser.getEmail(), theUser.getName(), theNewEmail);
+    }
 
     /**
      * Imports the UserProfile.json file into the repository.

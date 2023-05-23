@@ -52,6 +52,24 @@ public class AppInfoController {
         aboutAppRepository.getAppInfo().setUser(theUser);
         aboutAppRepository.exportData();
     }
+    
+    /**
+     * Change User name in aboutAppRepository
+     * @Author Bairu Li
+     */
+    public static void changeUserName(String theName) {
+        aboutAppRepository.getAppInfo().getUser().setName(theName);
+        aboutAppRepository.exportData();
+    }
+    
+    /**
+     * Change User email in aboutAppRepository
+     * @Author Bairu Li
+     */
+    public static void changeUserEmail(String theEmail) {
+        aboutAppRepository.getAppInfo().getUser().setEmail(theEmail);
+        aboutAppRepository.exportData();
+    }
 
     /**
      * Adding new developer and export current state to json file.
