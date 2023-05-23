@@ -6,16 +6,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import controller.AppInfoController;
 import controller.UserController;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author Tin Phu
- * @author Riley Bennett
- * @version 0.1
  * CreateProfile JPanel allows the user to create a profile.
  * BorderLayout and GridBagLayout are used in this JPanel.
+ * @author Tin Phu
+ * @author Riley Bennett
+ * @version 0.2
  */
 public class CreateProfile extends JPanel {
     /**
@@ -27,6 +28,13 @@ public class CreateProfile extends JPanel {
      */
     private JTextField emailArea;
 
+    /**
+     * Creates the panel to create a profile.
+     * @author Riley Bennett
+     * @author Tin Phu
+     * @param cardPanel The cardpanel to be used
+     * @param cardLayout The cardlayout to be used
+     */
     public CreateProfile(JPanel cardPanel, CardLayout  cardLayout  ){
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -40,23 +48,18 @@ public class CreateProfile extends JPanel {
         JLabel passwordLabel = new JLabel("Email:");
         emailArea = new JTextField(20);
         JButton createButton = new JButton("Create");
-        /**
-         * @author Riley Bennett
-         * @author Tin Phu
-         */
+
         createButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
                 String name = nameField.getText();
                 String email = emailArea.getText();
-                //Tin Phu
-                //Show Error message if one of user inputs isEmty()
+
                 if(name.isEmpty() || email.isEmpty()){
                     JOptionPane.showMessageDialog(CreateProfile.this, "Please fill in all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                //TinPhu
-                //Email Validation
+
                 if(!emailValidation(email)){
                     JOptionPane.showMessageDialog(CreateProfile.this, "Invalid Email", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -67,11 +70,11 @@ public class CreateProfile extends JPanel {
                     return;
                 }
 
-                //Tin Phu
                 //AboutScreen is created with new User() as argument
                 //cardPanel, cardLayout are passed to AboutScreen, so we can switch back to previous JPanel.
 
                 User theUser = UserController.addUser(name,email);
+                AppInfoController.setUser(theUser);
                 cardPanel.add(new HomeScreen(theUser, cardPanel, cardLayout), "HomeScreen");
                 JOptionPane.showMessageDialog(CreateProfile.this, "Account successfully created!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
@@ -82,10 +85,7 @@ public class CreateProfile extends JPanel {
 
         JLabel newUserLabel = new JLabel("Already have an account?");
         JButton logInButton = new JButton("Log in");
-        /**
-         * @author Riley Bennett
-         * @author Tin Phu
-         */
+
         logInButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(cardPanel, "LogInScreen");
@@ -140,10 +140,11 @@ public class CreateProfile extends JPanel {
 
     /**
      * Email Validation using regex Expression
-     * @Author Tin Phu
-     * @return boolean
+     * @author Tin Phu
+     * @param emailString The email to check
+     * @return boolean Whether the given email is valid
      */
-    public boolean emailValidation(String emailString){
+    public static boolean emailValidation(String emailString){
         String regex = "^[\\w!#$%&amp;'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&amp;'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(emailString);
