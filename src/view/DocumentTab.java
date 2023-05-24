@@ -1,7 +1,7 @@
 package view;
 
+import controller.DocumentController;
 import model.Document;
-import repository.DocumentRepository;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -20,7 +20,7 @@ import java.util.EventObject;
 import java.util.HashMap;
 
 public class DocumentTab extends JPanel {
-    private HashMap<String, Document> ListOfDocs;
+    private HashMap<String, Document> listOfDocs;
     private DefaultListModel<String> listModel;
     private JList<String> itemList;
     private DefaultTableModel model;
@@ -28,16 +28,16 @@ public class DocumentTab extends JPanel {
     private JTable table;
 
 
-    public DocumentTab(){
-        ListOfDocs = new HashMap<String, Document>();
+    public DocumentTab(String theProjectID){
+        listOfDocs = DocumentController.getDocsByProjectID(theProjectID);
 
-        Document d1 = (new Document("Doc2", "Description2", "theProejectId", "UseID", BigDecimal.valueOf(222)));
-        Document d2 =(new Document("Doc1", "Description1", "theProejectId", "UseID", BigDecimal.valueOf(111)));
-        Document d3 =(new Document("Doc3", "Description3", "theProejectId", "UseID", BigDecimal.valueOf(333)));
-
-        ListOfDocs.put(d1.getId(),d1);
-        ListOfDocs.put(d2.getId(),d2);
-        ListOfDocs.put(d3.getId(),d3);
+//        Document d1 = (new Document("Doc2", "Description2", "theProejectId", "UseID", BigDecimal.valueOf(222)));
+//        Document d2 =(new Document("Doc1", "Description1", "theProejectId", "UseID", BigDecimal.valueOf(111)));
+//        Document d3 =(new Document("Doc3", "Description3", "theProejectId", "UseID", BigDecimal.valueOf(333)));
+//
+//        listOfDocs.put(d1.getId(),d1);
+//        listOfDocs.put(d2.getId(),d2);
+//        listOfDocs.put(d3.getId(),d3);
 
 
         listModel = new DefaultListModel<>();
@@ -121,13 +121,13 @@ public class DocumentTab extends JPanel {
                     String name = model.getValueAt(row, 1).toString();
                     String description = model.getValueAt(row, 2).toString();
                     String totalCost = model.getValueAt(row, 4).toString();
-                    ListOfDocs.get(id).setTotalCost(BigDecimal.valueOf(Double.valueOf(totalCost)));
-                    ListOfDocs.get(id).setDocumentName(name);
-                    ListOfDocs.get(id).setDocumentDescription(description);
+                    listOfDocs.get(id).setTotalCost(BigDecimal.valueOf(Double.valueOf(totalCost)));
+                    listOfDocs.get(id).setDocumentName(name);
+                    listOfDocs.get(id).setDocumentDescription(description);
 
 
                     System.out.println("Value changed at row " + row + ", column " + columnName + ": " + newValue);
-                    System.out.println(ListOfDocs.get(id));
+                    System.out.println(listOfDocs.get(id));
                 }
             }
         });
@@ -138,7 +138,7 @@ public class DocumentTab extends JPanel {
 
 
 
-        ListOfDocs.forEach((k,e)->{
+        listOfDocs.forEach((k, e)->{
             addRow(k, e.getDocumentName(), e.getDocumentDescription(), e.getDate().toString(), e.getTotalCost().toString());
         });
 
@@ -152,22 +152,7 @@ public class DocumentTab extends JPanel {
             int row = table.getSelectedRow();
             if (row >= 0) {
                 String id = (String) table.getValueAt(row, 0);
-                String name = (String) model.getValueAt(row, 1);
-                String description = (String) model.getValueAt(row, 2);
-                System.out.println("Open item: " + ListOfDocs.get(id).getDocumentName() + ", " + ListOfDocs.get(id).getDocumentDescription());
-                String currentPath = System.getProperty("user.dir");
-                System.out.println("Current path: " + currentPath);
-
-                File file = new File(currentPath + "\\AppInfo.json");
-                Desktop desktop = Desktop.getDesktop();
-                if(file.exists())         //checks file exists or not
-                {
-                    try {
-                        desktop.open(file);              //opens the specified file
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }
+                listOfDocs.get(id).openDoc();
 
         }
         });
@@ -181,7 +166,7 @@ public class DocumentTab extends JPanel {
                     String name = model.getValueAt(row, 1).toString();
                     System.out.println("Deleting " + name);
                     String id = (String) table.getValueAt(row, 0);
-                    ListOfDocs.remove(id);
+                    listOfDocs.remove(id);
                     updateTable();
                 } else {
                     System.out.println("User clicked No");
@@ -227,7 +212,7 @@ public class DocumentTab extends JPanel {
             public void actionPerformed(ActionEvent e) {
 
 
-                new DocumentCreationFormPopUp() ;
+                new DocumentCreationFormPopUp(theProjectID) ;
 
             }
         });
@@ -243,14 +228,14 @@ public class DocumentTab extends JPanel {
         model.addRow(rowData);
     }
 
-    public void updateTable() {
+    public  void updateTable() {
         // Clear existing rows
         model.setRowCount(0);
 
 
 
         // Populate the table with the updated data from the list
-        ListOfDocs.forEach((k,e)->{
+        listOfDocs.forEach((k, e)->{
             addRow(k, e.getDocumentName(), e.getDocumentDescription(), e.getDate().toString(), e.getTotalCost().toString());
         });
 
@@ -287,5 +272,147 @@ public class DocumentTab extends JPanel {
         }
     }
 
+
+
+
+    /**
+     * DocumentCreationFormPopUp
+     * @author Tin Phu
+     *
+     */
+    public class DocumentCreationFormPopUp extends JPanel{
+        private JTextField documentNameField;
+        private JTextField documentDescriptionField;
+        private JTextField totalCostField;
+        private String srcFileString;
+        private JButton fileSelectorButton;
+        private JButton createButton;
+        private JDialog dialog = new JDialog();
+        private Document newDoc = null;
+
+
+        public DocumentCreationFormPopUp(String theProjectID) {
+            // Create components
+            JLabel documentNameLabel = new JLabel("Document Name:");
+            documentNameField = new JTextField(20);
+
+            JLabel documentDescriptionLabel = new JLabel("Document Description:");
+            documentDescriptionField = new JTextField(20);
+
+            JLabel totalCostLabel = new JLabel("Total Cost:");
+            totalCostField = new JTextField(10);
+
+            JLabel fileSrcStringLabel = new JLabel("");
+            fileSelectorButton = new JButton("Select File");
+
+            createButton = new JButton("Create Document");
+
+            // Create layout
+            JPanel panel = new JPanel(new GridBagLayout());
+            GridBagConstraints constraints = new GridBagConstraints();
+            constraints.anchor = GridBagConstraints.WEST;
+            constraints.insets = new Insets(10, 10, 10, 10);
+
+            // Add components to the panel
+            constraints.gridx = 0;
+            constraints.gridy = 0;
+            panel.add(documentNameLabel, constraints);
+
+            constraints.gridx = 1;
+            panel.add(documentNameField, constraints);
+
+            constraints.gridx = 0;
+            constraints.gridy = 1;
+            panel.add(documentDescriptionLabel, constraints);
+
+            constraints.gridx = 1;
+            panel.add(documentDescriptionField, constraints);
+
+            constraints.gridx = 0;
+            constraints.gridy = 2;
+            panel.add(totalCostLabel, constraints);
+
+            constraints.gridx = 1;
+            panel.add(totalCostField, constraints);
+
+            constraints.gridx = 0;
+            constraints.gridy = 3;
+            panel.add(fileSrcStringLabel, constraints);
+            constraints.gridx = 1;
+            constraints.gridy = 3;
+            constraints.gridwidth = 2;
+            panel.add(fileSelectorButton, constraints);
+
+            constraints.gridy = 4;
+            constraints.anchor = GridBagConstraints.CENTER;
+            panel.add(createButton, constraints);
+
+            // Set action listeners
+            /**
+             * @Author Tin Phu
+             */
+            fileSelectorButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JFileChooser fileChooser = new JFileChooser();
+                    int result = fileChooser.showOpenDialog(panel);
+                    if(result == JFileChooser.APPROVE_OPTION){
+                        srcFileString = fileChooser.getSelectedFile().toString();
+                        File file = new File(srcFileString);
+                        fileSrcStringLabel.setText(file.getName());
+                    }
+                }
+            });
+            /**
+             * Create button eventLisener
+             * @Author Tin Phu
+             */
+            createButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String documentName = documentNameField.getText();
+                    String documentDescription = documentDescriptionField.getText();
+                    double totalCost = Double.parseDouble(totalCostField.getText());
+                    try {
+                        Document newDoc = new Document(documentName,documentDescription,theProjectID,"", BigDecimal.valueOf(totalCost), srcFileString );
+                        DocumentController.addDocument(newDoc);
+                        listOfDocs.put(newDoc.id(), newDoc);
+                        dialog.setVisible(false);
+
+                        updateTable();
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(DocumentTab.this, "Something went wrong! The File could not be coppied");
+                    }
+                }
+            });
+
+            dialog.setContentPane(panel);
+
+            // Set dialog properties
+            dialog.setTitle("Document Creation Form");
+            dialog.setSize(500, 400);
+            dialog.setLocationRelativeTo(null); // Center the dialog on the screen
+            dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+            // Display the dialog
+            dialog.setVisible(true);
+
+            // Display the panel
+            // JOptionPane.showMessageDialog(null, panel, "Document Creation Form", JOptionPane.PLAIN_MESSAGE);
+        }
+
+
+
+
+
     }
+
+
+
+}
+
+
+
+
+
 

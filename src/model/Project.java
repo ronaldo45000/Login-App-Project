@@ -4,6 +4,7 @@ package model;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsonable;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -20,6 +21,10 @@ import java.util.UUID;
  * @version 0.2
  */
 public class Project implements Jsonable {
+
+//    public static void main(String[] args) {
+//        Project p = new Project("Cafe Racer", BigDecimal.valueOf(999.99), BigDecimal.valueOf(2000.99), "a4e3f045-ab62-44cd-ac48-e7349a8db5b2" );
+//    }
     /**
      * Id of the project.
      */
@@ -67,6 +72,7 @@ public class Project implements Jsonable {
         this.date = LocalDate.now();
         this.userID = theUserID;
         this.projectName = theProjectName;
+        this.createProjectFolder();
     }
 
     /**
@@ -203,4 +209,18 @@ public class Project implements Jsonable {
          return "id:" + this.id + "|" + "projectName:" + this.projectName + "|userID:" + this.userID + 
          "| totalCost" + this.totalCost + "| budget:" + this.budget + "\n";
     }
+
+    /**
+     * Create A Folder for a project.
+     * @Author Tin Phu
+     */
+    private void createProjectFolder(){
+        String currentPath = System.getProperty("user.dir");
+        File theDir = new File(currentPath + "\\"+ this.id);
+        if (!theDir.exists()){
+            theDir.mkdirs();
+        }
+    }
+
+
 }

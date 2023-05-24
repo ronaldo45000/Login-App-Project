@@ -36,7 +36,7 @@ public class ProjectScreen extends JPanel {
      * @param cardPanel The panels to swap to/from
      * @param cardLayout The layout used to swap to/from panels
      */
-    public ProjectScreen(User user, JPanel cardPanel, CardLayout cardLayout) {
+    public ProjectScreen(User user, JPanel cardPanel, CardLayout cardLayout, String theProjectID) {
         setLayout(new BorderLayout());
         
         //Setting up panels
@@ -175,6 +175,6 @@ public class ProjectScreen extends JPanel {
         //add(folderPanel, BorderLayout.WEST);
         //add(new ProjectSelector(), BorderLayout.WEST);
         //add(projectsPanel, BorderLayout.CENTER);
-       add(new TabsPanels(), BorderLayout.CENTER);
+       add(new TabsPanels(theProjectID), BorderLayout.CENTER);
     }
 }
