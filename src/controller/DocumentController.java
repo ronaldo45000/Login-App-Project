@@ -1,10 +1,15 @@
 package controller;
 
+import model.Document;
 import repository.DocumentRepository;
+
+import java.io.File;
+import java.util.HashMap;
 
 /**
  * A controller for the list of documents in every project.
  * @author Riley Bennett
+ * @author Tin Phu.
  * @version 0.2
  */
 public class DocumentController {
@@ -25,4 +30,53 @@ public class DocumentController {
     public static void exportData() {
         documentRepository.exportData();
     }
+
+    /**
+     * Get List of Doc of a specific projectID.
+     * @author Tin Phu
+     * @param thePID
+     * @return a copy of HashMap of the list, NOT REFERENCE.
+     */
+    public static HashMap<String, Document> getDocsByProjectID(String thePID){
+        HashMap<String, Document> listOfDoc = new HashMap<String, Document>();
+        documentRepository.getListOfDocument().forEach((k,e)->{
+            if(e.getProjectID().equals(thePID)){
+                listOfDoc.put(k,e);
+            }
+        });
+
+        return listOfDoc;
+    }
+
+    /**
+     * Adding a document to json file.
+     * @author Tin Phu
+     * @param theDoc
+     */
+    public static void addDocument(Document theDoc){
+        documentRepository.addDocument(theDoc);
+    }
+
+    /**
+     * Deleting a Doc .
+     * @author Tin Phu
+     * @param theDoc
+     */
+    public static void deleteADocument(Document theDoc){
+        documentRepository.deleteDocument(theDoc.getId());
+        String currentPath = System.getProperty("user.dir");
+        File file = new File(currentPath + theDoc.getFilePath());
+        file.delete();
+
+    }
+
+    /**
+     * find a Document by ID
+     * @Author Tin Phu
+     */
+    public static  Document findDocbyID(String theID){
+        return documentRepository.findDocumentById(theID);
+    }
+
+
 }

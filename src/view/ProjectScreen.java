@@ -36,7 +36,10 @@ public class ProjectScreen extends JPanel {
      * @param cardPanel The panels to swap to/from
      * @param cardLayout The layout used to swap to/from panels
      */
-    public ProjectScreen(User user, JPanel cardPanel, CardLayout cardLayout) {
+    public ProjectScreen(User user, JPanel cardPanel, CardLayout cardLayout, String theProjectID) {
+
+
+
         setLayout(new BorderLayout());
         
         //Setting up panels
@@ -183,7 +186,7 @@ public class ProjectScreen extends JPanel {
                 if (projectName != null && !projectName.isEmpty()) {
                     JPanel projectPanel = new JPanel();
                     projectPanel.setLayout(new BorderLayout());
-                    projectPanel.add(new JScrollPane(new TabsPanels()), BorderLayout.CENTER);
+                    projectPanel.add(new JScrollPane(new TabsPanels(theProjectID)), BorderLayout.CENTER);
                     projectTab.addTab(projectName, projectPanel);
                 } else {
                     JOptionPane.showMessageDialog(ProjectScreen.this, "Please enter a valid project name: ");
@@ -215,35 +218,57 @@ public class ProjectScreen extends JPanel {
         //Adding other panels on the main panel
         add(topPanel, BorderLayout.NORTH);
         add(projectPanel, BorderLayout.CENTER);
-
     }
-        private void rightClickMenu(int x, int y) {
+  
+/**
+     * Allows user to right-click the selected tab for a options menu
+     * 
+     * @author Hassan Abbas
+     */
+    private void rightClickMenu(int x, int y) {
         JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem renameTab = new JMenuItem("Rename");
         JMenuItem deleteTab = new JMenuItem("Remove");
         renameTab.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String currentTabTitle = projectTab.getTitleAt(projectTab.getSelectedIndex());
-                String newTabTitle = JOptionPane.showInputDialog(ProjectScreen.this, "Enter new project name:", currentTabTitle);
-                if (newTabTitle != null && !newTabTitle.isEmpty()) {
-                    projectTab.setTitleAt(projectTab.getSelectedIndex(), newTabTitle);
-                }
+                renameTab();
             }
         });
         deleteTab.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int selectedTab = projectTab.getSelectedIndex();
-                if(selectedTab > 0) {
-                    int confirm = JOptionPane.showConfirmDialog(ProjectScreen.this, "Are you sure you want to delete this project?");
-                    if(confirm == JOptionPane.YES_OPTION) {
-                        projectTab.remove(selectedTab);
-                    }
-                }
+                deleteTab();
             }
         });
         
         popupMenu.add(renameTab);
         popupMenu.add(deleteTab);
         popupMenu.show(projectTab, x, y);
+    }
+    /**
+     * Allows user to rename the selected tab
+     * 
+     * @author Hassan Abbas
+     */
+    private void renameTab() {
+        String currentTabTitle = projectTab.getTitleAt(projectTab.getSelectedIndex());
+        String newTabTitle = JOptionPane.showInputDialog(ProjectScreen.this, "Enter new project name:", currentTabTitle);
+        if (newTabTitle != null && !newTabTitle.isEmpty()) {
+            projectTab.setTitleAt(projectTab.getSelectedIndex(), newTabTitle);
+        }
+    }
+    
+    /**
+     * Allows user to delete the selected tab
+     * 
+     * @author Hassan Abbas
+     */
+    private void deleteTab() {
+        int selectedTab = projectTab.getSelectedIndex();
+        if(selectedTab > 0) {
+            int confirm = JOptionPane.showConfirmDialog(ProjectScreen.this, "Are you sure you want to delete this project?");
+            if(confirm == JOptionPane.YES_OPTION) {
+                projectTab.remove(selectedTab);
+            }
+        }
     }
 }

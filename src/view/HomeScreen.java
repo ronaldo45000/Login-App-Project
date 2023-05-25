@@ -9,7 +9,7 @@ import model.User;
 
 /**
  * A class to create the Home screen of the FileNtro project.
- *
+ * Tin Phu: "Please pass ProjectID to ProjectScreen() at line 46"
  * @author Riley Bennett
  * @version 0.2
  */
@@ -43,7 +43,7 @@ public class HomeScreen extends JPanel {
         buttonPanel.add(projectButton, cons);
         
         //Add project screen to card, switch to project screen when button is pressed
-        cardPanel.add(new ProjectScreen(user, cardPanel, cardLayout), "ProjectScreen");
+        cardPanel.add(new ProjectScreen(user, cardPanel, cardLayout, "35089418-d50b-4fc8-88ea-bb82c1ea5633"), "ProjectScreen");
         projectButton.addActionListener((new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(cardPanel, "ProjectScreen");
