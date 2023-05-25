@@ -131,5 +131,6 @@ public class LogInScreen extends JPanel {
 
         gbc.gridy = 5;
         add(createAcct, gbc);
+
     }
 }

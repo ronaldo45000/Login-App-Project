@@ -9,43 +9,44 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.EventObject;
 import java.util.HashMap;
 
+/**
+ * DocumentTab for a specific Project.
+ * @Author Tin Phu
+ * @version 0.1
+ */
 public class DocumentTab extends JPanel {
+    /**
+     * List of Docs belong to a specific Project
+     */
     private HashMap<String, Document> listOfDocs;
-    private DefaultListModel<String> listModel;
-    private JList<String> itemList;
-    private DefaultTableModel model;
+    /**
+     * DefaultTableModel model
+     */
+    private final DefaultTableModel model;
+    /**
+     * JTable table
+     */
+    private final JTable table;
 
-    private JTable table;
 
-
+    /**
+     * DocumentTab set up.
+     * @author Tin Phu
+     * @param theProjectID
+     */
     public DocumentTab(String theProjectID){
         listOfDocs = DocumentController.getDocsByProjectID(theProjectID);
-
-//        Document d1 = (new Document("Doc2", "Description2", "theProejectId", "UseID", BigDecimal.valueOf(222)));
-//        Document d2 =(new Document("Doc1", "Description1", "theProejectId", "UseID", BigDecimal.valueOf(111)));
-//        Document d3 =(new Document("Doc3", "Description3", "theProejectId", "UseID", BigDecimal.valueOf(333)));
-//
-//        listOfDocs.put(d1.getId(),d1);
-//        listOfDocs.put(d2.getId(),d2);
-//        listOfDocs.put(d3.getId(),d3);
-
-
-        listModel = new DefaultListModel<>();
-        itemList = new JList<>(listModel);
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        JList<String> itemList = new JList<>(listModel);
         setLayout(new BorderLayout());
-
         // Create the table model
-
         model = new DefaultTableModel();
         model.addColumn("ID");
         model.addColumn("Name");
@@ -56,60 +57,27 @@ public class DocumentTab extends JPanel {
         table = new JTable(model);
 
 
-        // Set the cell editor for the locked colum
-        //to ID
+        // Set the cell editor for the locked ID column
         TableColumn lockedColumn = table.getColumnModel().getColumn(0);
         lockedColumn.setCellEditor(new LockedColumnEditor());
-        //to Date
+        //Set the cell editor for the locked date column
         lockedColumn =  table.getColumnModel().getColumn(3);
         lockedColumn.setCellEditor(new LockedColumnEditor());
-
-
-
-
-
-
-
         // Set column widths
         TableColumn column = table.getColumnModel().getColumn(2); // Description column
         column.setPreferredWidth(350);
         column = table.getColumnModel().getColumn(0); // Date column
         column.setPreferredWidth(10);
-
-
         column = table.getColumnModel().getColumn(3); // Date column
         column.setPreferredWidth(30);
-
         column = table.getColumnModel().getColumn(4); // Total Cost column
         column.setPreferredWidth(30);
 
-        ListSelectionModel selectionModel = table.getSelectionModel();
-//        selectionModel.addListSelectionListener(new ListSelectionListener() {
-//            @Override
-//            public void valueChanged(ListSelectionEvent e) {
-//                if (e.getValueIsAdjusting()) {
-//                    int selectedRow = table.getSelectedRow();
-//                    if (selectedRow != -1) {
-//
-//                        String id = (String) table.getValueAt(selectedRow, 0);
-//                        String name = (String) table.getValueAt(selectedRow, 1);
-//                        String description = (String) table.getValueAt(selectedRow, 2);
-//                        String date = (String) table.getValueAt(selectedRow, 3);
-//                        String totalCost = (String) table.getValueAt(selectedRow, 4);
-//
-//                        ListOfDocs.get(id).setTotalCost(BigDecimal.valueOf(Double.valueOf(totalCost)));
-//                        ListOfDocs.get(id).setDocumentName(name);
-//                        ListOfDocs.get(id).setDocumentDescription(description);
-//                        System.out.println("Changing:");
-//                        System.out.println(ListOfDocs.get(id));
-//                    }
-////                System.out.println("////////////////////////////////////////");
-////                    System.out.println(ListOfDocs);
-//
-//                }
-//            }
-//        });
 
+        /**
+         * export data when tableChanged
+         * @Author Tin Phu
+         */
         model.addTableModelListener(new TableModelListener() {
             public void tableChanged(TableModelEvent e) {
                 if (e.getType() == TableModelEvent.UPDATE && e.getColumn() >= 0 && e.getFirstRow() >= 0) {
@@ -124,39 +92,43 @@ public class DocumentTab extends JPanel {
                     listOfDocs.get(id).setTotalCost(BigDecimal.valueOf(Double.valueOf(totalCost)));
                     listOfDocs.get(id).setDocumentName(name);
                     listOfDocs.get(id).setDocumentDescription(description);
-
-
-                    System.out.println("Value changed at row " + row + ", column " + columnName + ": " + newValue);
-                    System.out.println(listOfDocs.get(id));
+                    DocumentController.addDocument(listOfDocs.get(id));
                 }
             }
         });
 
-        // Add some example data to the table
 
 
 
 
-
+        // Load listOfDocs to the Table.
         listOfDocs.forEach((k, e)->{
             addRow(k, e.getDocumentName(), e.getDocumentDescription(), e.getDate().toString(), e.getTotalCost().toString());
         });
-
-
         JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem openItem = new JMenuItem("Open");
         JMenuItem deleteItem = new JMenuItem("Delete");
-
-        // Add action listeners to the menu items
+        JMenuItem readItem = new JMenuItem("Read");
+        // Add action listeners to openItem
         openItem.addActionListener(e -> {
             int row = table.getSelectedRow();
             if (row >= 0) {
                 String id = (String) table.getValueAt(row, 0);
-                listOfDocs.get(id).openDoc();
-
+                if(!listOfDocs.get(id).openDoc()){
+                    JOptionPane.showMessageDialog(DocumentTab.this, "This document does not have an attached file !");
+                };
         }
         });
 
+        readItem.addActionListener(e->{
+            int row = table.getSelectedRow();
+            if (row >= 0) {
+                String id = (String) table.getValueAt(row, 0);
+                new DocumentTabRead(listOfDocs.get(id));
+            }
+        });
+
+        // Add action listeners to deleteItem
         deleteItem.addActionListener(e -> {
             int row = table.getSelectedRow();
             if (row >= 0) {
@@ -166,6 +138,7 @@ public class DocumentTab extends JPanel {
                     String name = model.getValueAt(row, 1).toString();
                     System.out.println("Deleting " + name);
                     String id = (String) table.getValueAt(row, 0);
+                    DocumentController.deleteADocument(listOfDocs.get(id));
                     listOfDocs.remove(id);
                     updateTable();
                 } else {
@@ -174,14 +147,15 @@ public class DocumentTab extends JPanel {
                 }
             }
         });
-
-
         // Add the menu items to the popup menu
         popupMenu.add(openItem);
+        popupMenu.add(readItem);
         popupMenu.add(deleteItem);
-
-        // Add a mouse listener to show the popup menu on right-click
-
+        /**
+         * Add a mouse listener to show the popup menu on right-click
+         * export data when tableChanged
+         * @Author Tin Phu
+         */
         table.addMouseListener(new MouseAdapter() {
             public void mouseReleased(MouseEvent e) {
                 if (e.isPopupTrigger()) {
@@ -194,46 +168,40 @@ public class DocumentTab extends JPanel {
             }
         });
 
-
-
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
-
-
-
-
-
-
-
-
         JButton addButton = new JButton("Add Document");
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-
                 new DocumentCreationFormPopUp(theProjectID) ;
-
             }
         });
-
-
         add(addButton, BorderLayout.SOUTH);
     }
 
 
-
+    /**
+     * add a row to table.
+     * @Author Tin Phu
+     * @param id
+     * @param name
+     * @param description
+     * @param date
+     * @param totalCost
+     */
     private void addRow(String id, String name, String description, String date,  String totalCost) {
         Object[] rowData = {id, name, description, date,totalCost};
         model.addRow(rowData);
     }
 
+    /**
+     * updateTable with new data.
+     * @Author Tin Phu
+     */
     public  void updateTable() {
         // Clear existing rows
         model.setRowCount(0);
-
-
-
         // Populate the table with the updated data from the list
         listOfDocs.forEach((k, e)->{
             addRow(k, e.getDocumentName(), e.getDocumentDescription(), e.getDate().toString(), e.getTotalCost().toString());
@@ -241,6 +209,10 @@ public class DocumentTab extends JPanel {
 
     }
 
+    /**
+     * Table Column Setting.
+     * @author Tin Phu
+     */
     private class LockedColumnEditor implements TableCellEditor {
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
             return null; // Return null to make the cell non-editable
@@ -271,26 +243,22 @@ public class DocumentTab extends JPanel {
         public void removeCellEditorListener(CellEditorListener l) {
         }
     }
-
-
-
-
     /**
      * DocumentCreationFormPopUp
      * @author Tin Phu
      *
      */
     public class DocumentCreationFormPopUp extends JPanel{
-        private JTextField documentNameField;
-        private JTextField documentDescriptionField;
-        private JTextField totalCostField;
-        private String srcFileString;
-        private JButton fileSelectorButton;
-        private JButton createButton;
-        private JDialog dialog = new JDialog();
-        private Document newDoc = null;
+        private final JTextField documentNameField;
+        private final JTextField documentDescriptionField;
+        private final JTextField totalCostField;
+        private String srcFileString = "";
+        private final JDialog dialog = new JDialog();
 
-
+        /**
+         * @Author Tin Phu
+         * @param theProjectID
+         */
         public DocumentCreationFormPopUp(String theProjectID) {
             // Create components
             JLabel documentNameLabel = new JLabel("Document Name:");
@@ -302,10 +270,10 @@ public class DocumentTab extends JPanel {
             JLabel totalCostLabel = new JLabel("Total Cost:");
             totalCostField = new JTextField(10);
 
-            JLabel fileSrcStringLabel = new JLabel("");
-            fileSelectorButton = new JButton("Select File");
+            JLabel fileSrcStringLabel = new JLabel("(option)");
+            JButton fileSelectorButton = new JButton("Select File");
 
-            createButton = new JButton("Create Document");
+            JButton createButton = new JButton("Create Document");
 
             // Create layout
             JPanel panel = new JPanel(new GridBagLayout());
@@ -347,8 +315,14 @@ public class DocumentTab extends JPanel {
             constraints.anchor = GridBagConstraints.CENTER;
             panel.add(createButton, constraints);
 
-            // Set action listeners
+
+
+
+
+
+            //
             /**
+             * set fileSelectorButton Action Listener
              * @Author Tin Phu
              */
             fileSelectorButton.addActionListener(new ActionListener() {
@@ -372,42 +346,44 @@ public class DocumentTab extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     String documentName = documentNameField.getText();
                     String documentDescription = documentDescriptionField.getText();
-                    double totalCost = Double.parseDouble(totalCostField.getText());
-                    try {
-                        Document newDoc = new Document(documentName,documentDescription,theProjectID,"", BigDecimal.valueOf(totalCost), srcFileString );
-                        DocumentController.addDocument(newDoc);
-                        listOfDocs.put(newDoc.id(), newDoc);
-                        dialog.setVisible(false);
+                    Document newDoc = null;
+                    if(documentName.isEmpty() || documentDescription.isEmpty() || totalCostField.getText().isEmpty() ){
+                        JOptionPane.showMessageDialog(DocumentTab.this, "Please enter required information!");
+                    } else if(documentDescription.length() >= 1300){
+                        JOptionPane.showMessageDialog(DocumentTab.this, "The Description is too long!");
+                    }else {
 
-                        updateTable();
-                    } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(DocumentTab.this, "Something went wrong! The File could not be coppied");
+
+                        double totalCost = Double.parseDouble(totalCostField.getText());
+                        try {
+                            if(srcFileString.isEmpty()){
+                                newDoc = new Document(documentName,documentDescription,theProjectID,"", BigDecimal.valueOf(totalCost) );
+
+                            }else {
+                                newDoc = new Document(documentName,documentDescription,theProjectID,"", BigDecimal.valueOf(totalCost), srcFileString );
+
+                            }
+                            DocumentController.addDocument(newDoc);
+                            listOfDocs.put(newDoc.id(), newDoc);
+                            dialog.setVisible(false);
+                            updateTable();
+                        } catch (IOException ex) {
+                            JOptionPane.showMessageDialog(DocumentTab.this, "Something went wrong! The File could not be coppied");
+                        }
                     }
+
                 }
             });
-
+            dialog.setLocationRelativeTo(DocumentTab.this);
             dialog.setContentPane(panel);
-
-            // Set dialog properties
             dialog.setTitle("Document Creation Form");
             dialog.setSize(500, 400);
             dialog.setLocationRelativeTo(null); // Center the dialog on the screen
             dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-            // Display the dialog
             dialog.setVisible(true);
 
-            // Display the panel
-            // JOptionPane.showMessageDialog(null, panel, "Document Creation Form", JOptionPane.PLAIN_MESSAGE);
         }
-
-
-
-
-
     }
-
-
 
 }
 

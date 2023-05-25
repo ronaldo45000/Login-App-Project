@@ -24,28 +24,6 @@ import java.util.UUID;
  * @version 0.2
  */
 public class Document implements Jsonable {
-    public static void main(String[] args) {
-//        try {
-//            Document d3 = (new Document("Doc3", "Description2", "35089418-d50b-4fc8-88ea-bb82c1ea5633", "UseID", BigDecimal.valueOf(222), "D:\\360\\TestDocs\\TestDoc3.pdf"));
-//            Document d2 = (new Document("Doc2", "Description2", "35089418-d50b-4fc8-88ea-bb82c1ea5633", "UseID", BigDecimal.valueOf(222), "D:\\360\\TestDocs\\TestDoc2.docx"));
-//            Document d1 = (new Document("Doc1", "Description2", "35089418-d50b-4fc8-88ea-bb82c1ea5633", "UseID", BigDecimal.valueOf(222), "D:\\360\\TestDocs\\TestDoc1.png"));
-//            DocumentRepository rep = new DocumentRepository();
-//            rep.addDocument(d1);
-//            rep.addDocument(d2);
-//            rep.addDocument(d3);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-
-        DocumentRepository rep = new DocumentRepository();
-        HashMap<String, Document> l = DocumentController.getDocsByProjectID("35089418-d50b-4fc8-88ea-bb82c1ea5633");
-        l.get("92ac0f56-258b-4ac0-aa40-b939744c3a29").setTotalCost(BigDecimal.valueOf(11111));
-        rep.addDocument(l.get("92ac0f56-258b-4ac0-aa40-b939744c3a29"));
-        System.out.println(rep.getListOfDocument().get("92ac0f56-258b-4ac0-aa40-b939744c3a29").getTotalCost());
-        System.out.println(l.get("92ac0f56-258b-4ac0-aa40-b939744c3a29").getTotalCost());
-
-    }
 
     /**
      * This is name of document.
@@ -162,16 +140,6 @@ public class Document implements Jsonable {
     public String getDocumentName(){
         return documentName;
     }
-
-    // /**
-    //  * This is the getter for file path.
-    //  * @author Tin Phu
-    //  * @return The file path of the document
-    //  */
-//    public String getFilepath(){
-//        return filepath;
-//    }
-
     /**
      * This is the getter for document description.
      * @author Thinh Le
@@ -300,15 +268,6 @@ public class Document implements Jsonable {
                 + "|userID:"+ this.userID+"|totalCost:" + this.totalCost + "|filePath:" + this.filePath + "|date:" + this.date + "\n" ;
     }
 
-
-//    public BigDecimal getTotalCost() {
-//        return totalCost;
-//    }
-//
-//    public String getUserID() {
-//        return userID;
-//    }
-
     public LocalDate getDate() {
         return date;
     }
@@ -331,22 +290,18 @@ public class Document implements Jsonable {
                 break;
             }
         }
-
-
         String currentPath = System.getProperty("user.dir");
-
         String destString = "\\" + this.projectID + "\\" + this.id + fileType;
-
-
         File dest = new File(currentPath + destString);
-
         Files.copy(src.toPath(), dest.toPath());
-
-
         return  destString;
     }
 
-    public void openDoc(){
+    /**
+     * @Author
+     * @return boolean, false indicate that the file does not exist.
+     */
+    public boolean openDoc(){
         String currentPath = System.getProperty("user.dir");
 
         File file = new File(currentPath + this.filePath);
@@ -358,7 +313,12 @@ public class Document implements Jsonable {
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
+            return true;
         }
+        return false;
     }
 
+    public String getFilePath() {
+        return filePath;
+    }
 }

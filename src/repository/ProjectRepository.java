@@ -85,8 +85,6 @@ public class ProjectRepository {
             }
 
             System.out.println("Import Data from ProjectList.json");
-//            System.out.println(this.listOfProject.toString());
-
 
         } catch (IOException | JsonException e){
             throw new RuntimeException(e);
@@ -101,23 +99,10 @@ public class ProjectRepository {
         try (FileWriter fileWriter = new FileWriter(this.FILEPATH)) {
             Jsoner.serialize(this.listOfProject, fileWriter);
             System.out.println("Export Data to ProjectList.json");
-//            System.out.println(this.listOfProject.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
     }
-
-    /**
-     * Returns the file path of ProjectList.json
-     * @author Tin Phu
-     * @return The file path of the json file
-     */
-    public String getFILEPATH() {
-        return FILEPATH;
-    }
-
     /**
      * Return the reference of the hashmap.
      * @author Tin Phu

@@ -77,8 +77,8 @@ public class AppUI {
                     UserController.importData();
                     DocumentController.importData();
                     ProjectController.importData();
-
                     if(AppInfoController.getCurrentUser() == null){
+
                         cardLayout.show(cardPanel, "LogInScreen");
                     } else {
                         cardPanel.add(new HomeScreen(AppInfoController.getCurrentUser(), cardPanel, cardLayout), "HomeScreen");

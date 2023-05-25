@@ -211,7 +211,7 @@ public class Project implements Jsonable {
     }
 
     /**
-     * Create A Folder for a project.
+     * Create A Folder for a project at currentPath\id
      * @Author Tin Phu
      */
     private void createProjectFolder(){

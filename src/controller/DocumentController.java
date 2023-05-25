@@ -3,6 +3,7 @@ package controller;
 import model.Document;
 import repository.DocumentRepository;
 
+import java.io.File;
 import java.util.HashMap;
 
 /**
@@ -57,12 +58,24 @@ public class DocumentController {
     }
 
     /**
-     * Deleting a Doc by ID.
+     * Deleting a Doc .
      * @author Tin Phu
-     * @param theDocID
+     * @param theDoc
      */
-    public static void deleteADocumentByID(String theDocID){
-        documentRepository.deleteDocument(theDocID);
+    public static void deleteADocument(Document theDoc){
+        documentRepository.deleteDocument(theDoc.getId());
+        String currentPath = System.getProperty("user.dir");
+        File file = new File(currentPath + theDoc.getFilePath());
+        file.delete();
+
+    }
+
+    /**
+     * find a Document by ID
+     * @Author Tin Phu
+     */
+    public static  Document findDocbyID(String theID){
+        return documentRepository.findDocumentById(theID);
     }
 
 
