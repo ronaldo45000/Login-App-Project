@@ -26,7 +26,7 @@ public class AboutAppRepository {
     /**
      * appInfo holds data.
      */
-    private final AppInfo appInfo = new AppInfo();
+    private  AppInfo appInfo = new AppInfo();
 
     /**
      * No-arg constructor.
@@ -43,26 +43,19 @@ public class AboutAppRepository {
      */
     public void importData() {
 
+        appInfo = new AppInfo();
+
         try (FileReader fileReader = new FileReader(FILEPATH)) {
             JsonArray objects = Jsoner.deserializeMany(fileReader);
-//            System.out.println(objects.toString());
-//            System.out.println(objects);
-
-
                 JsonObject o = (JsonObject) objects.get(0);
-//                System.out.println(o);
                 if(o.get("versionNumber") != null){
                     appInfo.setVersionNumber(Double.parseDouble(o.get("versionNumber").toString()));
                 }
-
                 //Mapping CurrentUser
                  if(o.get("user") != null){
                     JsonObject currentUserJObject =  (JsonObject) o.get("user");
                     appInfo.setUser(new User(currentUserJObject.get("name").toString(),currentUserJObject.get("email").toString()));
                 }
-
-
-
                 JsonArray  arr = (JsonArray)o.get("teamMembers");
                 appInfo.clearDevelopers();
                  if(arr != null){
@@ -73,9 +66,6 @@ public class AboutAppRepository {
                          appInfo.addNewDeveloper(new Account(currentMemberName,currentMemberEmail ));
                      }
                  }
-
-
-
         } catch (IOException | JsonException e) {
             throw new RuntimeException(e);
         }
@@ -87,15 +77,11 @@ public class AboutAppRepository {
      * @author Tin Phu
      */
     public void exportData(){
-//        String json = Jsoner.serialize(this.appInfo);
-//        json = Jsoner.prettyPrint(json);
-//        System.out.println(json);   // print out JSON to check before writing to json file.
         try (FileWriter fileWriter = new FileWriter(this.FILEPATH)) {
             Jsoner.serialize(this.appInfo, fileWriter);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         System.out.println("Export Data to AppInfo.json");
     }
 
