@@ -53,14 +53,12 @@ public class UserRepository {
      * @author Tin Phu
      */
     public void importData(){
+        listOfuserProfile.clear();
         try (FileReader fileReader = new FileReader(FILEPATH)) {
             JsonArray objects = Jsoner.deserializeMany(fileReader);
             JsonObject o = (JsonObject) objects.get(0);
             for (Map.Entry<String, Object> entry : o.entrySet()) {
-                
                 JsonObject currentUser  = (JsonObject) entry.getValue();
-
-
                 String id = "notFound";
                 if(currentUser.get("id") != null){
                     id = currentUser.get("id").toString();
@@ -79,9 +77,6 @@ public class UserRepository {
             }
 
         System.out.println("Import Data from UserProfile.json");
-//        System.out.println(this.listOfuserProfile.toString());
-
-
         } catch (IOException | JsonException e){
             throw new RuntimeException(e);
         }
@@ -92,13 +87,9 @@ public class UserRepository {
      * @author Tin Phu
      */
     public void exportData(){
-        //        String json = Jsoner.serialize(this.appInfo);
-//        json = Jsoner.prettyPrint(json);
-//        System.out.println(json);   // print out JSON to check before writing to json file.
         try (FileWriter fileWriter = new FileWriter(this.FILEPATH)) {
             Jsoner.serialize(this.listOfuserProfile, fileWriter);
             System.out.println("Export Data to UserProfile.json");
-//            System.out.println(this.listOfuserProfile.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -121,6 +112,24 @@ public class UserRepository {
             }
         }
         return null;
+    }
+    
+    /**
+     * Changes the user information in the databse with specified new information
+     *
+     * @author Bairu Li
+     * @param theOldName The old name of the user to be changed
+     * @param theOldEmail The old email of the user to be changed
+     * @param theName The new name of the user to be changed
+     * @param theEmail The new email of the user to be changed
+     */
+    public void changeUserInfo(String theOldName, String theOldEmail, 
+    		                   String theName, String theEmail){
+        User tempUser = findUserByName(theOldName, theOldEmail);
+        
+        listOfuserProfile.get(tempUser.getId()).setName(theName);
+        listOfuserProfile.get(tempUser.getId()).setEmail(theEmail);
+        this.exportData();
     }
 
     /**

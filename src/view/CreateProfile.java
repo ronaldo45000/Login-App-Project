@@ -144,7 +144,7 @@ public class CreateProfile extends JPanel {
      * @param emailString The email to check
      * @return boolean Whether the given email is valid
      */
-    public boolean emailValidation(String emailString){
+    public static boolean emailValidation(String emailString){
         String regex = "^[\\w!#$%&amp;'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&amp;'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(emailString);

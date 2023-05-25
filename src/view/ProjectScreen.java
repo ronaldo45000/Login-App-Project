@@ -17,6 +17,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import controller.AppInfoController;
 import model.User;
 
 /**
@@ -34,7 +36,10 @@ public class ProjectScreen extends JPanel {
      * @param cardPanel The panels to swap to/from
      * @param cardLayout The layout used to swap to/from panels
      */
-    public ProjectScreen(User user, JPanel cardPanel, CardLayout cardLayout) {
+    public ProjectScreen(User user, JPanel cardPanel, CardLayout cardLayout, String theProjectID) {
+
+
+
         setLayout(new BorderLayout());
         
         //Setting up panels
@@ -77,7 +82,9 @@ public class ProjectScreen extends JPanel {
         String userName = user.getName();
         
         //Adding menu items
-        JMenuItem exitButton = new JMenuItem("Exit");
+        JMenuItem changeUsernameButton = new JMenuItem("Change Username");
+        JMenuItem changeEmailButton = new JMenuItem("Change Email");
+        JMenuItem exitButton = new JMenuItem("Log Out");
         JMenuBar accountMenuBar = new JMenuBar();
         JMenu accountMenu = new JMenu(userName);
         
@@ -111,6 +118,8 @@ public class ProjectScreen extends JPanel {
         topPanel.add(accountMenuBar);
         
         //Adding button to menu
+        accountMenu.add(changeUsernameButton);
+        accountMenu.add(changeEmailButton);
         accountMenu.add(exitButton);
         accountMenuBar.add(accountMenu);
         
@@ -144,10 +153,22 @@ public class ProjectScreen extends JPanel {
                 cardLayout.show(cardPanel, "BudgetScreen");
             }
         });
-        //Adding exit button to go back to home screen
+        //Adding exit button to go back to the login screen
         exitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "HomeScreen");
+                cardLayout.show(cardPanel, "LogInScreen");
+            }
+        });
+        // Add button to change username
+        changeUsernameButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	new ChangeCurrentUserData(accountMenu, ChangeCurrentUserData.USERNAME);
+            }
+        });
+        // Add button to change user's email
+        changeEmailButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	new ChangeCurrentUserData(accountMenu, ChangeCurrentUserData.EMAIL);
             }
         });
 
@@ -157,6 +178,6 @@ public class ProjectScreen extends JPanel {
         //add(folderPanel, BorderLayout.WEST);
         //add(new ProjectSelector(), BorderLayout.WEST);
         //add(projectsPanel, BorderLayout.CENTER);
-       add(new TabsPanels(), BorderLayout.CENTER);
+       add(new TabsPanels(theProjectID), BorderLayout.CENTER);
     }
 }

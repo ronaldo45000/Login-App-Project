@@ -2,12 +2,18 @@ package model;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsonable;
+import controller.DocumentController;
+import repository.DocumentRepository;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
+import java.nio.file.Files;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -53,7 +59,7 @@ public class Document implements Jsonable {
     private final LocalDate date;
 
     /**
-     * This constructor creates Document with id, document name, document description and file path.
+     * This constructor creates Document with id, document name, document description.
      * @author Thinh Le
      * @author Tin Phu
      * @param documentName Name of the document
@@ -70,7 +76,29 @@ public class Document implements Jsonable {
     this.userID = theUserID;
     this.date = LocalDate.now();
     this.totalCost = theTotalCost;
+    this.filePath = "\\" + theProjectId + this.id;
 }
+    /**
+     * This constructor creates Document with id, document name, document description and
+     * "file path"
+     * @author Thinh Le
+     * @author Tin Phu
+     * @param documentName Name of the document
+     * @param documentDescription Description associated with the document
+     * @param theProjectId The id of the project this document is in
+     * @param theUserID The id of the user this document belongs to
+     * @param theTotalCost The cost associated with this document
+     */
+    public Document( String documentName, String documentDescription, String theProjectId, String theUserID, BigDecimal theTotalCost, String srcFileString) throws IOException {
+        this.documentName = documentName;
+        this.documentDescription = documentDescription;
+        this.id =   UUID.randomUUID().toString();
+        this.projectID = theProjectId;
+        this.userID = theUserID;
+        this.date = LocalDate.now();
+        this.totalCost = theTotalCost;
+        this.filePath = this.copyFileToAppRep(srcFileString);
+    }
 
     /**
      * A constructor for data mapping.
@@ -112,16 +140,6 @@ public class Document implements Jsonable {
     public String getDocumentName(){
         return documentName;
     }
-
-    // /**
-    //  * This is the getter for file path.
-    //  * @author Tin Phu
-    //  * @return The file path of the document
-    //  */
-//    public String getFilepath(){
-//        return filepath;
-//    }
-
     /**
      * This is the getter for document description.
      * @author Thinh Le
@@ -248,5 +266,59 @@ public class Document implements Jsonable {
     public String toString(){
         return "id: " + this.id + "|documentName:"+this.documentName + "|documentDescription:" + this.documentDescription +"|projectID:" + this.projectID
                 + "|userID:"+ this.userID+"|totalCost:" + this.totalCost + "|filePath:" + this.filePath + "|date:" + this.date + "\n" ;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    /**
+     * Copy a file from user input to a dest location.
+     * This Model could throw except straight to GUIs.
+     * @Author Tin Phu
+     * @param srcString
+     * @throws IOException
+     */
+    private String copyFileToAppRep(String srcString) throws IOException {
+        File src = new File(srcString);
+        String fileType = "";
+        for(int i = srcString.length()-1; i >= 0; i-- ){
+            if(srcString.charAt(i) != '.'){
+                fileType =  srcString.charAt(i) + fileType;
+            } else {
+                fileType = "." + fileType;
+                break;
+            }
+        }
+        String currentPath = System.getProperty("user.dir");
+        String destString = "\\" + this.projectID + "\\" + this.id + fileType;
+        File dest = new File(currentPath + destString);
+        Files.copy(src.toPath(), dest.toPath());
+        return  destString;
+    }
+
+    /**
+     * @Author
+     * @return boolean, false indicate that the file does not exist.
+     */
+    public boolean openDoc(){
+        String currentPath = System.getProperty("user.dir");
+
+        File file = new File(currentPath + this.filePath);
+        Desktop desktop = Desktop.getDesktop();
+        if(file.exists())         //checks file exists or not
+        {
+            try {
+                desktop.open(file);              //opens the specified file
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public String getFilePath() {
+        return filePath;
     }
 }

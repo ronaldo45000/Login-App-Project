@@ -69,16 +69,25 @@ public class AppUI {
         importMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int confirm = JOptionPane.showConfirmDialog(frame, "While importing data, you will be logged out.\nContinue?", 
+                int confirm = JOptionPane.showConfirmDialog(frame, "While importing data, you will be logged out to Home Screen.\nContinue?",
                 "Warning", JOptionPane.YES_NO_OPTION);
 
                 if (confirm == JOptionPane.YES_OPTION) {
-                    cardLayout.show(cardPanel, "LogInScreen");
-                    AppInfoController.logout();
                     AppInfoController.importData();
                     UserController.importData();
                     DocumentController.importData();
                     ProjectController.importData();
+                    if(AppInfoController.getCurrentUser() == null){
+
+                        cardLayout.show(cardPanel, "LogInScreen");
+                    } else {
+                        cardPanel.add(new HomeScreen(AppInfoController.getCurrentUser(), cardPanel, cardLayout), "HomeScreen");
+                        cardLayout.show(cardPanel, "HomeScreen");
+                    }
+                    frame.dispose();
+                    frame.setVisible(true);
+
+
                 }
             }
         });
