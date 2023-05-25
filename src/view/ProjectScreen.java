@@ -28,7 +28,7 @@ import model.User;
  * @version 0.1
  */
 public class ProjectScreen extends JPanel {
-    
+    private JTabbedPane projectTab;
     /**
      * Constructor to create the Project screen.
      *
@@ -44,15 +44,28 @@ public class ProjectScreen extends JPanel {
         
         //Setting up panels
         JPanel projectsPanel = new JPanel(new BorderLayout());
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel topPanel = new JPanel(new BorderLayout());
+        JPanel topLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel topCenterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JPanel folderPanel = new JPanel();
         JPanel projectBtnPanel = new JPanel();
         JPanel addDocumentPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPanel projectSelectionPanel = new JPanel();
         
+        //Setting up projects tab
+        JPanel projectPanel = new JPanel(new BorderLayout());
+        projectTab = new JTabbedPane();
+        projectPanel.add(projectTab, BorderLayout.CENTER);
+        JPanel addProjectPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        addProjectPanel.setPreferredSize(new Dimension(0,0));
+        
         //Setting color for panels
         projectsPanel.setBackground(Color.red);
         topPanel.setBackground(Color.darkGray);
+        topLeftPanel.setBackground(Color.darkGray);
+        topRightPanel.setBackground(Color.darkGray);
+        topCenterPanel.setBackground(Color.darkGray);
         folderPanel.setBackground(Color.yellow);
         projectBtnPanel.setBackground(Color.white);
         
@@ -65,16 +78,16 @@ public class ProjectScreen extends JPanel {
         addDocumentPanel.setPreferredSize(new Dimension(125,125));
         
         //Setting up labels
-        JLabel projectNameLabel = new JLabel("Project Name: (Name)");
+        JLabel projectNameLabel = new JLabel("Project Name: ");
         JLabel projectSelectionLabel = new JLabel("Project Selection");
         JLabel searchLabel = new JLabel("Search: ");
-        JLabel accountNameLabel = new JLabel("(Account name)");
         
         //Setting up JButtons for tabs
         JButton documentsButton = new JButton("Documents");
         JButton budgetButton = new JButton("Budget");
         JButton membersButton = new JButton("Members");
         JButton addDocument = new JButton("Add Document...");
+        JButton addProjectButton = new JButton("Add Project");
         
         //Search text box
         JTextField searchBar = new JTextField(16);
@@ -94,28 +107,31 @@ public class ProjectScreen extends JPanel {
         projectNameLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         searchLabel.setForeground(new Color(255,255,255));
         searchLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        accountNameLabel.setForeground(new Color(255,255,255));
-        accountNameLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         
         //Setting size for buttons on the center panel
         documentsButton.setPreferredSize(new Dimension(206,25));
         budgetButton.setPreferredSize(new Dimension(206,25));
         membersButton.setPreferredSize(new Dimension(206, 25));
         addDocument.setPreferredSize(new Dimension(135, 125));
+        addProjectButton.setPreferredSize(new Dimension(70,30));
+        
+        projectTab.add(addProjectButton);
+        projectTab.setTitleAt(0, "Add Project");
+        projectTab.getTitleAt(projectTab.getSelectedIndex());
         
         //Adding the three buttons on the center panel
         projectBtnPanel.add(documentsButton, BorderLayout.NORTH);
         projectBtnPanel.add(budgetButton, BorderLayout.NORTH);
         projectBtnPanel.add(membersButton, BorderLayout.NORTH);
-        projectsPanel.add(projectBtnPanel, BorderLayout.NORTH);
         
         //Making the top panel (Where the search function goes)
-        topPanel.add(projectNameLabel);
-        topPanel.add(Box.createHorizontalStrut(100));
-        topPanel.add(searchLabel);
-        topPanel.add(searchBar);
-        topPanel.add(Box.createHorizontalStrut(100));
-        topPanel.add(accountMenuBar);
+        topLeftPanel.add(projectNameLabel);
+        topCenterPanel.add(searchLabel);
+        topCenterPanel.add(searchBar);
+        topRightPanel.add(accountMenuBar);
+        topPanel.add(topLeftPanel, BorderLayout.WEST);
+        topPanel.add(topCenterPanel, BorderLayout.CENTER);
+        topPanel.add(topRightPanel, BorderLayout.EAST);
         
         //Adding button to menu
         accountMenu.add(changeUsernameButton);
@@ -129,16 +145,8 @@ public class ProjectScreen extends JPanel {
         folderPanel.add(projectSelectionPanel, BorderLayout.NORTH);
         //Setting up "Add document" button on panel
         addDocumentPanel.add(addDocument);
-        projectsPanel.add(addDocumentPanel);
+        //projectsPanel.add(addDocumentPanel);
         
-        //Adding action listeners to the exit, documents, budget, and members buttons.
-        //Adding members screen to cards
-        //  cardPanel.add(new MembersScreen(), "MembersScreen");
-        // membersButton.addActionListener((new ActionListener() {
-        //     public void actionPerformed(ActionEvent e) {
-        //         cardLayout.show(cardPanel, "MembersScreen");
-        //     }
-        // }));
         //Adding documents screen to cards
         cardPanel.add(new DocumentsScreen(), "DocumentsScreen");
         documentsButton.addActionListener((new ActionListener() {
@@ -171,13 +179,96 @@ public class ProjectScreen extends JPanel {
             	new ChangeCurrentUserData(accountMenu, ChangeCurrentUserData.EMAIL);
             }
         });
+        
+        addProjectButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String projectName = JOptionPane.showInputDialog(ProjectScreen.this, "Enter project name: ");
+                if (projectName != null && !projectName.isEmpty()) {
+                    JPanel projectPanel = new JPanel();
+                    projectPanel.setLayout(new BorderLayout());
+                    projectPanel.add(new JScrollPane(new TabsPanels(theProjectID)), BorderLayout.CENTER);
+                    projectTab.addTab(projectName, projectPanel);
+                } else {
+                    JOptionPane.showMessageDialog(ProjectScreen.this, "Please enter a valid project name: ");
+                }
+            }
+        });
+        
+        projectTab.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON3 && projectTab.getSelectedIndex() > 0) {
+                    rightClickMenu(e.getX(), e.getY());
+                }
+            }
+        });
+        
+        projectTab.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                int selectedTab = projectTab.getSelectedIndex();
+                if (selectedTab > 0) {
+                    String selectedTabTitle = projectTab.getTitleAt(selectedTab);
+                    projectNameLabel.setText("Project Name: " + selectedTabTitle);
+                }
+            }
+        });
 
-
+        projectPanel.add(addProjectPanel, BorderLayout.SOUTH);
+        projectsPanel.add(projectPanel, BorderLayout.WEST);
         //Adding other panels on the main panel
         add(topPanel, BorderLayout.NORTH);
-        //add(folderPanel, BorderLayout.WEST);
-        //add(new ProjectSelector(), BorderLayout.WEST);
-        //add(projectsPanel, BorderLayout.CENTER);
-       add(new TabsPanels(theProjectID), BorderLayout.CENTER);
+        add(projectPanel, BorderLayout.CENTER);
+    }
+  
+/**
+     * Allows user to right-click the selected tab for a options menu
+     * 
+     * @author Hassan Abbas
+     */
+    private void rightClickMenu(int x, int y) {
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem renameTab = new JMenuItem("Rename");
+        JMenuItem deleteTab = new JMenuItem("Remove");
+        renameTab.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                renameTab();
+            }
+        });
+        deleteTab.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                deleteTab();
+            }
+        });
+        
+        popupMenu.add(renameTab);
+        popupMenu.add(deleteTab);
+        popupMenu.show(projectTab, x, y);
+    }
+    /**
+     * Allows user to rename the selected tab
+     * 
+     * @author Hassan Abbas
+     */
+    private void renameTab() {
+        String currentTabTitle = projectTab.getTitleAt(projectTab.getSelectedIndex());
+        String newTabTitle = JOptionPane.showInputDialog(ProjectScreen.this, "Enter new project name:", currentTabTitle);
+        if (newTabTitle != null && !newTabTitle.isEmpty()) {
+            projectTab.setTitleAt(projectTab.getSelectedIndex(), newTabTitle);
+        }
+    }
+    
+    /**
+     * Allows user to delete the selected tab
+     * 
+     * @author Hassan Abbas
+     */
+    private void deleteTab() {
+        int selectedTab = projectTab.getSelectedIndex();
+        if(selectedTab > 0) {
+            int confirm = JOptionPane.showConfirmDialog(ProjectScreen.this, "Are you sure you want to delete this project?");
+            if(confirm == JOptionPane.YES_OPTION) {
+                projectTab.remove(selectedTab);
+            }
+        }
     }
 }
