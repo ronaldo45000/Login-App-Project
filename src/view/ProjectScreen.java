@@ -106,6 +106,7 @@ public class ProjectScreen extends JPanel {
         JMenuItem changeUsernameButton = new JMenuItem("Change Username");
         JMenuItem changeEmailButton = new JMenuItem("Change Email");
         JMenuItem exitButton = new JMenuItem("Log Out");
+        JMenuItem homeExitButton = new JMenuItem("Back Home");
         JMenuBar accountMenuBar = new JMenuBar();
         JMenu accountMenu = new JMenu(userName);
         
@@ -144,6 +145,7 @@ public class ProjectScreen extends JPanel {
         //Adding button to menu
         accountMenu.add(changeUsernameButton);
         accountMenu.add(changeEmailButton);
+        accountMenu.add(homeExitButton);
         accountMenu.add(exitButton);
         accountMenuBar.add(accountMenu);
         
@@ -175,6 +177,14 @@ public class ProjectScreen extends JPanel {
                 cardLayout.show(cardPanel, "LogInScreen");
                 // logout
                 AppInfoController.logout();
+            }
+        });
+        /**
+         * @author Bairu Li
+         */
+        homeExitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(cardPanel, "HomeScreen");
             }
         });
         // Add button to change username
