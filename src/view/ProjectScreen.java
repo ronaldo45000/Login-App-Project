@@ -75,6 +75,7 @@ public class ProjectScreen extends JPanel {
         projectBtnPanel.setBackground(Color.white);
         
         //Setting size for panels
+        //topLeftPanel.setPreferredSize(new Dimension(200,30));
         projectsPanel.setPreferredSize(new Dimension(100,100));
         topPanel.setPreferredSize(new Dimension(100,30));
         folderPanel.setPreferredSize(new Dimension(150,100));
@@ -96,6 +97,8 @@ public class ProjectScreen extends JPanel {
         
         //Search text box
         JTextField searchBar = new JTextField(16);
+        JButton searchButton = new JButton("o");
+        searchButton.setPreferredSize(new Dimension(25,25));
         //Get name of user
         String userName = user.getName();
         
@@ -134,6 +137,7 @@ public class ProjectScreen extends JPanel {
         topLeftPanel.add(projectNameLabel);
         topCenterPanel.add(searchLabel);
         topCenterPanel.add(searchBar);
+        topCenterPanel.add(searchButton);
         topRightPanel.add(accountMenuBar);
         topPanel.add(topLeftPanel, BorderLayout.WEST);
         topPanel.add(topCenterPanel, BorderLayout.CENTER);
@@ -142,6 +146,7 @@ public class ProjectScreen extends JPanel {
         //Adding button to menu
         accountMenu.add(changeUsernameButton);
         accountMenu.add(changeEmailButton);
+        accountMenu.addSeparator();
         accountMenu.add(homeExitButton);
         accountMenu.add(exitButton);
         accountMenuBar.add(accountMenu);
@@ -177,23 +182,24 @@ public class ProjectScreen extends JPanel {
             }
         });
         // Adding exit button to go back to home screen
-        homeExitButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        homeExitButton.addActionListener(theE -> {
                 cardLayout.show(cardPanel, "HomeScreen");
                 home.updateWelcomeName();
-            }
         });
         // Add button to change username
-        changeUsernameButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        changeUsernameButton.addActionListener(theE -> {
             	new ChangeCurrentUserData(accountMenu, ChangeCurrentUserData.USERNAME);
-            }
         });
         // Add button to change user's email
-        changeEmailButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        changeEmailButton.addActionListener(theE -> {
             	new ChangeCurrentUserData(accountMenu, ChangeCurrentUserData.EMAIL);
+        });
+
+        searchButton.addActionListener(theE -> {
+            if (searchBar.getText().isEmpty()) {
+                return;
             }
+
         });
         
         addProjectButton.addActionListener(new ActionListener() {

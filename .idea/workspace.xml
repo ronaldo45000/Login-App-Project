@@ -9,14 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8601f8e0-3e8b-4422-8383-2e8c7082147e" name="Changes" comment="added UserRepository and UserProfile.json">
+    <list default="true" id="8601f8e0-3e8b-4422-8383-2e8c7082147e" name="Changes" comment="update unused imports">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AppInfo.json" beforeDir="false" afterPath="$PROJECT_DIR$/AppInfo.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfficialProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/OfficialProject.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserProfile.json" beforeDir="false" afterPath="$PROJECT_DIR$/UserProfile.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/AppUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/AppUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/ChangeCurrentUserData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/ChangeCurrentUserData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/HomeScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/HomeScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/LogInScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/LogInScreen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/ProjectScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/ProjectScreen.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -297,7 +294,21 @@
       <option name="project" value="LOCAL" />
       <updated>1684455743545</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="update back home button to update welcome name">
+      <created>1685079326414</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1685079326414</updated>
+    </task>
+    <task id="LOCAL-00016" summary="update unused imports">
+      <created>1685079401479</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1685079401479</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -384,6 +395,8 @@
     <MESSAGE value="Fixed Repository Import() bugs to handle null key" />
     <MESSAGE value="Making many changes to Models." />
     <MESSAGE value="added UserRepository and UserProfile.json" />
-    <option name="LAST_COMMIT_MESSAGE" value="added UserRepository and UserProfile.json" />
+    <MESSAGE value="update back home button to update welcome name" />
+    <MESSAGE value="update unused imports" />
+    <option name="LAST_COMMIT_MESSAGE" value="update unused imports" />
   </component>
 </project>
