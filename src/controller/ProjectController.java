@@ -1,6 +1,9 @@
 package controller;
 
+import model.Project;
 import repository.ProjectRepository;
+
+import java.util.HashMap;
 
 /**
  * A controller for the list of projects a user has.
