@@ -5,7 +5,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeSupport;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
