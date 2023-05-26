@@ -4,6 +4,7 @@ package model;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsonable;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -16,69 +17,72 @@ import java.util.UUID;
  * This Project is to handle the budget for the user.
  *
  * @author Thinh Le
- * @version 0.1
+ * @author Tin Phu
+ * @version 0.2
  */
 public class Project implements Jsonable {
-     /**
-     * id for project
-     */
 
-   private final String id;
+//    public static void main(String[] args) {
+//        Project p = new Project("Cafe Racer", BigDecimal.valueOf(999.99), BigDecimal.valueOf(2000.99), "a4e3f045-ab62-44cd-ac48-e7349a8db5b2" );
+//    }
     /**
-     * project name
+     * Id of the project.
+     */
+   private final String id;
+
+    /**
+     * Project's name.
      */
     private  String projectName;
 
- /**
-     * this is the total cost
+    /**
+     * Total cost of the project.
      */
     private BigDecimal totalCost = BigDecimal.valueOf(0);
+
     /**
-     * This is the budget of a user.
+     * Budget of this project.
      */
     private BigDecimal budget = BigDecimal.valueOf(0);
 
     /**
-     * this is the User Id which this document belongs to.
+     * The id of the user this project belongs to.
      */
     private final String userID;
 
-
-
- /**
-     * The date that users buy item.
+    /**
+     * The date of this project.
      */
-    private LocalDate  date;
-
+    private LocalDate date;
 
     /**
      * This constructor helps to calculate the cost of item for user, and let the uses to see the current
      * budget, and this is also helps them to track item by date and total cost.
-     *
-     * @param theProjectName
-      * @param totalCost
-     * @param budget
-     * @param theUserID
+     * @author Tin Phu
+     * @param theProjectName The name of the project
+     * @param totalCost The total cost of the project
+     * @param budget The budget of the project
+     * @param theUserID The id of the user this project belongs to
      *
      */
     public Project( String theProjectName, BigDecimal totalCost, BigDecimal budget, String theUserID){
-     this.totalCost = totalCost;
-     this.budget = budget;
-     this.id =  UUID.randomUUID().toString();
-     this.date = LocalDate.now();
-     this.userID = theUserID;
-     this.projectName = theProjectName;
+        this.totalCost = totalCost;
+        this.budget = budget;
+        this.id =  UUID.randomUUID().toString();
+        this.date = LocalDate.now();
+        this.userID = theUserID;
+        this.projectName = theProjectName;
+        this.createProjectFolder();
     }
 
     /**
-     * DO NOT CALL THIS CONSTRUCTOR TO CREATE A NEW PROJECT.
-     * THIS IS FOR DATA MAPPING ONLY.
+     * Constructor for data mapping.
      * @author Tin Phu
-     * @param theId
-     * @param theProjectName
-     * @param totalCost
-     * @param budget
-     * @param theUserID
+     * @param theId The id of the project
+     * @param theProjectName The name of the project
+     * @param totalCost The total cost of the project
+     * @param budget The budget of the project
+     * @param theUserID The id of the user this project belongs to
      */
     public Project( String theId, String theProjectName, BigDecimal totalCost, BigDecimal budget, String theUserID, LocalDate theDate){
         this.totalCost = totalCost;
@@ -91,17 +95,17 @@ public class Project implements Jsonable {
 
     /**
      * Getter for id.
-     * @return
+     * @author Thinh Le
+     * @return The id of this project
      */
     public String getId(){
         return id;
     }
 
-
-
     /**
      * Getter for date.
-     * @return
+     * @author Thinh Le
+     * @return The date of this project
      */
     public LocalDate  getDate(){
         return date;
@@ -109,7 +113,8 @@ public class Project implements Jsonable {
 
     /**
      * Getter for total cost.
-     * @return
+     * @author Thinh Le
+     * @return The total cost of this project
      */
     public BigDecimal getTotalCost(){
         return totalCost;
@@ -117,51 +122,54 @@ public class Project implements Jsonable {
 
     /**
      * Getter for budget.
-     * @return
+     * @author Thinh Le
+     * @return The budget of this project
      */
     public BigDecimal getBudget(){
-    return budget;
+        return budget;
     }
 
     /**
-     * Getter for balance.
-     * @return
+     * Getter for remaining available cost.
+     * @author Thinh Le
+     * @return The balance left on this project
      */
     public BigDecimal getBalance(){
-    return budget.subtract(totalCost);
+        return budget.subtract(totalCost);
     }
 
-
-
-
-
-
     /**
-     * This is the setter for budget
-     * @param budget
+     * This is the setter for budget.
+     * @author Thinh Le
+     * @param budget The new budget of this project
      */
     public void setBudget(BigDecimal budget){
         this.budget = budget;
     }
 
     /**
-     *
-     * This is the seeter for total caost
-     * @param totalCost
+     * This is the setter for total cost.
+     * @author Thinh Le
+     * @param totalCost The new total cost of this project
      */
     public void setTotalCost(BigDecimal totalCost){
         this.totalCost = totalCost;
     }
 
-   /**
-    * OwnerName getter
-    * @return
+    /**
+     * Getter for the id of the user who owns this project.
+     * @author Tin Phu
+     * @return The id of the user
      */
-     public String getUserID() {
+    public String getUserID() {
         return this.userID;
     }
 
-
+    /**
+     * Converts this project to JSON formatted stream.
+     * @author Tin Phu
+     * @return String JSON formatted stream of this document
+     */
     @Override
     public String toJson() {
         final StringWriter writable = new StringWriter();
@@ -173,6 +181,11 @@ public class Project implements Jsonable {
         return writable.toString();
     }
 
+    /**
+     * Converts this project to JSON formatted stream.
+     * @author Tin Phu
+     * @param writer Writer to write to stream with
+     */
     @Override
     public void toJson(Writer writer) throws IOException {
         final JsonObject json = new JsonObject();
@@ -187,13 +200,27 @@ public class Project implements Jsonable {
     }
 
     /**
-     * Overide toString()
+     * Returns a String representation of this project.
      * @author Tin Phu
-     * @return
+     * @return String representation of this project
      */
     @Override
     public String toString(){
-         return "id:" + this.id + "|" + "projectName:" + this.projectName + "|userID:" + this.userID + "| totalCost" + this.totalCost + "| budget:" + this.budget + "\n";
-
+         return "id:" + this.id + "|" + "projectName:" + this.projectName + "|userID:" + this.userID + 
+         "| totalCost" + this.totalCost + "| budget:" + this.budget + "\n";
     }
+
+    /**
+     * Create A Folder for a project at currentPath\id
+     * @Author Tin Phu
+     */
+    private void createProjectFolder(){
+        String currentPath = System.getProperty("user.dir");
+        File theDir = new File(currentPath + "\\"+ this.id);
+        if (!theDir.exists()){
+            theDir.mkdirs();
+        }
+    }
+
+
 }

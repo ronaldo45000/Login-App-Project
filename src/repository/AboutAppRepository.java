@@ -4,20 +4,18 @@ import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonException;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import model.Account;
 import model.AppInfo;
 import model.User;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-
 /**
- * @author  Tin Phu
- * @version 0.1
  * AboutAppRepository reads and writes to/from AppInfo.json file
  * com.github.cliftonlabs.json_simple library is used to work with Json.
- *
+ * @author Tin Phu
+ * @version 0.2
  */
 public class AboutAppRepository {
 
@@ -28,11 +26,12 @@ public class AboutAppRepository {
     /**
      * appInfo holds data.
      */
-    private final AppInfo appInfo = new AppInfo();
+    private  AppInfo appInfo = new AppInfo();
 
     /**
      * No-arg constructor.
      * which will simply importData() and populate data from json file to this.appInfo.
+     * @author Tin Phu
      */
     public AboutAppRepository()  {
         importData();
@@ -40,31 +39,25 @@ public class AboutAppRepository {
 
     /**
      * Data is imported and then mapped to this.appInfo
-     * @Author Tin Phu
+     * @author Tin Phu
      */
     public void importData() {
 
+        appInfo = new AppInfo();
+
         try (FileReader fileReader = new FileReader(FILEPATH)) {
             JsonArray objects = Jsoner.deserializeMany(fileReader);
-//            System.out.println(objects.toString());
-//            System.out.println(objects);
-
-
                 JsonObject o = (JsonObject) objects.get(0);
-//                System.out.println(o);
                 if(o.get("versionNumber") != null){
                     appInfo.setVersionNumber(Double.parseDouble(o.get("versionNumber").toString()));
                 }
-
                 //Mapping CurrentUser
                  if(o.get("user") != null){
                     JsonObject currentUserJObject =  (JsonObject) o.get("user");
                     appInfo.setUser(new User(currentUserJObject.get("name").toString(),currentUserJObject.get("email").toString()));
                 }
-
-
-
                 JsonArray  arr = (JsonArray)o.get("teamMembers");
+                appInfo.clearDevelopers();
                  if(arr != null){
                      //Mapping List of Devs information.
                      for(int i = 0; i < arr.size(); i++){
@@ -73,40 +66,31 @@ public class AboutAppRepository {
                          appInfo.addNewDeveloper(new Account(currentMemberName,currentMemberEmail ));
                      }
                  }
-
-
-
         } catch (IOException | JsonException e) {
             throw new RuntimeException(e);
         }
+        System.out.println("Import Data from AppInfo.json");
     }
 
     /**
-     * exporting or serialize this.appInfo to AppInfor.json.
-     * @Author Tin Phu
+     * Exporting or serialize this.appInfo to AppInfo.json.
+     * @author Tin Phu
      */
     public void exportData(){
-
-
-//        String json = Jsoner.serialize(this.appInfo);
-//        json = Jsoner.prettyPrint(json);
-//        System.out.println(json);   // print out JSON to check before writing to json file.
         try (FileWriter fileWriter = new FileWriter(this.FILEPATH)) {
             Jsoner.serialize(this.appInfo, fileWriter);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
+        System.out.println("Export Data to AppInfo.json");
     }
 
     /**
-     * @Author Tin Phu
-     * @return
+     * Returns the AppInfo object this repository is associated with
+     * @author Tin Phu
+     * @return The AppInfo object this repository is associated with
      */
     public AppInfo getAppInfo() {
         return appInfo;
     }
-
-
 }

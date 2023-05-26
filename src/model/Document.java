@@ -2,20 +2,26 @@ package model;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsonable;
+import controller.DocumentController;
+import repository.DocumentRepository;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
+import java.nio.file.Files;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.UUID;
 
 /**
  * This class has information about document such as document name, file path, document description, and id.
  *
  * @author Thinh Le
- * @version 0.1
+ * @author Tin Phu
+ * @version 0.2
  */
 public class Document implements Jsonable {
 
@@ -53,10 +59,14 @@ public class Document implements Jsonable {
     private final LocalDate date;
 
     /**
-     * This constructor creates Document witt id, document name, document description and file path.
-     * @param documentName
-     * @param documentDescription
-
+     * This constructor creates Document with id, document name, document description.
+     * @author Thinh Le
+     * @author Tin Phu
+     * @param documentName Name of the document
+     * @param documentDescription Description associated with the document
+     * @param theProjectId The id of the project this document is in
+     * @param theUserID The id of the user this document belongs to
+     * @param theTotalCost The cost associated with this document 
      */
     public Document( String documentName, String documentDescription, String theProjectId, String theUserID, BigDecimal theTotalCost){
     this.documentName = documentName;
@@ -66,20 +76,41 @@ public class Document implements Jsonable {
     this.userID = theUserID;
     this.date = LocalDate.now();
     this.totalCost = theTotalCost;
+    this.filePath = "\\" + theProjectId + this.id;
 }
+    /**
+     * This constructor creates Document with id, document name, document description and
+     * "file path"
+     * @author Thinh Le
+     * @author Tin Phu
+     * @param documentName Name of the document
+     * @param documentDescription Description associated with the document
+     * @param theProjectId The id of the project this document is in
+     * @param theUserID The id of the user this document belongs to
+     * @param theTotalCost The cost associated with this document
+     */
+    public Document( String documentName, String documentDescription, String theProjectId, String theUserID, BigDecimal theTotalCost, String srcFileString) throws IOException {
+        this.documentName = documentName;
+        this.documentDescription = documentDescription;
+        this.id =   UUID.randomUUID().toString();
+        this.projectID = theProjectId;
+        this.userID = theUserID;
+        this.date = LocalDate.now();
+        this.totalCost = theTotalCost;
+        this.filePath = this.copyFileToAppRep(srcFileString);
+    }
 
     /**
-     * @Author Tin Phu
-     * DO NOT USE TO CREATE   AN INSTANCE
-     * THIS IS FOR DATA MAPPING ONLY
-     * @param documentName
-     * @param documentDescription
-     * @param theProjectId
-     * @param theUserID
-     * @param theTotalCost
-     * @param theID
-     * @param theDate
-     * @param thePath
+     * A constructor for data mapping.
+     * @author Tin Phu
+     * @param documentName Name of the document
+     * @param documentDescription Description associated with the document
+     * @param theProjectId The id of the project this document is in
+     * @param theUserID The id of the user this document belongs to
+     * @param theTotalCost The cost associated with this document 
+     * @param theID The id of this document
+     * @param theDate The date associated with this document
+     * @param thePath The file path of this document
      */
     public Document(String documentName, String documentDescription, String theProjectId, String theUserID, BigDecimal theTotalCost, String theID, LocalDate theDate, String thePath ){
         this.documentName = documentName;
@@ -94,42 +125,34 @@ public class Document implements Jsonable {
 
     /**
      * This is the getter for document id.
-     *
-     * @return
+     * @author Thinh Le
+     * @return The id of the document
      */
     public String id(){
-    return id;
-}
+        return id;
+    }
 
     /**
      * This is getter for document name.
-     *
-     * @return
+     * @author Thinh Le
+     * @return The name of the document
      */
     public String getDocumentName(){
-    return documentName;
-}
-
+        return documentName;
+    }
     /**
-     * This is the getter for file path.
-     * @return
-     */
-//    public String getFilepath(){
-//        return filepath;
-//    }
-
-    /**
-     * this is the getter for document description.
-     * @return
+     * This is the getter for document description.
+     * @author Thinh Le
+     * @return This document's description
      */
     public String getDocumentDescription(){
         return documentDescription;
     }
 
-
     /**
      * This is the setter for document name.
-     * @param documentName
+     * @author Thinh Le
+     * @param documentName The new name of this document
      */
     public void setDocumentName(String documentName){
         this.documentName = documentName;
@@ -137,7 +160,8 @@ public class Document implements Jsonable {
 
     /**
      * This is the setter for file path.
-     * @param filepath
+     * @author Thinh Le
+     * @param filepath The new file path of this document
      */
     public void setFilepath(String filepath){
         this.filePath = filepath;
@@ -145,25 +169,62 @@ public class Document implements Jsonable {
 
     /**
      * This is the setter for document description
-     * @param documentDescription
+     * @author Thinh Le
+     * @param documentDescription The new description of this document
      */
     public void setDocumentDescription(String documentDescription){
         this.documentDescription = documentDescription;
     }
+
+    /**
+     * Returns the id of this document.
+     * @author Tin Phu
+     * @return The id of this document
+     */
     public String getId() {
         return id;
     }
+
+    /**
+     * Sets the cost associated with this document.
+     * @author Tin Phu
+     * @param totalCost The cost to associate this document with
+     */
     public void setTotalCost(BigDecimal totalCost) {
         this.totalCost = totalCost;
     }
 
+    /**
+     * Returns the id of the project this document is in.
+     * @author Tin Phu
+     * @return The id of the project
+     */
     public String getProjectID() {
         return projectID;
     }
 
     /**
+     * Returns the cost associated with this document.
      * @author Tin Phu
-     * @return
+     * @return The cost associated with this document
+     */
+    public BigDecimal getTotalCost() {
+        return totalCost;
+    }
+
+    /**
+     * Returns the id of the user this document belongs to.
+     * @author Tin Phu
+     * @return The id of the user
+     */
+    public String getUserID() {
+        return userID;
+    }
+
+    /**
+     * Converts this document to JSON formatted stream.
+     * @author Tin Phu
+     * @return String JSON formatted stream of this document
      */
     @Override
     public String toJson() {
@@ -177,8 +238,9 @@ public class Document implements Jsonable {
     }
 
     /**
+     * Converts this document to JSON formatted stream.
      * @author Tin Phu
-     * @param writer
+     * @param writer Writer to write to stream with
      * @throws IOException
      */
     @Override
@@ -194,17 +256,69 @@ public class Document implements Jsonable {
         json.put("filePath",this.filePath);
         json.toJson(writer);
     }
+
+    /**
+     * Returns a String representation of this document.
+     * @author Tin Phu
+     * @return String representation of this document
+     */
     @Override
     public String toString(){
         return "id: " + this.id + "|documentName:"+this.documentName + "|documentDescription:" + this.documentDescription +"|projectID:" + this.projectID
                 + "|userID:"+ this.userID+"|totalCost:" + this.totalCost + "|filePath:" + this.filePath + "|date:" + this.date + "\n" ;
     }
 
-    public BigDecimal getTotalCost() {
-        return totalCost;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public String getUserID() {
-        return userID;
+    /**
+     * Copy a file from user input to a dest location.
+     * This Model could throw except straight to GUIs.
+     * @Author Tin Phu
+     * @param srcString
+     * @throws IOException
+     */
+    private String copyFileToAppRep(String srcString) throws IOException {
+        File src = new File(srcString);
+        String fileType = "";
+        for(int i = srcString.length()-1; i >= 0; i-- ){
+            if(srcString.charAt(i) != '.'){
+                fileType =  srcString.charAt(i) + fileType;
+            } else {
+                fileType = "." + fileType;
+                break;
+            }
+        }
+        String currentPath = System.getProperty("user.dir");
+        String destString = "\\" + this.projectID + "\\" + this.id + fileType;
+        File dest = new File(currentPath + destString);
+        Files.copy(src.toPath(), dest.toPath());
+        return  destString;
+    }
+
+    /**
+     * @Author
+     * @return boolean, false indicate that the file does not exist.
+     */
+    public boolean openDoc(){
+        String currentPath = System.getProperty("user.dir");
+
+        File file = new File(currentPath + this.filePath);
+        Desktop desktop = Desktop.getDesktop();
+        if(file.exists())         //checks file exists or not
+        {
+            try {
+                desktop.open(file);              //opens the specified file
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public String getFilePath() {
+        return filePath;
     }
 }
