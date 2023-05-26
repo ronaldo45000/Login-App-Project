@@ -156,19 +156,19 @@ public class ProjectScreen extends JPanel {
         //projectsPanel.add(addDocumentPanel);
         
         //Adding documents screen to cards
-        cardPanel.add(new DocumentsScreen(), "DocumentsScreen");
-        documentsButton.addActionListener((new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "DocumentsScreen");
-            }
-        }));
+        // cardPanel.add(new DocumentsScreen(), "DocumentsScreen");
+        // documentsButton.addActionListener((new ActionListener() {
+        //     public void actionPerformed(ActionEvent e) {
+        //         cardLayout.show(cardPanel, "DocumentsScreen");
+        //     }
+        // }));
         //Adding budget screen to cards
-        cardPanel.add(new BudgetScreen(), "BudgetScreen");
-        budgetButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "BudgetScreen");
-            }
-        });
+        //  cardPanel.add(new BudgetScreen(), "BudgetScreen");
+        // budgetButton.addActionListener(new ActionListener() {
+        //     public void actionPerformed(ActionEvent e) {
+        //         cardLayout.show(cardPanel, "BudgetScreen");
+        //     }
+        // });
         //Adding exit button to go back to the login screen
         exitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
