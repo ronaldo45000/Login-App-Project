@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
 /**
  * AppUI is the main class of the FileNtro application.
@@ -16,7 +15,7 @@ import java.awt.event.KeyEvent;
  * @author Riley Bennett
  * @version 0.2
  */
-public class AppUI{
+public class AppUI {
     private JFrame frame;
     /**
      * Panel containing every JPanel of the app.
@@ -43,8 +42,7 @@ public class AppUI{
         // Set the size of the frame to medium
         int width = 400;
         int height = 300;
-        int scale = 2;
-        frame.setSize(scale * width, scale * height);
+        frame.setSize(2 * width, 2 * height);
         //Setup cardLayout and carPanel.
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
@@ -68,8 +66,6 @@ public class AppUI{
         //Adding Import Menu Item
         JMenuItem importMenuItem = new JMenuItem("Import");
         JMenuItem exportMenuItem = new JMenuItem("Export");
-        importMenuItem.setAccelerator(KeyStroke.getKeyStroke("control I"));
-        exportMenuItem.setAccelerator(KeyStroke.getKeyStroke("control E"));
         importMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -127,9 +123,9 @@ public class AppUI{
         // Set the menu bar to the frame
         frame.setJMenuBar(menuBar);
 
+
         // Pack and center the frame
         //frame.pack();
-        frame.setMinimumSize(new Dimension(width, height));
         frame.setLocationRelativeTo(null);
 
         // Show the frame
