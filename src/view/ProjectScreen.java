@@ -173,6 +173,7 @@ public class ProjectScreen extends JPanel {
         exitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(cardPanel, "LogInScreen");
+                AppInfoController.logout();
             }
         });
         // Add button to change username

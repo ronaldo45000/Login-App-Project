@@ -11,9 +11,12 @@
   <component name="ChangeListManager">
     <list default="true" id="8601f8e0-3e8b-4422-8383-2e8c7082147e" name="Changes" comment="added UserRepository and UserProfile.json">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_5_17_2023_9_58_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_5_17_2023_9_58_PM__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_5_17_2023_9_58_PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_5_17_2023_9_58_PM__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppInfo.json" beforeDir="false" afterPath="$PROJECT_DIR$/AppInfo.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OfficialProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/OfficialProject.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/ProjectScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/ProjectScreen.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +69,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
+    "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "vue.rearranger.settings.migration": "true"
@@ -355,7 +358,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="main" />
+                        <option value="origin/development" />
                       </list>
                     </value>
                   </entry>
