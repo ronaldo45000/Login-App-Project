@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * AppUI is the main class of the FileNtro application.
@@ -15,7 +17,7 @@ import java.awt.event.ActionListener;
  * @author Riley Bennett
  * @version 0.2
  */
-public class AppUI {
+public class AppUI{
     private JFrame frame;
     /**
      * Panel containing every JPanel of the app.
@@ -122,7 +124,6 @@ public class AppUI {
 
         // Set the menu bar to the frame
         frame.setJMenuBar(menuBar);
-
 
         // Pack and center the frame
         //frame.pack();

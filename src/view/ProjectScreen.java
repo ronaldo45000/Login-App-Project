@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -44,9 +46,7 @@ public class ProjectScreen extends JPanel {
      * @param cardPanel The panels to swap to/from
      * @param cardLayout The layout used to swap to/from panels
      */
-    public ProjectScreen(User user, JPanel cardPanel, CardLayout cardLayout, String theProjectID) {
-
-
+    public ProjectScreen(User user, JPanel cardPanel, CardLayout cardLayout, HomeScreen home, String theProjectID) {
 
         setLayout(new BorderLayout());
         
@@ -179,12 +179,11 @@ public class ProjectScreen extends JPanel {
                 AppInfoController.logout();
             }
         });
-        /**
-         * @author Bairu Li
-         */
+        // Adding exit button to go back to home screen
         homeExitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(cardPanel, "HomeScreen");
+                home.updateWelcomeName();
             }
         });
         // Add button to change username
