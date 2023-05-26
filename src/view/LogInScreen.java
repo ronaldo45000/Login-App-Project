@@ -5,6 +5,7 @@ import controller.UserController;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeListener;
 import javax.swing.*;
 import model.User;
 
@@ -46,9 +47,9 @@ public class LogInScreen extends JPanel {
         emailArea = new JTextField(20);
         JButton loginButton = new JButton("Log In");
 
-        loginButton.addActionListener(new ActionListener() {
+        Action attemptLogin = new AbstractAction() {
+            @Override
             public void actionPerformed(ActionEvent e) {
-
                 String name = nameField.getText();
                 String email = emailArea.getText();
 
@@ -75,9 +76,15 @@ public class LogInScreen extends JPanel {
                 //Switch Trigger Here
 
                 cardLayout.show(cardPanel, "HomeScreen");
-
             }
-        });
+        };
+
+        // logs in by pressing enter key
+        // Bairu
+        nameField.addActionListener(attemptLogin);
+        emailArea.addActionListener(attemptLogin);
+
+        loginButton.addActionListener(attemptLogin);
 
         JLabel newUserLabel = new JLabel("New to FileNtro?");
         JButton createAcct = new JButton("Sign Up");
