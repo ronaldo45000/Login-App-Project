@@ -61,7 +61,7 @@ public class ProjectRepository {
 
                 String ownerName = "notFound";
                 if(currentProject.get("userID") != null){
-                    ownerName = currentProject.get("ownerName").toString();
+                    ownerName = currentProject.get("userID").toString();
                 }
 
                 LocalDate date = null;
