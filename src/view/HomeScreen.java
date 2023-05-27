@@ -21,7 +21,8 @@ import model.User;
  * @version 0.2
  */
 public class HomeScreen extends JPanel {
-
+    /** Label for the welcome 'username'.*/
+    JLabel homeLabel;
     private DefaultTableModel projectTableModel;
     private JTable projectTable;
     private JButton openButton;
@@ -94,10 +95,11 @@ public class HomeScreen extends JPanel {
 
         add(topPanel, BorderLayout.NORTH);
 
+        HomeScreen home = this;
         // Event listeners for the buttons
         openButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cardPanel.add(new ProjectScreen(user, cardPanel, cardLayout, "35089418-d50b-4fc8-88ea-bb82c1ea5633"), "ProjectScreen");
+            public void actionPerformed(ActionEvent e) {//"35089418-d50b-4fc8-88ea-bb82c1ea5633"
+                cardPanel.add(new ProjectScreen(user, cardPanel, cardLayout,  "35089418-d50b-4fc8-88ea-bb82c1ea5633"), "ProjectScreen");
                 cardLayout.show(cardPanel, "ProjectScreen");
                 int selectedRow = projectTable.getSelectedRow();
                 if (selectedRow != -1) {
@@ -143,5 +145,13 @@ public class HomeScreen extends JPanel {
             Object[] rowData = {project.getId(), project.getProjectName(), project.getDate()};
             projectTableModel.addRow(rowData);
         }
+    }
+
+    /**
+     * Updates the welcome label whenever the username is changed.
+     * @author Bairu Li
+     */
+    public void updateWelcomeName() {
+        homeLabel.setText("Welcome " + AppInfoController.getCurrentUser().getName() + "!");
     }
 }
