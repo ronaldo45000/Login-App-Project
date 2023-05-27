@@ -60,7 +60,7 @@ public class ProjectRepository {
                 }
 
                 String ownerName = "notFound";
-                if(currentProject.get("ownerName") != null){
+                if(currentProject.get("userID") != null){
                     ownerName = currentProject.get("ownerName").toString();
                 }
 
