@@ -27,6 +27,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import controller.AppInfoController;
+import controller.ProjectController;
 import model.User;
 
 /**
@@ -86,7 +87,8 @@ public class ProjectScreen extends JPanel {
         addDocumentPanel.setPreferredSize(new Dimension(125,125));
         
         //Setting up labels
-        JLabel projectNameLabel = new JLabel("Project Name: ");
+        JLabel projectNameLabel = new JLabel("Project Name: " + ProjectController.findProjectByID(theProjectID).getProjectName());
+
         JLabel projectSelectionLabel = new JLabel("Project Selection");
         JLabel searchLabel = new JLabel("Search: ");
         
@@ -232,7 +234,7 @@ public class ProjectScreen extends JPanel {
         //projectsPanel.add(projectPanel, BorderLayout.WEST);
         //Adding other panels on the main panel
         add(topPanel, BorderLayout.NORTH);
-        add(new JScrollPane(new TabsPanels(theProjectID)), BorderLayout.CENTER);
+        add(new TabsPanels(theProjectID), BorderLayout.CENTER);
     }
   
 /**
