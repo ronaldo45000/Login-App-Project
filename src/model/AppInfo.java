@@ -119,7 +119,6 @@ public class AppInfo implements Jsonable {
      * @param user The current user to be set
      */
     public void setUser(User user) {
-        System.out.println(user.getId() + "_");
         this.user = user;
     }
 
