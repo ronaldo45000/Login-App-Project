@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -43,7 +44,9 @@ public class ProjectScreen extends JPanel {
      * @param cardPanel The panels to swap to/from
      * @param cardLayout The layout used to swap to/from panels
      */
-    public ProjectScreen(User user, JPanel cardPanel, CardLayout cardLayout, HomeScreen home, String theProjectID) {
+    public ProjectScreen(User user, JPanel cardPanel, CardLayout cardLayout, String theProjectID) {
+
+
 
         setLayout(new BorderLayout());
         
@@ -75,7 +78,6 @@ public class ProjectScreen extends JPanel {
         projectBtnPanel.setBackground(Color.white);
         
         //Setting size for panels
-        //topLeftPanel.setPreferredSize(new Dimension(200,30));
         projectsPanel.setPreferredSize(new Dimension(100,100));
         topPanel.setPreferredSize(new Dimension(100,30));
         folderPanel.setPreferredSize(new Dimension(150,100));
@@ -97,8 +99,6 @@ public class ProjectScreen extends JPanel {
         
         //Search text box
         JTextField searchBar = new JTextField(16);
-        JButton searchButton = new JButton("o");
-        searchButton.setPreferredSize(new Dimension(25,25));
         //Get name of user
         String userName = user.getName();
         
@@ -106,7 +106,6 @@ public class ProjectScreen extends JPanel {
         JMenuItem changeUsernameButton = new JMenuItem("Change Username");
         JMenuItem changeEmailButton = new JMenuItem("Change Email");
         JMenuItem exitButton = new JMenuItem("Log Out");
-        JMenuItem homeExitButton = new JMenuItem("Back Home");
         JMenuBar accountMenuBar = new JMenuBar();
         JMenu accountMenu = new JMenu(userName);
         
@@ -137,7 +136,6 @@ public class ProjectScreen extends JPanel {
         topLeftPanel.add(projectNameLabel);
         topCenterPanel.add(searchLabel);
         topCenterPanel.add(searchBar);
-        topCenterPanel.add(searchButton);
         topRightPanel.add(accountMenuBar);
         topPanel.add(topLeftPanel, BorderLayout.WEST);
         topPanel.add(topCenterPanel, BorderLayout.CENTER);
@@ -146,8 +144,6 @@ public class ProjectScreen extends JPanel {
         //Adding button to menu
         accountMenu.add(changeUsernameButton);
         accountMenu.add(changeEmailButton);
-        accountMenu.addSeparator();
-        accountMenu.add(homeExitButton);
         accountMenu.add(exitButton);
         accountMenuBar.add(accountMenu);
         
@@ -177,29 +173,19 @@ public class ProjectScreen extends JPanel {
         exitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(cardPanel, "LogInScreen");
-                // logout
-                AppInfoController.logout();
             }
-        });
-        // Adding exit button to go back to home screen
-        homeExitButton.addActionListener(theE -> {
-                cardLayout.show(cardPanel, "HomeScreen");
-                home.updateWelcomeName();
         });
         // Add button to change username
-        changeUsernameButton.addActionListener(theE -> {
+        changeUsernameButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
             	new ChangeCurrentUserData(accountMenu, ChangeCurrentUserData.USERNAME);
+            }
         });
         // Add button to change user's email
-        changeEmailButton.addActionListener(theE -> {
+        changeEmailButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
             	new ChangeCurrentUserData(accountMenu, ChangeCurrentUserData.EMAIL);
-        });
-
-        searchButton.addActionListener(theE -> {
-            if (searchBar.getText().isEmpty()) {
-                return;
             }
-
         });
         
         addProjectButton.addActionListener(new ActionListener() {

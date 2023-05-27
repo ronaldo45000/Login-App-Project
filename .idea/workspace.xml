@@ -9,12 +9,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8601f8e0-3e8b-4422-8383-2e8c7082147e" name="Changes" comment="update unused imports">
+    <list default="true" id="8601f8e0-3e8b-4422-8383-2e8c7082147e" name="Changes" comment="added UserRepository and UserProfile.json">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AppInfo.json" beforeDir="false" afterPath="$PROJECT_DIR$/AppInfo.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/AppUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/AppUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/LogInScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/LogInScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/ProjectScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/ProjectScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserProfile.json" beforeDir="false" afterPath="$PROJECT_DIR$/UserProfile.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/repository/UserRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +38,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2P8ndFogCAhSif3qhpxekx7yFWI" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+  <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -57,7 +55,6 @@
     &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;TODO_SCOPE&quot;: &quot;All Places&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;openjdk-19&quot;,
@@ -67,13 +64,13 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.AppUI">
+  <component name="RunManager" selected="Application.UserRepository">
     <configuration name="AboutAppRepository" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="repository.AboutAppRepository" />
       <module name="OfficialProject" />
@@ -143,8 +140,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.AppUI" />
         <item itemvalue="Application.UserRepository" />
+        <item itemvalue="Application.AppUI" />
         <item itemvalue="Application.Project" />
         <item itemvalue="JUnit.ExportTests" />
         <item itemvalue="Application.AboutAppRepository" />
@@ -294,74 +291,15 @@
       <option name="project" value="LOCAL" />
       <updated>1684455743545</updated>
     </task>
-    <task id="LOCAL-00015" summary="update back home button to update welcome name">
-      <created>1685079326414</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1685079326414</updated>
-    </task>
-    <task id="LOCAL-00016" summary="update unused imports">
-      <created>1685079401479</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1685079401479</updated>
-    </task>
-    <option name="localTasksCounter" value="17" />
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
-    <option name="OPEN_GENERIC_TABS">
-      <map>
-        <entry key="91ea8f00-df55-4de9-b991-8c3e338b6d70" value="TOOL_WINDOW" />
-      </map>
-    </option>
-    <option name="RECENT_FILTERS">
-      <map>
-        <entry key="Branch">
-          <value>
-            <list>
-              <RecentGroup>
-                <option name="FILTER_VALUES">
-                  <option value="origin/development" />
-                </option>
-              </RecentGroup>
-            </list>
-          </value>
-        </entry>
-      </map>
-    </option>
     <option name="TAB_STATES">
       <map>
-        <entry key="91ea8f00-df55-4de9-b991-8c3e338b6d70">
-          <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="origin/development" />
-                      </list>
-                    </value>
-                  </entry>
-                  <entry key="roots">
-                    <value>
-                      <list>
-                        <option value="$PROJECT_DIR$" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
-            </State>
-          </value>
-        </entry>
         <entry key="MAIN">
           <value>
             <State>
@@ -395,8 +333,6 @@
     <MESSAGE value="Fixed Repository Import() bugs to handle null key" />
     <MESSAGE value="Making many changes to Models." />
     <MESSAGE value="added UserRepository and UserProfile.json" />
-    <MESSAGE value="update back home button to update welcome name" />
-    <MESSAGE value="update unused imports" />
-    <option name="LAST_COMMIT_MESSAGE" value="update unused imports" />
+    <option name="LAST_COMMIT_MESSAGE" value="added UserRepository and UserProfile.json" />
   </component>
 </project>

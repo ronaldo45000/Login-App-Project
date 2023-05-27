@@ -14,7 +14,6 @@ import model.User;
  * @version 0.2
  */
 public class HomeScreen extends JPanel {
-    JLabel homeLabel;
 
     /**
      * Constructor to create the Home screen.
@@ -28,7 +27,7 @@ public class HomeScreen extends JPanel {
         setLayout(new BorderLayout());
 
         // Creating labels/button
-        homeLabel = new JLabel("Welcome " + user.getName() + "!");
+        JLabel homeLabel = new JLabel("Welcome " + user.getName() + "!");
         JButton projectButton = new JButton("Go to projects...");
 
         // Setting up look of GUI
@@ -44,7 +43,7 @@ public class HomeScreen extends JPanel {
         buttonPanel.add(projectButton, cons);
         
         //Add project screen to card, switch to project screen when button is pressed
-        cardPanel.add(new ProjectScreen(user, cardPanel, cardLayout, this, "35089418-d50b-4fc8-88ea-bb82c1ea5633"), "ProjectScreen");
+        cardPanel.add(new ProjectScreen(user, cardPanel, cardLayout, "35089418-d50b-4fc8-88ea-bb82c1ea5633"), "ProjectScreen");
         projectButton.addActionListener((new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(cardPanel, "ProjectScreen");
@@ -66,9 +65,5 @@ public class HomeScreen extends JPanel {
         buttonPanel.add(logoutButton, cons);
 
         add(buttonPanel, BorderLayout.CENTER);
-     }
-
-     public void updateWelcomeName() {
-         homeLabel.setText("Welcome " + AppInfoController.getCurrentUser().getName() + "!");
      }
 }
