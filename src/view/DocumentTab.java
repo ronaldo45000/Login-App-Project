@@ -55,8 +55,6 @@ public class DocumentTab extends JPanel {
         model.addColumn("Total Cost");
         // Create the table and set the model
         table = new JTable(model);
-
-
         // Set the cell editor for the locked ID column
         TableColumn lockedColumn = table.getColumnModel().getColumn(0);
         lockedColumn.setCellEditor(new LockedColumnEditor());
@@ -72,7 +70,6 @@ public class DocumentTab extends JPanel {
         column.setPreferredWidth(30);
         column = table.getColumnModel().getColumn(4); // Total Cost column
         column.setPreferredWidth(30);
-
 
         /**
          * export data when tableChanged
@@ -96,10 +93,6 @@ public class DocumentTab extends JPanel {
                 }
             }
         });
-
-
-
-
 
         // Load listOfDocs to the Table.
         listOfDocs.forEach((k, e)->{
@@ -217,29 +210,22 @@ public class DocumentTab extends JPanel {
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
             return null; // Return null to make the cell non-editable
         }
-
         public Object getCellEditorValue() {
             return null;
         }
-
         public boolean isCellEditable(EventObject anEvent) {
             return false; // Return false to prevent editing
         }
-
         public boolean shouldSelectCell(EventObject anEvent) {
             return true;
         }
-
         public boolean stopCellEditing() {
             return true;
         }
-
         public void cancelCellEditing() {
         }
-
         public void addCellEditorListener(CellEditorListener l) {
         }
-
         public void removeCellEditorListener(CellEditorListener l) {
         }
     }
@@ -314,11 +300,6 @@ public class DocumentTab extends JPanel {
             constraints.gridy = 4;
             constraints.anchor = GridBagConstraints.CENTER;
             panel.add(createButton, constraints);
-
-
-
-
-
 
             //
             /**

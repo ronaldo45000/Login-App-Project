@@ -221,11 +221,11 @@ public class ProjectScreen extends JPanel {
             }
         });
 
-        projectPanel.add(addProjectPanel, BorderLayout.SOUTH);
-        projectsPanel.add(projectPanel, BorderLayout.WEST);
+        //projectPanel.add(addProjectPanel, BorderLayout.SOUTH);
+        //projectsPanel.add(projectPanel, BorderLayout.WEST);
         //Adding other panels on the main panel
         add(topPanel, BorderLayout.NORTH);
-        add(projectPanel, BorderLayout.CENTER);
+        add(new JScrollPane(new TabsPanels(theProjectID)), BorderLayout.CENTER);
     }
   
 /**
