@@ -59,6 +59,8 @@ public class HomeScreen extends JPanel {
         projectTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         projectTable.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
 
+
+
         //Load List to table here
         setProjects(listOfProjects);
         
@@ -91,7 +93,7 @@ public class HomeScreen extends JPanel {
         buttonPanel.add(deleteButton);
         buttonPanel.add(logoutButton);
 
-        JLabel welcomeLabel = new JLabel("Welcome");
+        JLabel welcomeLabel = new JLabel("Welcome Back, "+user.getName()+"!");
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         JPanel topPanel = new JPanel(new BorderLayout(10, 10));
@@ -105,15 +107,14 @@ public class HomeScreen extends JPanel {
         openButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {//"35089418-d50b-4fc8-88ea-bb82c1ea5633"
-                cardPanel.add(new ProjectScreen(user, cardPanel, cardLayout,  "35089418-d50b-4fc8-88ea-bb82c1ea5633"), "ProjectScreen");
-                cardLayout.show(cardPanel, "ProjectScreen");
+
 
                 int selectedRow = projectTable.getSelectedRow();
                 if (selectedRow != -1) {
                     String projectID = projectTable.getValueAt(selectedRow, 0).toString();
                     String projectName = projectTable.getValueAt(selectedRow, 1).toString();
                     System.out.println("Opening project ID: " + projectID);
-                    ProjectScreen projectScreen = new ProjectScreen(thisUser, cardPanel, cardLayout, projectID, projectName);
+                    ProjectScreen projectScreen = new ProjectScreen(thisUser, cardPanel, cardLayout, projectID);
                     cardPanel.add(projectScreen, "ProjectScreen");
                     cardLayout.show(cardPanel, "ProjectScreen");
                 } else {
@@ -126,9 +127,9 @@ public class HomeScreen extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String projectName = JOptionPane.showInputDialog(HomeScreen.this, "Enter project name: ");
                 if (projectName != null && !projectName.isEmpty()) {
-                    Project newProject = new Project(projectName, BigDecimal.valueOf(55000), BigDecimal.valueOf(190000), user.getName());
+                    Project newProject = new Project(projectName, BigDecimal.valueOf(0), BigDecimal.valueOf(0), user.getId());
                     ProjectController.addProject(newProject);
-                    listOfProjects = ProjectController.getProjectsByUserID(user.getName());
+                    listOfProjects.put(newProject.getId(),newProject);
                     setProjects(listOfProjects);
                 } else {
                     JOptionPane.showMessageDialog(HomeScreen.this, "Please enter a valid project name: ");
@@ -165,7 +166,7 @@ public class HomeScreen extends JPanel {
         projectTableModel.setRowCount(0);
 
         for (Project project : map.values()) {
-            Object[] rowData = {project.getId(), project.getName(), project.getDate()};
+            Object[] rowData = {project.getId(), project.getProjectName(), project.getDate()};
             projectTableModel.addRow(rowData);
         }
     }

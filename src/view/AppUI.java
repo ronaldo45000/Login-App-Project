@@ -23,7 +23,7 @@ public class AppUI {
     private static final int HEIGHT = 300;
 
     /** Constant for the scale of the frame.*/
-    private static final int SCALE = 2;
+    private static final int SCALE = 3;
     private JFrame frame;
     /**
      * Panel containing every JPanel of the app.
@@ -90,6 +90,7 @@ public class AppUI {
                         cardLayout.show(cardPanel, "LogInScreen");
                     } else {
                         cardPanel.add(new HomeScreen(AppInfoController.getCurrentUser(), cardPanel, cardLayout), "HomeScreen");
+//                        System.out.println(AppInfoController.getCurrentUser().getId());
                         cardLayout.show(cardPanel, "HomeScreen");
                     }
                     frame.dispose();
@@ -141,6 +142,7 @@ public class AppUI {
 
         if(AppInfoController.getCurrentUser() != null){
             cardPanel.add(new HomeScreen(AppInfoController.getCurrentUser(), cardPanel, cardLayout), "HomeScreen");
+            System.out.println(AppInfoController.getCurrentUser().getId());
             cardLayout.show(cardPanel, "HomeScreen");
         }
     }
