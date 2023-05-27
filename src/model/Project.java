@@ -222,5 +222,7 @@ public class Project implements Jsonable {
         }
     }
 
-
+    public String getProjectName() {
+        return projectName;
+    }
 }
