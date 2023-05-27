@@ -7,13 +7,15 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 
 
 /**
  * This is the budget tab where it shows the budget management.
  *
  * @author Thinh Le
- * @version 0.1
+ * @author Riley Bennett
+ * @version 0.2
  */
 public class BudgetTab extends JPanel implements ActionListener {
 
@@ -39,6 +41,8 @@ public class BudgetTab extends JPanel implements ActionListener {
     private JLabel totalLabel;
     private double totalCost = 0.0;
 
+    private DecimalFormat df = new DecimalFormat("#.##");
+
 
     /**
      * This is the constructor to create the budget Tab GUI.
@@ -52,6 +56,7 @@ public class BudgetTab extends JPanel implements ActionListener {
         model.addColumn("Price");
 
         table = new JTable(model);
+        table.setDefaultEditor(Object.class, null);
         table.setPreferredScrollableViewportSize(new Dimension(350, 350));
         // Create a scroll pane and add the table to it
         JScrollPane scrollPane = new JScrollPane(table);
@@ -249,6 +254,9 @@ public class BudgetTab extends JPanel implements ActionListener {
             String input = JOptionPane.showInputDialog("Enter new budget:");
             try {
                 double newBudget = Double.parseDouble(input);
+
+                // Round budget to 2 decimal places
+                newBudget = Double.valueOf(df.format(newBudget));  
                 setTotalBudget(newBudget);
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "Please enter a numeric value.");
@@ -306,6 +314,9 @@ public class BudgetTab extends JPanel implements ActionListener {
         double newPrice;
         try {
             newPrice = Double.parseDouble(message);
+
+            // Round to 2 decimal places
+            newPrice = Double.valueOf(df.format(newPrice));
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Invalid Price!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -396,6 +407,9 @@ public class BudgetTab extends JPanel implements ActionListener {
         double price;
         try {
             price = Double.parseDouble(priceStr);
+
+            // Round to 2 decimal places
+            price = Double.valueOf(df.format(price));
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Invalid Price!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
