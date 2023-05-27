@@ -1,7 +1,6 @@
 package view;
 
 import controller.AppInfoController;
-import controller.ProjectController;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -145,13 +144,5 @@ public class HomeScreen extends JPanel {
             Object[] rowData = {project.getId(), project.getProjectName(), project.getDate()};
             projectTableModel.addRow(rowData);
         }
-    }
-
-    /**
-     * Updates the welcome label whenever the username is changed.
-     * @author Bairu Li
-     */
-    public void updateWelcomeName() {
-        homeLabel.setText("Welcome " + AppInfoController.getCurrentUser().getName() + "!");
     }
 }
