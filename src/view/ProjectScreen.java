@@ -44,7 +44,7 @@ public class ProjectScreen extends JPanel {
      * @param cardPanel The panels to swap to/from
      * @param cardLayout The layout used to swap to/from panels
      */
-    public ProjectScreen(User user, JPanel cardPanel, CardLayout cardLayout, HomeScreen home, String theProjectID) {
+    public ProjectScreen(User user, JPanel cardPanel, CardLayout cardLayout, String theProjectID) {
 
 
 
@@ -159,24 +159,22 @@ public class ProjectScreen extends JPanel {
         //projectsPanel.add(addDocumentPanel);
         
         //Adding documents screen to cards
-        cardPanel.add(new DocumentsScreen(), "DocumentsScreen");
-        documentsButton.addActionListener((new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "DocumentsScreen");
-            }
-        }));
+        // cardPanel.add(new DocumentsScreen(), "DocumentsScreen");
+        // documentsButton.addActionListener((new ActionListener() {
+        //     public void actionPerformed(ActionEvent e) {
+        //         cardLayout.show(cardPanel, "DocumentsScreen");
+        //     }
+        // }));
         //Adding budget screen to cards
-        cardPanel.add(new BudgetScreen(), "BudgetScreen");
-        budgetButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(cardPanel, "BudgetScreen");
-            }
-        });
-
+        //  cardPanel.add(new BudgetScreen(), "BudgetScreen");
+        // budgetButton.addActionListener(new ActionListener() {
+        //     public void actionPerformed(ActionEvent e) {
+        //         cardLayout.show(cardPanel, "BudgetScreen");
+        //     }
+        // });
         // Adding exit button to go back to home screen
         homeExitButton.addActionListener(theE -> {
             cardLayout.show(cardPanel, "HomeScreen");
-            home.updateWelcomeName();
         });
         //Adding exit button to go back to the login screen
         exitButton.addActionListener(new ActionListener() {
@@ -230,11 +228,11 @@ public class ProjectScreen extends JPanel {
             }
         });
 
-        projectPanel.add(addProjectPanel, BorderLayout.SOUTH);
-        projectsPanel.add(projectPanel, BorderLayout.WEST);
+        //projectPanel.add(addProjectPanel, BorderLayout.SOUTH);
+        //projectsPanel.add(projectPanel, BorderLayout.WEST);
         //Adding other panels on the main panel
         add(topPanel, BorderLayout.NORTH);
-        add(projectPanel, BorderLayout.CENTER);
+        add(new JScrollPane(new TabsPanels(theProjectID)), BorderLayout.CENTER);
     }
   
 /**

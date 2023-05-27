@@ -1,8 +1,12 @@
 package controller;
 
+
 import java.util.HashMap;
+
 import model.Project;
 import repository.ProjectRepository;
+
+import java.util.HashMap;
 
 /**
  * A controller for the list of projects a user has.
@@ -10,6 +14,7 @@ import repository.ProjectRepository;
  * @version 0.2
  */
 public class ProjectController {
+
     private final static ProjectRepository projectRepository = new ProjectRepository();
 
     /**
@@ -33,10 +38,10 @@ public class ProjectController {
      * 
      * @author Hassan Abbas
      */
-    public static HashMap<String, Project> getProjectsByID(String thePID) {
+    public static HashMap<String, Project> getProjectsByUserID(String theUID) {
         HashMap<String, Project> listOfProjects = new HashMap<String, Project>();
         projectRepository.getListOfProject().forEach((k,e)->{
-            if(e.getId().equals(thePID)) {
+            if(e.getUserID().equals(theUID)) {
                 listOfProjects.put(k, e);
             }
         });

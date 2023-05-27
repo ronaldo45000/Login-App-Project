@@ -20,6 +20,7 @@ import repository.AboutAppRepository;
  *
  */
 public class AppInfoController {
+
     /**
      * Final Static aboutAppRepository which has access to data in Json file.
      */
