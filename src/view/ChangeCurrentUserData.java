@@ -37,7 +37,6 @@ public class ChangeCurrentUserData extends JPanel {
 	 * @param thePopupType the type of changed specified
 	 */
 	public ChangeCurrentUserData(final JMenu theMenu, final String thePopupType) {
-
 		// panel
 		final JPanel panel = new JPanel(new GridBagLayout());
 		final GridBagConstraints c = new GridBagConstraints();

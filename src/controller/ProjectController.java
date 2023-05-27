@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.HashMap;
+import model.Project;
 import repository.ProjectRepository;
 
 /**
@@ -24,5 +26,47 @@ public class ProjectController {
      */
     public static void exportData() {
         projectRepository.exportData();
+    }
+    
+    /**
+     * Get the list of projects
+     * 
+     * @author Hassan Abbas
+     */
+    public static HashMap<String, Project> getProjectsByID(String thePID) {
+        HashMap<String, Project> listOfProjects = new HashMap<String, Project>();
+        projectRepository.getListOfProject().forEach((k,e)->{
+            if(e.getId().equals(thePID)) {
+                listOfProjects.put(k, e);
+            }
+        });
+        return listOfProjects;
+    }
+    
+    /**
+     * Adding project to json file
+     * 
+     * @author Hassan Abbas
+     */
+    public static void addProject(Project theProject) {
+        projectRepository.addProject(theProject);
+    }
+    
+    /**
+     * Deleting project
+     * 
+     * @author Hassan Abbas
+     */
+    public static void deleteProject(Project theProject) {
+        projectRepository.deleteProject(theProject);
+    }
+    
+    /**
+     * Find a project by ID
+     * 
+     * @author Hassan Abbas
+     */
+    public static Project findProjectByID(String theID) {
+        return projectRepository.findProjectbyId(theID);
     }
 }
