@@ -41,7 +41,7 @@ public class HomeScreen extends JPanel {
    
         HashMap<String, Project> listOfProjects = new HashMap<String, Project>();
 
-        listOfProjects = ProjectController.getProjectsByUserID(user.getName());
+//        listOfProjects = ProjectController.getProjectsByUserID(user.());
         System.out.println("the user.getName " + user.getName());
         System.out.println("the user.getID " + user.getId());
         
@@ -97,6 +97,8 @@ public class HomeScreen extends JPanel {
         // Event listeners for the buttons
         openButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                cardPanel.add(new ProjectScreen(user, cardPanel, cardLayout, "35089418-d50b-4fc8-88ea-bb82c1ea5633"), "ProjectScreen");
+                cardLayout.show(cardPanel, "ProjectScreen");
                 int selectedRow = projectTable.getSelectedRow();
                 if (selectedRow != -1) {
                     String projectID = projectTable.getValueAt(selectedRow, 0).toString();
@@ -138,7 +140,7 @@ public class HomeScreen extends JPanel {
         projectTableModel.setRowCount(0);
 
         for (Project project : map.values()) {
-            Object[] rowData = {project.getId(), project.getName(), project.getDate()};
+            Object[] rowData = {project.getId(), project.getProjectName(), project.getDate()};
             projectTableModel.addRow(rowData);
         }
     }
