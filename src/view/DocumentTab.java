@@ -257,6 +257,11 @@ public class DocumentTab extends JPanel {
             totalCostField = new JTextField(10);
 
             JLabel fileSrcStringLabel = new JLabel("(option)");
+
+            // Set max width for file name
+            Dimension d = fileSrcStringLabel.getPreferredSize();
+            fileSrcStringLabel.setPreferredSize(new Dimension(d.width + 90, d.height));
+            
             JButton fileSelectorButton = new JButton("Select File");
 
             JButton createButton = new JButton("Create Document");
