@@ -27,6 +27,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import controller.AppInfoController;
+import controller.ProjectController;
 import model.User;
 
 /**
@@ -86,7 +87,8 @@ public class ProjectScreen extends JPanel {
         addDocumentPanel.setPreferredSize(new Dimension(125,125));
         
         //Setting up labels
-        JLabel projectNameLabel = new JLabel("Project Name: ");
+        JLabel projectNameLabel = new JLabel("Project Name: " + ProjectController.findProjectByID(theProjectID).getProjectName());
+
         JLabel projectSelectionLabel = new JLabel("Project Selection");
         JLabel searchLabel = new JLabel("Search: ");
         
@@ -105,6 +107,7 @@ public class ProjectScreen extends JPanel {
         //Adding menu items
         JMenuItem changeUsernameButton = new JMenuItem("Change Username");
         JMenuItem changeEmailButton = new JMenuItem("Change Email");
+        JMenuItem homeExitButton = new JMenuItem("Back Home");
         JMenuItem exitButton = new JMenuItem("Log Out");
         JMenuBar accountMenuBar = new JMenuBar();
         JMenu accountMenu = new JMenu(userName);
@@ -144,6 +147,8 @@ public class ProjectScreen extends JPanel {
         //Adding button to menu
         accountMenu.add(changeUsernameButton);
         accountMenu.add(changeEmailButton);
+        accountMenu.addSeparator();
+        accountMenu.add(homeExitButton);
         accountMenu.add(exitButton);
         accountMenuBar.add(accountMenu);
         
@@ -169,6 +174,10 @@ public class ProjectScreen extends JPanel {
         //         cardLayout.show(cardPanel, "BudgetScreen");
         //     }
         // });
+        // Adding exit button to go back to home screen
+        homeExitButton.addActionListener(theE -> {
+            cardLayout.show(cardPanel, "HomeScreen");
+        });
         //Adding exit button to go back to the login screen
         exitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -225,7 +234,7 @@ public class ProjectScreen extends JPanel {
         //projectsPanel.add(projectPanel, BorderLayout.WEST);
         //Adding other panels on the main panel
         add(topPanel, BorderLayout.NORTH);
-        add(new JScrollPane(new TabsPanels(theProjectID)), BorderLayout.CENTER);
+        add(new TabsPanels(theProjectID), BorderLayout.CENTER);
     }
   
 /**
