@@ -30,9 +30,6 @@ public class HomeScreen extends JPanel {
 
     HashMap<String, Project> listOfProjects = new HashMap<String, Project>();
 
-    /** Label for the welcome 'username'.*/
-    JLabel homeLabel;
-
     private DefaultTableModel projectTableModel;
     private JTable projectTable;
     private JButton openButton;
@@ -179,14 +176,6 @@ public class HomeScreen extends JPanel {
             Object[] rowData = {project.getId(), project.getProjectName(), project.getDate()};
             projectTableModel.addRow(rowData);
         }
-    }
-
-    /**
-     * Updates the welcome label whenever the username is changed.
-     * @author Bairu Li
-     */
-    public void updateWelcomeName() {
-        homeLabel.setText("Welcome " + AppInfoController.getCurrentUser().getName() + "!");
     }
 
     /**

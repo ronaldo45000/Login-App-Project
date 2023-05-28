@@ -76,6 +76,11 @@ public class ProjectController {
         return projectRepository.findProjectbyId(theID);
     }
 
+    /**
+     * Deletes a project by Id.
+     * @author Bairu Li
+     * @param theID
+     */
     public static void deleteProjectByID(String theID) {
         DocumentController.getDocsByProjectID(theID).forEach((documentId, document) -> {
             DocumentController.deleteADocument(document);
@@ -84,6 +89,12 @@ public class ProjectController {
         projectRepository.deleteProject(theID);
     }
 
+    /**
+     * Updates the total cost of a project by Id.
+     *
+     * @author Bairu Li
+     * @param theID
+     */
     public static void updateTotalCostByID(String theID) {
         BigDecimal totaLCost = BigDecimal.ZERO;
         DocumentController.getDocsByProjectID(theID).forEach((documentId, document) -> {
