@@ -7,10 +7,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import java.util.HashMap;
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import java.util.EventObject;
+import java.util.HashMap;
 
 import model.Project;
 import model.User;
@@ -39,6 +43,7 @@ public class HomeScreen extends JPanel {
 
     /**
      * Constructor to create the Home screen.
+     * @author Tin Phu
      * @author Riley Bennett
      * @param user The user of the app
      * @param cardPanel The panels to swap to/from
@@ -59,7 +64,12 @@ public class HomeScreen extends JPanel {
         projectTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         projectTable.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
 
-
+        //Set the cell editor for the locked id column
+        TableColumn lockedColumn = projectTable.getColumnModel().getColumn(0);
+        lockedColumn.setCellEditor(new LockedColumnEditor());
+        //Set the cell editor for the locked date column
+        lockedColumn =  projectTable.getColumnModel().getColumn(2);
+        lockedColumn.setCellEditor(new LockedColumnEditor());
 
         //Load List to table here
         setProjects(listOfProjects);
@@ -177,5 +187,33 @@ public class HomeScreen extends JPanel {
      */
     public void updateWelcomeName() {
         homeLabel.setText("Welcome " + AppInfoController.getCurrentUser().getName() + "!");
+    }
+
+    /**
+     * Table Column Setting.
+     * @author Tin Phu
+     */
+    private class LockedColumnEditor implements TableCellEditor {
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            return null; // Return null to make the cell non-editable
+        }
+        public Object getCellEditorValue() {
+            return null;
+        }
+        public boolean isCellEditable(EventObject anEvent) {
+            return false; // Return false to prevent editing
+        }
+        public boolean shouldSelectCell(EventObject anEvent) {
+            return true;
+        }
+        public boolean stopCellEditing() {
+            return true;
+        }
+        public void cancelCellEditing() {
+        }
+        public void addCellEditorListener(CellEditorListener l) {
+        }
+        public void removeCellEditorListener(CellEditorListener l) {
+        }
     }
 }
