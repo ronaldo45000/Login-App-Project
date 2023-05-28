@@ -1,6 +1,7 @@
 package view;
 
 import controller.DocumentController;
+import controller.ProjectController;
 import model.Document;
 
 import javax.swing.*;
@@ -133,7 +134,7 @@ public class DocumentTab extends JPanel {
                     String id = (String) table.getValueAt(row, 0);
                     DocumentController.deleteADocument(listOfDocs.get(id));
                     listOfDocs.remove(id);
-                    updateTable();
+                    updateTable(theProjectID);
                 } else {
                     System.out.println("User clicked No");
                     // Add your code for the "No" option here
@@ -192,7 +193,8 @@ public class DocumentTab extends JPanel {
      * updateTable with new data.
      * @Author Tin Phu
      */
-    public  void updateTable() {
+    public  void updateTable(String theProjectID) {
+        System.out.println("Total Cost: " +ProjectController.updateTotalCostByID(theProjectID).toString());
         // Clear existing rows
         model.setRowCount(0);
         // Populate the table with the updated data from the list
@@ -352,7 +354,7 @@ public class DocumentTab extends JPanel {
                             DocumentController.addDocument(newDoc);
                             listOfDocs.put(newDoc.id(), newDoc);
                             dialog.setVisible(false);
-                            updateTable();
+                            updateTable(theProjectID);
                         } catch (IOException ex) {
                             JOptionPane.showMessageDialog(DocumentTab.this, "Something went wrong! The File could not be coppied");
                         }

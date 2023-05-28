@@ -6,6 +6,7 @@ import controller.ProjectController;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.math.BigDecimal;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -151,7 +152,12 @@ public class HomeScreen extends JPanel {
                     String projectID = projectTable.getValueAt(selectedRow, 0).toString();
                     ProjectController.deleteProject(ProjectController.findProjectByID(projectID));
                     System.out.println("Deleting project ID: " + projectID);
-                    listOfProjects = ProjectController.getProjectsByUserID(user.getName());
+                    try {
+                        ProjectController.deleteProjectByID(projectID);
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(HomeScreen.this, "Something went wront, the project folder could not be deleted!");
+                    }
+                    listOfProjects.remove(projectID);
                     setProjects(listOfProjects);
                 } else {
                     System.out.println("No project selected.");
