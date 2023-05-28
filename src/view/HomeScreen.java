@@ -1,14 +1,20 @@
 package view;
 
 import controller.AppInfoController;
+import controller.ProjectController;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
+import java.math.BigDecimal;
 import javax.swing.*;
+import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import java.util.EventObject;
+import java.util.HashMap;
 
 import model.Project;
 import model.User;
@@ -20,8 +26,13 @@ import model.User;
  * @version 0.2
  */
 public class HomeScreen extends JPanel {
+
+
+    HashMap<String, Project> listOfProjects = new HashMap<String, Project>();
+
     /** Label for the welcome 'username'.*/
     JLabel homeLabel;
+
     private DefaultTableModel projectTableModel;
     private JTable projectTable;
     private JButton openButton;
@@ -32,6 +43,7 @@ public class HomeScreen extends JPanel {
 
     /**
      * Constructor to create the Home screen.
+     * @author Tin Phu
      * @author Riley Bennett
      * @param user The user of the app
      * @param cardPanel The panels to swap to/from
@@ -39,11 +51,9 @@ public class HomeScreen extends JPanel {
      */
     public HomeScreen(User user, JPanel cardPanel, CardLayout cardLayout) {
    
-        HashMap<String, Project> listOfProjects = new HashMap<String, Project>();
+        User thisUser = user;
 
-//        listOfProjects = ProjectController.getProjectsByUserID(user.());
-        System.out.println("the user.getName " + user.getName());
-        System.out.println("the user.getID " + user.getId());
+        listOfProjects = ProjectController.getProjectsByUserID(user.getId());
         
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -54,8 +64,16 @@ public class HomeScreen extends JPanel {
         projectTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         projectTable.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
 
+        //Set the cell editor for the locked id column
+        TableColumn lockedColumn = projectTable.getColumnModel().getColumn(0);
+        lockedColumn.setCellEditor(new LockedColumnEditor());
+        //Set the cell editor for the locked date column
+        lockedColumn =  projectTable.getColumnModel().getColumn(2);
+        lockedColumn.setCellEditor(new LockedColumnEditor());
+
         //Load List to table here
         setProjects(listOfProjects);
+        
         //setSize
         TableColumnModel columnModel = projectTable.getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(10);
@@ -85,7 +103,7 @@ public class HomeScreen extends JPanel {
         buttonPanel.add(deleteButton);
         buttonPanel.add(logoutButton);
 
-        JLabel welcomeLabel = new JLabel("Welcome");
+        JLabel welcomeLabel = new JLabel("Welcome Back, "+user.getName()+"!");
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         JPanel topPanel = new JPanel(new BorderLayout(10, 10));
@@ -97,13 +115,18 @@ public class HomeScreen extends JPanel {
         HomeScreen home = this;
         // Event listeners for the buttons
         openButton.addActionListener(new ActionListener() {
+
             public void actionPerformed(ActionEvent e) {//"35089418-d50b-4fc8-88ea-bb82c1ea5633"
-                cardPanel.add(new ProjectScreen(user, cardPanel, cardLayout,  "35089418-d50b-4fc8-88ea-bb82c1ea5633"), "ProjectScreen");
-                cardLayout.show(cardPanel, "ProjectScreen");
+
+
                 int selectedRow = projectTable.getSelectedRow();
                 if (selectedRow != -1) {
                     String projectID = projectTable.getValueAt(selectedRow, 0).toString();
+                    String projectName = projectTable.getValueAt(selectedRow, 1).toString();
                     System.out.println("Opening project ID: " + projectID);
+                    ProjectScreen projectScreen = new ProjectScreen(thisUser, cardPanel, cardLayout, projectID);
+                    cardPanel.add(projectScreen, "ProjectScreen");
+                    cardLayout.show(cardPanel, "ProjectScreen");
                 } else {
                     System.out.println("No project selected.");
                 }
@@ -112,7 +135,15 @@ public class HomeScreen extends JPanel {
 
         createButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Creating new project...");
+                String projectName = JOptionPane.showInputDialog(HomeScreen.this, "Enter project name: ");
+                if (projectName != null && !projectName.isEmpty()) {
+                    Project newProject = new Project(projectName, BigDecimal.valueOf(0), BigDecimal.valueOf(0), user.getId());
+                    ProjectController.addProject(newProject);
+                    listOfProjects.put(newProject.getId(),newProject);
+                    setProjects(listOfProjects);
+                } else {
+                    JOptionPane.showMessageDialog(HomeScreen.this, "Please enter a valid project name: ");
+                }
             }
         });
 
@@ -121,10 +152,14 @@ public class HomeScreen extends JPanel {
                 int selectedRow = projectTable.getSelectedRow();
                 if (selectedRow != -1) {
                     String projectID = projectTable.getValueAt(selectedRow, 0).toString();
+                    ProjectController.deleteProject(ProjectController.findProjectByID(projectID));
                     System.out.println("Deleting project ID: " + projectID);
+                    listOfProjects = ProjectController.getProjectsByUserID(user.getName());
+                    setProjects(listOfProjects);
                 } else {
                     System.out.println("No project selected.");
                 }
+                
             }
         });
 
@@ -143,6 +178,42 @@ public class HomeScreen extends JPanel {
         for (Project project : map.values()) {
             Object[] rowData = {project.getId(), project.getProjectName(), project.getDate()};
             projectTableModel.addRow(rowData);
+        }
+    }
+
+    /**
+     * Updates the welcome label whenever the username is changed.
+     * @author Bairu Li
+     */
+    public void updateWelcomeName() {
+        homeLabel.setText("Welcome " + AppInfoController.getCurrentUser().getName() + "!");
+    }
+
+    /**
+     * Table Column Setting.
+     * @author Tin Phu
+     */
+    private class LockedColumnEditor implements TableCellEditor {
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            return null; // Return null to make the cell non-editable
+        }
+        public Object getCellEditorValue() {
+            return null;
+        }
+        public boolean isCellEditable(EventObject anEvent) {
+            return false; // Return false to prevent editing
+        }
+        public boolean shouldSelectCell(EventObject anEvent) {
+            return true;
+        }
+        public boolean stopCellEditing() {
+            return true;
+        }
+        public void cancelCellEditing() {
+        }
+        public void addCellEditorListener(CellEditorListener l) {
+        }
+        public void removeCellEditorListener(CellEditorListener l) {
         }
     }
 }
