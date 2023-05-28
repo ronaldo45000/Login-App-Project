@@ -1,6 +1,7 @@
 package controller;
 
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 import model.Project;
@@ -73,5 +74,32 @@ public class ProjectController {
      */
     public static Project findProjectByID(String theID) {
         return projectRepository.findProjectbyId(theID);
+    }
+
+    /**
+     * Deletes a project by Id.
+     * @author Bairu Li
+     * @param theID
+     */
+    public static void deleteProjectByID(String theID) {
+        DocumentController.getDocsByProjectID(theID).forEach((documentId, document) -> {
+            DocumentController.deleteADocument(document);
+        });
+        System.out.println(DocumentController.getDocsByProjectID(theID).size());
+        projectRepository.deleteProject(theID);
+    }
+
+    /**
+     * Updates the total cost of a project by Id.
+     *
+     * @author Bairu Li
+     * @param theID
+     */
+    public static void updateTotalCostByID(String theID) {
+        BigDecimal totaLCost = BigDecimal.ZERO;
+        DocumentController.getDocsByProjectID(theID).forEach((documentId, document) -> {
+            totaLCost.add(document.getTotalCost());
+        });
+        projectRepository.findProjectbyId(theID).setTotalCost(totaLCost);
     }
 }
