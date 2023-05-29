@@ -3,6 +3,7 @@ package view;
 import controller.DocumentController;
 import model.Document;
 
+import java.io.File;
 import javax.swing.*;
 
 import javax.swing.table.DefaultTableModel;
@@ -299,6 +300,10 @@ public class BudgetTab extends JPanel {
 
             String currentItemPrice = (String) table.getValueAt(selectedRow, 2); //CURRENT PRICE
             double price = Double.parseDouble(currentItemPrice);
+
+            //Round to 2 decimal places
+            price = Double.valueOf(df.format(price));
+
             String message = JOptionPane.showInputDialog(this, "Enter New Price:", price); //NEW PRICE
 
 
@@ -363,7 +368,7 @@ public class BudgetTab extends JPanel {
 
         myDoc.forEach((k, e) -> {
 
-            addRowToTable(k, e.getDocumentName(), e.getTotalCost().toString());
+            addRowToTable(k, e.getDocumentName(), df.format(e.getTotalCost()));
         });
 
     }
@@ -407,15 +412,14 @@ public class BudgetTab extends JPanel {
      *
      */
     public class DocumentCreationFormPopUp extends JPanel{
-        public final JTextField documentNameField;
-        public final JTextField documentDescriptionField;
-        public final JTextField totalCostField;
+        private final JTextField documentNameField;
+        private final JTextField documentDescriptionField;
+        private final JTextField totalCostField;
         private String srcFileString = "";
-        public final JDialog dialog = new JDialog();
+        private final JDialog dialog = new JDialog();
 
         /**
          * @Author Tin Phu
-         *
          * @param theProjectID
          */
         public DocumentCreationFormPopUp(String theProjectID) {
@@ -423,11 +427,19 @@ public class BudgetTab extends JPanel {
             JLabel documentNameLabel = new JLabel("Document Name:");
             documentNameField = new JTextField(20);
 
-            //   JLabel documentDescriptionLabel = new JLabel("Document Description:");
+            JLabel documentDescriptionLabel = new JLabel("Document Description:");
             documentDescriptionField = new JTextField(20);
 
             JLabel totalCostLabel = new JLabel("Total Cost:");
             totalCostField = new JTextField(10);
+
+            JLabel fileSrcStringLabel = new JLabel("(option)");
+
+            // Set max width for file name
+            Dimension d = fileSrcStringLabel.getPreferredSize();
+            fileSrcStringLabel.setPreferredSize(new Dimension(d.width + 90, d.height));
+            
+            JButton fileSelectorButton = new JButton("Select File");
 
             JButton createButton = new JButton("Create Document");
 
@@ -447,10 +459,10 @@ public class BudgetTab extends JPanel {
 
             constraints.gridx = 0;
             constraints.gridy = 1;
-            //  panel.add(documentDescriptionLabel, constraints);
+            panel.add(documentDescriptionLabel, constraints);
 
             constraints.gridx = 1;
-            //   panel.add(documentDescriptionField, constraints);
+            panel.add(documentDescriptionField, constraints);
 
             constraints.gridx = 0;
             constraints.gridy = 2;
@@ -461,20 +473,36 @@ public class BudgetTab extends JPanel {
 
             constraints.gridx = 0;
             constraints.gridy = 3;
-
+            panel.add(fileSrcStringLabel, constraints);
             constraints.gridx = 1;
             constraints.gridy = 3;
             constraints.gridwidth = 2;
-
+            panel.add(fileSelectorButton, constraints);
 
             constraints.gridy = 4;
             constraints.anchor = GridBagConstraints.CENTER;
             panel.add(createButton, constraints);
 
+            //
             /**
-             * Create button event Lisener for add document only form.
+             * set fileSelectorButton Action Listener
              * @Author Tin Phu
-             * @Author Thinh Le
+             */
+            fileSelectorButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JFileChooser fileChooser = new JFileChooser();
+                    int result = fileChooser.showOpenDialog(panel);
+                    if(result == JFileChooser.APPROVE_OPTION){
+                        srcFileString = fileChooser.getSelectedFile().toString();
+                        File file = new File(srcFileString);
+                        fileSrcStringLabel.setText(file.getName());
+                    }
+                }
+            });
+            /**
+             * Create button eventLisener
+             * @Author Tin Phu
              */
             createButton.addActionListener(new ActionListener() {
                 @Override
@@ -482,48 +510,37 @@ public class BudgetTab extends JPanel {
                     String documentName = documentNameField.getText();
                     String documentDescription = documentDescriptionField.getText();
                     Document newDoc = null;
+                    if(documentName.isEmpty() || documentDescription.isEmpty() || totalCostField.getText().isEmpty() ){
+                        JOptionPane.showMessageDialog(BudgetTab.this, "Please enter required information!");
+                    } else if(documentDescription.length() >= 1300){
+                        JOptionPane.showMessageDialog(BudgetTab.this, "The Description is too long!");
+                    }else {
 
 
-                    double totalCost = Double.parseDouble(totalCostField.getText());
-                    try {
-                        if(srcFileString.isEmpty()){
-                            newDoc = new Document(documentName,documentDescription,theProjectID,"", BigDecimal.valueOf(totalCost) );
+                        double totalCost = Double.parseDouble(totalCostField.getText());
+                        DecimalFormat df = new DecimalFormat("#.##");
+                        
+                        // Round to 2 decimal places
+                        totalCost = Double.valueOf(df.format(totalCost));
 
-                        }else {
-                            newDoc = new Document(documentName,documentDescription,theProjectID,"", BigDecimal.valueOf(totalCost), srcFileString );
+                        try {
+                            if(srcFileString.isEmpty()){
+                                newDoc = new Document(documentName,documentDescription,theProjectID,"", BigDecimal.valueOf(totalCost) );
 
+                            }else {
+                                newDoc = new Document(documentName,documentDescription,theProjectID,"", BigDecimal.valueOf(totalCost), srcFileString );
+
+                            }
+                            DocumentController.addDocument(newDoc);
+                            myDoc.put(newDoc.id(), newDoc);
+                            dialog.setVisible(false);
+                            updateTable();
+                        } catch (IOException ex) {
+                            JOptionPane.showMessageDialog(BudgetTab.this, "Something went wrong! The File could not be coppied");
                         }
-
-                        DocumentController.addDocument(newDoc);
-                        myDoc.put(newDoc.id(), newDoc);
-
-                        dialog.setVisible(false);
-
-                         //update total cost
-                        theTotalCost += myDoc.get(newDoc.id()).getTotalCost().doubleValue() ;
-
-
-                        totalLabel.setText("CurrentCost:$" + theTotalCost);
-
-
-                        updateTable();
-
-                        if(theTotalCost>totalBudget){
-
-                            JOptionPane.showMessageDialog(panel,"It is over your budget","Reminder",JOptionPane.WARNING_MESSAGE);
-                        }
-
-
-
-
-
-                    } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(BudgetTab.this, "Something went wrong! The File could not be coppied");
                     }
 
                 }
-
-
             });
             dialog.setLocationRelativeTo(BudgetTab.this);
             dialog.setContentPane(panel);

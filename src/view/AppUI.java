@@ -77,7 +77,7 @@ public class AppUI {
         importMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int confirm = JOptionPane.showConfirmDialog(frame, "While importing data, you will be logged out to Home Screen.\nContinue?",
+                int confirm = JOptionPane.showConfirmDialog(frame, "While importing data, you will be logged out to Project Screen.\nContinue?",
                 "Warning", JOptionPane.YES_NO_OPTION);
 
                 if (confirm == JOptionPane.YES_OPTION) {
