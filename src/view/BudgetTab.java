@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 import java.util.HashMap;
+import java.text.DecimalFormat;
 
 /**
  * This is the Budget tab for handles cost.
@@ -23,7 +24,7 @@ import java.util.HashMap;
 public class BudgetTab extends JPanel {
 
     public double theTotalCost;
-    public double totalBudget = 100000;
+    public double totalBudget;
     public JLabel totalLabel;
 
     /**
@@ -48,6 +49,8 @@ public class BudgetTab extends JPanel {
      * JTable table
      */
     public final JTable table;
+
+    private final DecimalFormat df = new DecimalFormat("#.##");
 
     /**
      * This is the constructor to create the Budget Tab.
@@ -159,16 +162,15 @@ public class BudgetTab extends JPanel {
                 double price;
                 try {
                     price = Double.parseDouble(priceStr);
+                    
+                    // Round to 2 decimal places
+                    price = Double.valueOf(df.format(price));
                 } catch (NumberFormatException ex) {
-                    //     JOptionPane.showMessageDialog(this, "Invalid Price!", "Error", JOptionPane.ERROR_MESSAGE);
+                         JOptionPane.showMessageDialog(BudgetTab.this, "Invalid Price!", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
                 Document doc = null;
-
-
-
-
 
                 doc = new Document(itemName, "", theProjectID, "", BigDecimal.valueOf(price));
 
@@ -214,21 +216,19 @@ public class BudgetTab extends JPanel {
                 try {
                     double newBudget = Double.parseDouble(input);
 
+                    // Round to 2 decimal places
+                    newBudget = Double.valueOf(df.format(newBudget));
                    // doc = new Document("Total Budget:$", "", theProjectID, "", BigDecimal.valueOf(newBudget));
-
-
-
 
                     setTotalBudget(newBudget);
 
-
-
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Please enter a numeric value.");
+                    JOptionPane.showMessageDialog(BudgetTab.this, "Please enter a numeric value.");
 
                 }
             }
         });
+
         //This is the delete item action listener
         addButton2.addActionListener(e -> {
             int row = table.getSelectedRow();
@@ -311,12 +311,14 @@ public class BudgetTab extends JPanel {
 
             newPrice = Double.parseDouble(message);
 
+            //Round to 2 decimal places
+            newPrice = Double.valueOf(df.format(newPrice));
 
               //Update the price in the table
 
             theTotalCost -= myDoc.get(currentID).getTotalCost().doubleValue();
 
-            Document newDoc = new Document(myDoc.get(currentID).getDocumentName(), "", currentID, "", new BigDecimal(price));
+//            Document newDoc = new Document(myDoc.get(currentID).getDocumentName(), "", currentID, "", new BigDecimal(price));
             Document newDoc2 = new Document(myDoc.get(currentID).getDocumentName(), "", theProjectID, "", new BigDecimal(newPrice));
 
             DocumentController.deleteADocument(myDoc.get(currentID));
@@ -392,6 +394,9 @@ public class BudgetTab extends JPanel {
 
         });
 
+        // Round to 2 decimal places
+        theTotalCost = Double.valueOf(df.format(theTotalCost));
+
         totalLabel.setText("CurrentCost:$" + String.format("%.2f", theTotalCost));
 
     }
@@ -465,12 +470,6 @@ public class BudgetTab extends JPanel {
             constraints.gridy = 4;
             constraints.anchor = GridBagConstraints.CENTER;
             panel.add(createButton, constraints);
-
-
-
-
-
-
 
             /**
              * Create button event Lisener for add document only form.
