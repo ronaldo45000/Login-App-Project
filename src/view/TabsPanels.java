@@ -15,7 +15,6 @@ public class TabsPanels extends JTabbedPane {
         JPanel panel2 = new JPanel();
 
         addTab("Budget Tab", new BudgetTab(theProjectID));
-
     }
 
 }
