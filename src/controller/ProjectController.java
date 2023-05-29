@@ -1,12 +1,20 @@
 package controller;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 
+import model.Document;
 import model.Project;
 import repository.ProjectRepository;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A controller for the list of projects a user has.
@@ -74,4 +82,46 @@ public class ProjectController {
     public static Project findProjectByID(String theID) {
         return projectRepository.findProjectbyId(theID);
     }
+
+    /**
+     * Deletes a project by Id.
+     * @author Bairu Li
+     * @param theID
+     */
+    public static void deleteProjectByID(String theID) throws IOException {
+        DocumentController.getDocsByProjectID(theID).forEach((documentId, document) -> {
+            DocumentController.deleteADocument(document);
+        });
+        System.out.println(DocumentController.getDocsByProjectID(theID).size());
+        projectRepository.deleteProject(theID);
+        String currentPath = System.getProperty("user.dir");
+
+        File file = new File(currentPath + "\\" +  theID);
+
+        Files.delete(file.toPath());
+
+    }
+
+    /**
+     * Updates the total cost of a project by Id.
+     *
+     * @author Bairu Li
+     * @param theID
+     */
+    public static BigDecimal updateTotalCostByID(String theID) {
+        BigDecimal  totaLCost = new BigDecimal(0);
+        Double      tempTotal = 0.0;
+
+        HashMap<String, Document> loopDoc =  DocumentController.getDocsByProjectID(theID);
+
+        for(Map.Entry<String, Document> set : loopDoc.entrySet()){
+            totaLCost =totaLCost.add(set.getValue().getTotalCost());
+        }
+
+        projectRepository.findProjectbyId(theID).setTotalCost(totaLCost);
+        projectRepository.exportData();
+        return totaLCost;
+    }
+
+
 }
