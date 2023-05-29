@@ -1,284 +1,373 @@
 package view;
 
+import controller.DocumentController;
 import model.Document;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
 
+import javax.swing.table.DefaultTableModel;
+
+import java.awt.*;
+import java.awt.event.*;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+
+import java.util.HashMap;
 
 /**
- * This is the budget tab where it shows the budget management.
- *
- * @author Thinh Le
- * @author Riley Bennett
- * @version 0.2
+ * This is the Budget tab for handles cost.
+ * @Author Thinh Le
+ * @version 0.1
  */
-public class BudgetTab extends JPanel implements ActionListener {
+public class BudgetTab extends JPanel {
 
-
-    double totalBudget;
-    private JLabel totalBudgetLabel;
-    private JLabel currentCostLabel;
-    JTextField setBudgetField;
-    private JTextField addDocumentCostField;
-    private JButton setBudgetButton;
-
-    private JButton addDocumentCost;
-    private JButton addCostOnly;
-
-
-    JButton name;
-    JTextField currentNameCost;
-
-
-    //from edit item
-    private DefaultTableModel model;
-    private JTable table;
-    private JLabel totalLabel;
-    private double totalCost = 0.0;
-
-    private DecimalFormat df = new DecimalFormat("#.##");
-
+    public double theTotalCost;
+    public double totalBudget = 100000;
+    public JLabel totalLabel;
 
     /**
-     * This is the constructor to create the budget Tab GUI.
+     * This is the label for total budget.
      */
-    public BudgetTab() {
+    public JLabel totalBudgetLabel;
+    /**
+     * This is the text field for set budget.
+     */
+    JTextField setBudgetField;
+    /**
+     * List of Docs belong to a specific Project
+     */
+    public JButton setBudgetButton;
+    public HashMap<String, Document> myDoc;
 
+    /**
+     * DefaultTableModel model
+     */
+    public final DefaultTableModel model;
+    /**
+     * JTable table
+     */
+    public final JTable table;
+
+    /**
+     * This is the constructor to create the Budget Tab.
+     *
+     * @param theProjectID
+     * @author Thinh Le
+     */
+    public BudgetTab(String theProjectID) {
+
+        //Initialize my doc from Document controller
+        myDoc = DocumentController.getDocsByProjectID(theProjectID);
 
         setLayout(new GridBagLayout());
+        // Create the table model
         model = new DefaultTableModel();
-        model.addColumn("Item Name");
-        model.addColumn("Price");
-
+        //add id column
+        model.addColumn("ID");
+        //add Name
+        model.addColumn("Name");
+        //add Total cost
+        model.addColumn("Total Cost");
+        // Create the table and set the model
         table = new JTable(model);
-        table.setDefaultEditor(Object.class, null);
         table.setPreferredScrollableViewportSize(new Dimension(350, 350));
-        // Create a scroll pane and add the table to it
-        JScrollPane scrollPane = new JScrollPane(table);
 
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.insets = new Insets(15, 15, 15, 15);
 
-        totalBudgetLabel = new JLabel("Total Budget: $");
+        totalLabel = new JLabel("CurrentCost:$0.00");
+        totalLabel.setFont(new Font("Verdana", Font.PLAIN, 18));
 
-        add(totalBudgetLabel, constraints);
+        updateTotalCost();
+
+        // put list of doc into table
+        myDoc.forEach((k, e) -> {
+            addRowToTable(k, e.getDocumentName(), e.getTotalCost().toString());
+        });
+
+        table.setDefaultEditor(Object.class, null);
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(15, 15, 15, 15);
+        totalBudgetLabel = new JLabel("Total Budget:$");
+
+        add(totalBudgetLabel, c);
 
         setBudgetField = new JTextField();
-
+        setBudgetField.setText("");
         setBudgetField.setEditable(false);
-        constraints.gridx = 1;
-        constraints.gridy = 0;
+        c.gridx = 1;
+        c.gridy = 0;
 
         setBudgetField.setColumns(5);
 
-        add(setBudgetField, constraints);
-
+        add(setBudgetField, c);
+        c.gridx = 2;
+        c.gridy = 2;
+        add(totalLabel, c);
         setBudgetButton = new JButton("Set Budget");
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        setBudgetButton.addActionListener(this);
-        add(setBudgetButton, constraints);
+        c.gridx = 0;
+        c.gridy = 1;
+        //  setBudgetButton.addActionListener(this);
+        add(setBudgetButton, c);
+        JScrollPane scrollPane = new JScrollPane(table);
+        c.gridx = 0;
+        c.gridy = 2;
+        add(scrollPane, c);
+        JButton addButton = new JButton("Add Document Only");
+        c.gridx = 0;
+        c.gridy = 3;
+        add(addButton, c);
 
-        JButton addButton = new JButton("Add");
+        JButton addButton2 = new JButton("Delete");
+        c.gridx = 1;
+        c.gridy = 3;
+        add(addButton2, c);
+        JButton addButton3 = new JButton("Change Name");
+        c.gridx = 2;
+        c.gridy = 3;
+        add(addButton3, c);
+        JButton addButton4 = new JButton("Change Cost");
+        c.gridx = 3;
+        c.gridy = 3;
+        add(addButton4, c);
+        JButton addButton5 = new JButton("Add Cost only");
+        c.gridx = 0;
+        c.gridy = 4;
+        add(addButton5, c);
+        updateTotalBudgetLabel();
+        /**
+         * This ask for Name and price to add into table.
+         */
+        addButton5.addActionListener(new ActionListener() {
+
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                // Prompt the user for item name and price
+                String itemName = JOptionPane.showInputDialog("Enter Item Name:");
+                if (itemName == null) {
+                    return; // User clicked Cancel
+                }
+
+                String priceStr = JOptionPane.showInputDialog("Enter Price:");
+                if (priceStr == null) {
+                    return; // User clicked Cancel
+                }
+
+                // Convert the price to a double
+                double price;
+                try {
+                    price = Double.parseDouble(priceStr);
+                } catch (NumberFormatException ex) {
+                    //     JOptionPane.showMessageDialog(this, "Invalid Price!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                Document doc = null;
+
+
+
+
+
+                doc = new Document(itemName, "", theProjectID, "", BigDecimal.valueOf(price));
+
+
+                DocumentController.addDocument(doc);
+                myDoc.put(doc.id(), doc);
+
+
+
+                theTotalCost += myDoc.get(doc.id()).getTotalCost().doubleValue();
+
+
+                totalLabel.setText("CurrentCost:$" + theTotalCost);
+
+                updateTable();
+                //This is a warning message when it is over your budget.
+                if(theTotalCost>totalBudget){
+
+                    JOptionPane.showMessageDialog(BudgetTab.this,"It is over your budget","Reminder",JOptionPane.WARNING_MESSAGE);
+                }
+
+            }
+
+        });
+        //This is for add document cost only button.
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                addItem();
+                new DocumentCreationFormPopUp(theProjectID);
+
+
+
             }
         });
-
-        // Create the Delete button
-        JButton deleteButton = new JButton("Delete");
-        deleteButton.addActionListener(new ActionListener() {
+        //This is the set budget action listener
+        setBudgetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                deleteItem();
+                Document doc = null;
+
+
+                String input = JOptionPane.showInputDialog("Enter new budget:");
+                try {
+                    double newBudget = Double.parseDouble(input);
+
+                   // doc = new Document("Total Budget:$", "", theProjectID, "", BigDecimal.valueOf(newBudget));
+
+
+
+
+                    setTotalBudget(newBudget);
+
+
+
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Please enter a numeric value.");
+
+                }
             }
         });
+        //This is the delete item action listener
+        addButton2.addActionListener(e -> {
+            int row = table.getSelectedRow();
+            if (row >= 0) {
 
-        // Create the Total Cost label
-        totalLabel = new JLabel("Current Cost: $0.00");
-        totalLabel.setFont(new Font("Verdana", Font.PLAIN, 18));
-        // Create the Edit button
-        JButton editButton = new JButton("Change Name");
-        editButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-                editItem();
+                String name = model.getValueAt(row, 1).toString();
+                System.out.println("Deleting " + name);
+                String id = (String) table.getValueAt(row, 0);
+                theTotalCost -= myDoc.get(id).getTotalCost().doubleValue();
+                totalLabel.setText("CurrentCost:$" + theTotalCost); //DO THIS IN ORDER TO WORK
+                DocumentController.deleteADocument(myDoc.get(id));
+
+
+                myDoc.remove(id);
+
+                updateTable();
+
+
             }
         });
-
-        JButton changeCost = new JButton("Change Cost");
-        changeCost.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                costItem();
+        //This is button action listener to change name.
+        addButton3.addActionListener(e -> {
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(this, "No item selected!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
+
+            String currentID = (String) table.getValueAt(selectedRow, 0); //CURRENT ID
+
+            String currentName = (String) table.getValueAt(selectedRow, 1); //CURRENT Name
+
+            String newMessage = JOptionPane.showInputDialog(this, "Enter New Name:", currentName); //NEW PRICE
+
+
+            if (newMessage == null) {
+                return;
+            }
+
+
+
+
+            Document doc = new Document(currentName, "", currentID, "", myDoc.get(currentID).getTotalCost());
+            Document doc2 = new Document(newMessage, "", theProjectID, "", myDoc.get(currentID).getTotalCost());
+
+            DocumentController.deleteADocument(myDoc.get(currentID));
+            myDoc.remove(currentID);
+
+
+            DocumentController.addDocument(doc2);
+            myDoc.put(currentID, doc2);
+
+            updateTable();
         });
-        constraints.gridx = 0;
-        constraints.gridy = 2;
 
-        add(scrollPane, constraints);
-        constraints.gridx = 2;
-        constraints.gridy = 2;
-        add(totalLabel, constraints);
-        constraints.gridx = 0;
-        constraints.gridy = 3;
-        add(addButton, constraints);
-        constraints.gridx = 1;
-        constraints.gridy = 3;
-        add(deleteButton, constraints);
-        constraints.gridx = 2;
-        constraints.gridy = 3;
-        add(editButton, constraints);
-        constraints.gridx = 3;
-        constraints.gridy = 3;
-        add(changeCost, constraints);
-
-        // Add the components to the frame
+        //This is to change the cost of item
+        addButton4.addActionListener(e -> {
 
 
-//        name= new JButton("List of Name and Price");
-//        name.addActionListener(this);
-//        constraints.gridx = 0;
-//        constraints.gridy = 4;
-//
-//        add(name, constraints);
-//
-//
-//
-//        currentNameCost = new JTextField("Change->");
-//        currentNameCost.setEditable(false);
-//        constraints.gridx = 1;
-//        constraints.gridy = 4;
-//        //   panel.add(currentNameCost, constraints);
-//
-//
-//        JMenuBar menuBar = new JMenuBar();
-//
-//
-//
-//        constraints.gridx = 2;
-//        constraints.gridy = 4;
-//        constraints.gridwidth = -1;
-//        constraints.fill =15;
-//        menuBar.setBackground(Color.GREEN);
-//
-//        add(menuBar, constraints);
-//
-//        constraints.insets = new Insets(200, 0, 0, 0);
-//
-        addDocumentCost = new JButton("Add Document Cost");
-        constraints.gridx = 0;
-        constraints.gridy = 6;
-        addDocumentCost.addActionListener(this);
-        add(addDocumentCost, constraints);
-//
-//
-        addCostOnly = new JButton("Add Cost Only");
-        addCostOnly.addActionListener(this);
-        constraints.gridx = 2;
-        constraints.gridy = 6;
-        constraints.weighty = 1;
-        add(addCostOnly, constraints);
-//
-//
-//        currentCostLabel = new JLabel("Current Cost: $");
-//        constraints.gridx = 0;
-//        constraints.gridy = 6;
-//
-//        add(currentCostLabel, constraints);
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(this, "No item selected!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String currentID = (String) table.getValueAt(selectedRow, 0); //CURRENT ID
+
+            String currentItemPrice = (String) table.getValueAt(selectedRow, 2); //CURRENT PRICE
+            double price = Double.parseDouble(currentItemPrice);
+            String message = JOptionPane.showInputDialog(this, "Enter New Price:", price); //NEW PRICE
 
 
-        addDocumentCostField = new JTextField();
-        addDocumentCostField.setEditable(false);
-        constraints.gridx = 1;
-        constraints.gridy = 6;
-
-//        FileReader file = null;
-//        try {
-//            file = new FileReader("C:\\Users\\onme7\\Downloads\\check.txt");
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//        Scanner sc = new Scanner(file);
-//        double sum = 0;
-//        while(sc.hasNext())
-//        {
-//            String line = sc.nextLine();
-//            // spit the line on - char
-//            String [] data = line.split(",");
-//            // Important : assuming price is always at index 2 parse and use value
-//            sum = sum + Double.parseDouble(data[1].trim());
-//        }
-
-        //  addDocumentCostField.setColumns(5);
-        // setBackground(Color.);
+            if (message == null) {
+                return;
+            }
 
 
-        //  add(addDocumentCostField, constraints);
+            double newPrice;
+
+            newPrice = Double.parseDouble(message);
 
 
+              //Update the price in the table
+
+            theTotalCost -= myDoc.get(currentID).getTotalCost().doubleValue();
+
+            Document newDoc = new Document(myDoc.get(currentID).getDocumentName(), "", currentID, "", new BigDecimal(price));
+            Document newDoc2 = new Document(myDoc.get(currentID).getDocumentName(), "", theProjectID, "", new BigDecimal(newPrice));
+
+            DocumentController.deleteADocument(myDoc.get(currentID));
+            myDoc.remove(currentID);
+
+
+            DocumentController.addDocument(newDoc2);
+            myDoc.put(currentID, newDoc2);
+            theTotalCost += myDoc.get(currentID).getTotalCost().doubleValue();
+
+
+            totalLabel.setText("CurrentCost:$" + theTotalCost);
+
+            updateTable();
+
+        });
     }
 
+
     /**
-     * This is the action listener when user clicks on a button
+     * This method is to add row for table
      *
-     * @param e the event to be processed
+     * @param id
+     * @param name
+     * @param totalCost
+     *
      */
+    public void addRowToTable(String id, String name, String totalCost) {
+        Object[] row = {id, name, totalCost};
+        model.addRow(row);
+    }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    /**
+     * This method is to update Table with new data.
+     *
+     *
+     */
+    public void updateTable() {
+        // clear the rows
+        model.setRowCount(0);
+        //update the row back.
 
-        if (e.getSource() == addDocumentCost) {
+        myDoc.forEach((k, e) -> {
 
-//            DocumentCreationFormPopUp b = new DocumentCreationFormPopUp();
-//            model.addRow(new Object[]{b.getItemName(), b.getItemPrice()});
-//            totalCost += Double.parseDouble(b.getItemPrice());
-//            updateTotalCost();
-
-            new  DocumentCreationPopUp();
-
-        }
-        if (e.getSource() == setBudgetButton) {
-            //frame.dispose();
-            //ToSetBudget w = new ToSetBudget();
-
-            String input = JOptionPane.showInputDialog("Enter new budget:");
-            try {
-                double newBudget = Double.parseDouble(input);
-
-                // Round budget to 2 decimal places
-                newBudget = Double.valueOf(df.format(newBudget));  
-                setTotalBudget(newBudget);
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, "Please enter a numeric value.");
-
-            }
-
-        }
-//        if (e.getSource() == name) {
-//
-//            EditItem w = new EditItem();
-//
-//        }
-
-        if (e.getSource() == addCostOnly) {
-          //  new AddCostOnly();
-        }
+            addRowToTable(k, e.getDocumentName(), e.getTotalCost().toString());
+        });
 
     }
 
     /**
-     * This to set the total budget
-     *
+     * This is the set total budget setter
      * @param budget
      */
     public void setTotalBudget(double budget) {
@@ -287,172 +376,55 @@ public class BudgetTab extends JPanel implements ActionListener {
     }
 
     /**
-     * Update the budget
+     * This method is to update total budget
      */
-    private void updateTotalBudgetLabel() {
+    public void updateTotalBudgetLabel() {
 
         setBudgetField.setText("" + totalBudget);
+
     }
+    /**
+     * This method is to update total Cost.
+     */
+    public void updateTotalCost() {
+        myDoc.forEach((k, b) -> {
+            theTotalCost += b.getTotalCost().doubleValue();
 
-    private void costItem() {
-        int selectedRow = table.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "No item selected!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        });
 
-        // Get the current item name and price from the selected row
-        double currentPrice = (double) table.getValueAt(selectedRow, 1);
+        totalLabel.setText("CurrentCost:$" + String.format("%.2f", theTotalCost));
 
-        // Prompt the user for the new price
-        String message = JOptionPane.showInputDialog(this, "Enter New Price:", currentPrice);
-        if (message == null) {
-            return; // User clicked Cancel
-        }
-
-        // Convert the new price to a double
-        double newPrice;
-        try {
-            newPrice = Double.parseDouble(message);
-
-            // Round to 2 decimal places
-            newPrice = Double.valueOf(df.format(newPrice));
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Invalid Price!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // Update the price in the table
-        table.setValueAt(newPrice, selectedRow, 1);
-
-        // Update the total cost
-        totalCost -= currentPrice;
-        totalCost += newPrice;
-        updateTotalCost();
     }
 
     /**
-     * Update the current Cost.
+     * DocumentCreationFormPopUp
+     * @author Tin Phu
+     *
      */
-    void updateTotalCost() {
+    public class DocumentCreationFormPopUp extends JPanel{
+        public final JTextField documentNameField;
+        public final JTextField documentDescriptionField;
+        public final JTextField totalCostField;
+        private String srcFileString = "";
+        public final JDialog dialog = new JDialog();
 
-        totalLabel.setText("Current Cost: $" + String.format("%.2f", totalCost));
-    }
-
-    /**
-     * This to delete item name and price
-     */
-    private void deleteItem() {
-        // Get the selected row index
-        int selectedRow = table.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "No item selected!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // Get the price of the selected item
-        double price = (double) table.getValueAt(selectedRow, 1);
-
-        // Remove the selected row from the table
-        model.removeRow(selectedRow);
-
-        // Update the total cost
-        totalCost -= price;
-        updateTotalCost();
-    }
-
-    /**
-     * This to change name of an item name
-     */
-    private void editItem() {
-        int selectedRow = table.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "No item selected!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // Get the current item name and price from the selected row
-        String currentItemName = (String) table.getValueAt(selectedRow, 0);
-
-
-        // Prompt the user for the new item name
-        String newItemName = JOptionPane.showInputDialog(this, "Enter New Item Name:", currentItemName);
-        if (newItemName == null) {
-            return; // User clicked Cancel
-        }
-
-        // Update the item name in the table
-        table.setValueAt(newItemName, selectedRow, 0);
-
-        // Update the total cost
-        updateTotalCost();
-    }
-
-    /**
-     * This to add item name and price
-     */
-    private void addItem() {
-        // Prompt the user for item name and price
-        String itemName = JOptionPane.showInputDialog(this, "Enter Item Name:");
-        if (itemName == null) {
-            return; // User clicked Cancel
-        }
-
-        String priceStr = JOptionPane.showInputDialog(this, "Enter Price:");
-        if (priceStr == null) {
-            return; // User clicked Cancel
-        }
-
-        // Convert the price to a double
-        double price;
-        try {
-            price = Double.parseDouble(priceStr);
-
-            // Round to 2 decimal places
-            price = Double.valueOf(df.format(price));
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Invalid Price!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // Add the item to the table
-        model.addRow(new Object[]{itemName, price});
-
-        // Update the total cost
-        totalCost += price;
-        updateTotalCost();
-    }
-
-    public void addItemToTable(String name, String price) {
-
-        model.addRow(new Object[]{name, price});
-        totalCost += Double.parseDouble(price);
-        updateTotalCost();
-    }
-
-    public class DocumentCreationPopUp extends JPanel{
-        private JTextField documentNameField;
-        private JTextField documentDescriptionField;
-        private JTextField totalCostField;
-        private JButton fileSelectorButton;
-        private JButton createButton;
-        JPanel contentPanel;
-
-        public DocumentCreationPopUp() {
+        /**
+         * @Author Tin Phu
+         *
+         * @param theProjectID
+         */
+        public DocumentCreationFormPopUp(String theProjectID) {
             // Create components
-            contentPanel = new JPanel();
             JLabel documentNameLabel = new JLabel("Document Name:");
             documentNameField = new JTextField(20);
 
-            JLabel documentDescriptionLabel = new JLabel("Document Description:");
+            //   JLabel documentDescriptionLabel = new JLabel("Document Description:");
             documentDescriptionField = new JTextField(20);
 
             JLabel totalCostLabel = new JLabel("Total Cost:");
             totalCostField = new JTextField(10);
 
-            fileSelectorButton = new JButton("Select File");
-
-            createButton = new JButton("Create Document");
+            JButton createButton = new JButton("Create Document");
 
             // Create layout
             JPanel panel = new JPanel(new GridBagLayout());
@@ -470,10 +442,10 @@ public class BudgetTab extends JPanel implements ActionListener {
 
             constraints.gridx = 0;
             constraints.gridy = 1;
-            panel.add(documentDescriptionLabel, constraints);
+            //  panel.add(documentDescriptionLabel, constraints);
 
             constraints.gridx = 1;
-            panel.add(documentDescriptionField, constraints);
+            //   panel.add(documentDescriptionField, constraints);
 
             constraints.gridx = 0;
             constraints.gridy = 2;
@@ -484,73 +456,91 @@ public class BudgetTab extends JPanel implements ActionListener {
 
             constraints.gridx = 0;
             constraints.gridy = 3;
+
+            constraints.gridx = 1;
+            constraints.gridy = 3;
             constraints.gridwidth = 2;
-            panel.add(fileSelectorButton, constraints);
+
 
             constraints.gridy = 4;
             constraints.anchor = GridBagConstraints.CENTER;
             panel.add(createButton, constraints);
 
-            // Set action listeners
+
+
+
+
+
+
             /**
+             * Create button event Lisener for add document only form.
              * @Author Tin Phu
-             */
-            fileSelectorButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    JFileChooser fileChooser = new JFileChooser();
-                    int result = fileChooser.showOpenDialog(panel);
-                    System.out.println(fileChooser.getSelectedFile());
-                }
-            });
-            /**
-             * @Author Tin Phu
+             * @Author Thinh Le
              */
             createButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     String documentName = documentNameField.getText();
                     String documentDescription = documentDescriptionField.getText();
-                    double totalCosts = Double.parseDouble(totalCostField.getText());
-                    // Create the document using the entered values
-                    // You can add your own logic here
-                    System.out.println("Document created: " + documentName);
-                    System.out.println("Description: " + documentDescription);
-                    System.out.println("Total cost: " + totalCost);
+                    Document newDoc = null;
 
-                    model.addRow(new Object[]{documentName, totalCosts});
-                    totalCost += totalCosts;
-                    updateTotalCost();
+
+                    double totalCost = Double.parseDouble(totalCostField.getText());
+                    try {
+                        if(srcFileString.isEmpty()){
+                            newDoc = new Document(documentName,documentDescription,theProjectID,"", BigDecimal.valueOf(totalCost) );
+
+                        }else {
+                            newDoc = new Document(documentName,documentDescription,theProjectID,"", BigDecimal.valueOf(totalCost), srcFileString );
+
+                        }
+
+                        DocumentController.addDocument(newDoc);
+                        myDoc.put(newDoc.id(), newDoc);
+
+                        dialog.setVisible(false);
+
+                         //update total cost
+                        theTotalCost += myDoc.get(newDoc.id()).getTotalCost().doubleValue() ;
+
+
+                        totalLabel.setText("CurrentCost:$" + theTotalCost);
+
+
+                        updateTable();
+
+                        if(theTotalCost>totalBudget){
+
+                            JOptionPane.showMessageDialog(panel,"It is over your budget","Reminder",JOptionPane.WARNING_MESSAGE);
+                        }
+
+
+
+
+
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(BudgetTab.this, "Something went wrong! The File could not be coppied");
+                    }
 
                 }
+
+
             });
-
-            JDialog dialog = new JDialog();
-            dialog.setModal(true);
+            dialog.setLocationRelativeTo(BudgetTab.this);
             dialog.setContentPane(panel);
-
-            // Set dialog properties
             dialog.setTitle("Document Creation Form");
             dialog.setSize(500, 400);
             dialog.setLocationRelativeTo(null); // Center the dialog on the screen
             dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-            // Display the dialog
             dialog.setVisible(true);
 
-            // Display the panel
-            // JOptionPane.showMessageDialog(null, panel, "Document Creation Form", JOptionPane.PLAIN_MESSAGE);
         }
-        public String getItemName() {
-            return documentNameField.getText();
-        }
-
-        public String getItemPrice() {
-            return totalCostField.getText();
-        }
-
-
     }
 
-
 }
+
+
+
+
+
+
