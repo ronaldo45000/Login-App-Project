@@ -147,6 +147,7 @@ public class BudgetTab extends JPanel {
         JScrollPane scrollPane = new JScrollPane(table);
         c.gridx = 0;
         c.gridy = 2;
+        scrollPane.setMinimumSize(new Dimension(350, 350));
         add(scrollPane, c);
 
         // Add document button
