@@ -104,7 +104,14 @@ public class DocumentTab extends JPanel {
                     String totalCost = model.getValueAt(row, 4).toString();     // Cost of changed document
 
                     // Set cost, formatted to 2 decimal places
-                    double totalCostRound = Double.valueOf(totalCost);
+                    double totalCostRound;
+                    try {
+                        totalCostRound = Double.valueOf(totalCost);
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(DocumentTab.this, "Invalid Price!", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
                     listOfDocs.get(id).setTotalCost(BigDecimal.valueOf(Double.valueOf(df.format(totalCostRound))));
                     listOfDocs.get(id).setDocumentName(name);               // Set name
                     listOfDocs.get(id).setDocumentDescription(description); // Set Description
@@ -417,12 +424,13 @@ public class DocumentTab extends JPanel {
 
                     } else {
 
-                        double totalCost = Double.parseDouble(totalCostField.getText());
-
-                        // Round to 2 decimal places
-                        totalCost = Double.valueOf(df.format(totalCost));
+                        double totalCost;
 
                         try {
+                            // Round to 2 decimal places
+                            totalCost = Double.parseDouble(totalCostField.getText());
+                            totalCost = Double.valueOf(df.format(totalCost));
+
                             // Create new document with no file if no file selected
                             if(srcFileString.isEmpty()){
                                 newDoc = new Document(documentName,documentDescription,theProjectID,"", 
@@ -441,6 +449,9 @@ public class DocumentTab extends JPanel {
                         } catch (IOException ex) {
                             JOptionPane.showMessageDialog(DocumentTab.this, 
                             "Something went wrong! The File could not be copied.");
+                        } catch (NumberFormatException ex2) {
+                            JOptionPane.showMessageDialog(DocumentTab.this, "Invalid Price!", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
                         }
                     }
                 }
