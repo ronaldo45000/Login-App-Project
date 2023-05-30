@@ -14,7 +14,7 @@ import model.User;
  * A class to create the About screen of the FileNtro project.
  *
  * @author Riley Bennett
- * @version 0.2
+ * @version 0.3
  */
 public class AboutScreen extends JPanel { 
     
@@ -24,14 +24,13 @@ public class AboutScreen extends JPanel {
     /**
      * Constructor to create the About screen GUI.
      * @author Riley Bennett
-     * @param user The user of the app
-     * @param cardPanel The panels to swap to/from
-     * @param cardLayout The cardlayout used to swap between panels
+     * @param user The user of the app,
+     * @param cardPanel The panels to swap to/from,
+     * @param cardLayout The cardlayout used to swap between panels,
      */
-    public AboutScreen(User user, JPanel cardPanel, CardLayout cardLayout) {
+    public AboutScreen(final User user, final JPanel cardPanel, final CardLayout cardLayout) {
         AppInfoController.setUser(user);
         info = AppInfoController.getAppInfo();
-       // AppInfoController.addNewDeveloper(new Account("Dummy", "Dummy@gmail.com"));
 
         // Create basic GUI elements
         setLayout(new BorderLayout());
@@ -62,9 +61,6 @@ public class AboutScreen extends JPanel {
             aboutInfo.add(userLabel, cons);
         }
 
-
-
-
         // Developer label text
         JLabel devLabel = new JLabel("This app is provided by " + info.getTeamName() + ":");
         devLabel.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -79,10 +75,12 @@ public class AboutScreen extends JPanel {
         cons.insets = new Insets(0, 0, 0, 0);
         StringBuilder str = new StringBuilder();
         str.append("<html><ul>");
+
         while (itr.hasNext()) {
             Account dev = itr.next();
             str.append("<li>" + dev.getName() + " (" + dev.getEmail() + ")</li>");
         }
+        
         str.append("</ul><html>");
         JLabel devs = new JLabel(str.toString());
         aboutInfo.add(devs, cons);

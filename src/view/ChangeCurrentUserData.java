@@ -1,11 +1,7 @@
 package view;
 
-
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.WindowEvent;
-
+import controller.AppInfoController;
+import controller.UserController;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -14,18 +10,21 @@ import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.WindowEvent;
 
-import controller.AppInfoController;
-import controller.UserController;
 /**
  * Popup for changing the user's email and/or username
- * 
  * @author Bairu Li
- *
+ * @version 0.3
  */
 public class ChangeCurrentUserData extends JPanel {
+
 	/** Constant for distinguishing changing username.*/
 	public static final String USERNAME = "Username";
+	
 	/** Constant for distinguishing changing email.*/
 	public static final String EMAIL = "Email";
 	

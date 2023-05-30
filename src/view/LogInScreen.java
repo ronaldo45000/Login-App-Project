@@ -9,18 +9,20 @@ import javax.swing.*;
 import model.User;
 
 /**
+ * Creates the log-in screen for the FileNtro program.
  * @author Riley Bennett
- * @version 0.2
- * OwnerProfileForm JPanel is responsible to create Owner Profile.
- * BorderLayout and GridBagLayout are used in this JPanel.
+ * @author Tin Phu
+ * @author Bairu Li
+ * @version 0.3
  */
 public class LogInScreen extends JPanel {
     /**
-     * State of nameFields
+     * Field for inputting a name.
      */
     private JTextField nameField;
+
     /**
-     * State of nameFields
+     * Field for inputting an email.
      */
     private JTextField emailArea;
 
@@ -28,8 +30,9 @@ public class LogInScreen extends JPanel {
      * Creates the panel for the user to log in.
      * @author Riley Bennett
      * @author Tin Phu
-     * @param cardPanel The cardpanel to be used
-     * @param cardLayout The cardlayout to be used
+     * @author Bairu Li
+     * @param cardPanel The cardpanel to be used.
+     * @param cardLayout The cardlayout to be used.
      */
     public LogInScreen(JPanel cardPanel, CardLayout  cardLayout  ){
 
@@ -46,7 +49,8 @@ public class LogInScreen extends JPanel {
         emailArea = new JTextField(20);
         JButton loginButton = new JButton("Log In");
 
-        loginButton.addActionListener(new ActionListener() {
+        // Action for logging in
+        final Action attemptLogin = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
 
                 String name = nameField.getText();
@@ -54,14 +58,16 @@ public class LogInScreen extends JPanel {
 
                 //Show Error message if one of user inputs isEmpty()
                 if(name.isEmpty() || email.isEmpty()){
-                    JOptionPane.showMessageDialog(LogInScreen.this, "Please fill in all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(LogInScreen.this, "Please fill in all the fields.", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
                 User theUser = UserController.findUser(name, email);
 
                 if (theUser == null) {
-                    JOptionPane.showMessageDialog(LogInScreen.this, "User does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(LogInScreen.this, "User does not exist.", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
@@ -77,11 +83,18 @@ public class LogInScreen extends JPanel {
                 cardLayout.show(cardPanel, "HomeScreen");
 
             }
-        });
+        };
+
+        // logs in by pressing enter key
+        nameField.addActionListener(attemptLogin);
+        emailArea.addActionListener(attemptLogin);
+
+        loginButton.addActionListener(attemptLogin);
 
         JLabel newUserLabel = new JLabel("New to FileNtro?");
         JButton createAcct = new JButton("Sign Up");
 
+        // Create account button action listener
         createAcct.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cardPanel.add(new CreateProfile(cardPanel, cardLayout), "CreateProfileScreen");

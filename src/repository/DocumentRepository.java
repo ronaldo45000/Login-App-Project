@@ -16,26 +16,22 @@ import model.Document;
 /**
  * A repository for the documents of the program.
  * @author Tin Phu
- * @version 0.2
+ * @version 0.3
  */
 public class DocumentRepository {
 
     /**
-     * File path
+     * File path of DocumentList.json.
      */
     private final String FILEPATH = "DocumentList.json";
 
     /**
-     * Hashmap<String, Document> to hold importData();
-     * Keep in mind that the key id.
-     * @author Tin Phu
+     * Mapping of Document ID/Document object pairs.
      */
-    private final  HashMap<String, Document> listOfDocument = new HashMap<String, Document>();
+    private final HashMap<String, Document> listOfDocument = new HashMap<String, Document>();
 
     /**
-     * no-arg constructor
-     * which automatically importData()
-     * @author Tin Phu
+     * No-arg constructor, which automatically imports data.
      */
     public DocumentRepository(){
         importData();
@@ -44,7 +40,7 @@ public class DocumentRepository {
     /**
      * Returns a hashmap of ids to documents.
      * @author Tin Phu
-     * @return Hashmap of id/document pairs
+     * @return Hashmap of id/document pairs.
      */
     public HashMap<String, Document> getListOfDocument(){
         return this.listOfDocument;
@@ -111,7 +107,7 @@ public class DocumentRepository {
     }
 
     /**
-     * Export the hashmap to DocumentList.json file.
+     * Exports the hashmap to DocumentList.json.
      * @author Tin Phu
      */
     public void exportData(){
@@ -124,9 +120,9 @@ public class DocumentRepository {
 
     }
     /**
-     * Returns the file path of DocumentList.json
+     * Returns the file path of DocumentList.json.
      * @author Tin Phu
-     * @return FILEPATH The file path of the json file
+     * @return The file path of the json file.
      */
     public String getFilepath() {
         return FILEPATH;
@@ -135,19 +131,19 @@ public class DocumentRepository {
     /**
      * Adds a document to the list of documents.
      * @author Tin Phu
-     * @param theDoc The document to add
+     * @param theDoc The document to add.
      */
-    public void addDocument(Document theDoc){
+    public void addDocument(final Document theDoc){
         this.listOfDocument.put(theDoc.getId(), theDoc);
         this.exportData();
     }
 
     /**
-     * Delete a Document by id
+     * Deletes a Document by it's ID.
      * @author Tin Phu
-     * @param id The id of the document to be removed
+     * @param id The ID of the document to be removed.
      */
-    public void deleteDocument(String id){
+    public void deleteDocument(final String id){
         this.listOfDocument.remove(id);
         this.exportData();
     }
@@ -155,20 +151,20 @@ public class DocumentRepository {
     /**
      * Deletes the given document.
      * @author Tin Phu
-     * @param theDoc The document to be deleted
+     * @param theDoc The document to be deleted.
      */
-    public void deleteDocument(Document theDoc){
+    public void deleteDocument(final Document theDoc){
         this.listOfDocument.remove(theDoc.getId());
         this.exportData();
     }
 
     /**
-     * Finds document by id.
+     * Finds document by it's ID.
      * @author Tin Phu
-     * @param id The id of the document to be found
-     * @return The document the id is associated with
+     * @param id The ID of the document to be found.
+     * @return The document the id is associated with.
      */
-    public Document findDocumentById(String id){
+    public Document findDocumentById(final String id){
         return this.listOfDocument.get(id);
     }
 }

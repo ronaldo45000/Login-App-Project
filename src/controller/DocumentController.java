@@ -1,18 +1,20 @@
 package controller;
-
-import model.Document;
-import repository.DocumentRepository;
-
 import java.io.File;
 import java.util.HashMap;
+import model.Document;
+import repository.DocumentRepository;
 
 /**
  * A controller for the list of documents in every project.
  * @author Riley Bennett
- * @author Tin Phu.
- * @version 0.2
+ * @author Tin Phu
+ * @version 0.3
  */
 public class DocumentController {
+
+    /**
+     * Document Repository, which has access to the documents in DocumentList.json.
+     */
     private final static DocumentRepository documentRepository = new DocumentRepository();
 
     /**
@@ -34,10 +36,10 @@ public class DocumentController {
     /**
      * Get List of Doc of a specific projectID.
      * @author Tin Phu
-     * @param thePID
-     * @return a copy of HashMap of the list, NOT REFERENCE.
+     * @param thePID The ID of the project
+     * @return A copy of HashMap of the list.
      */
-    public static HashMap<String, Document> getDocsByProjectID(String thePID){
+    public static HashMap<String, Document> getDocsByProjectID(final String thePID){
         HashMap<String, Document> listOfDoc = new HashMap<String, Document>();
         documentRepository.getListOfDocument().forEach((k,e)->{
             if(e.getProjectID().equals(thePID)){
@@ -49,20 +51,20 @@ public class DocumentController {
     }
 
     /**
-     * Adding a document to json file.
+     * Adds a document to the database.
      * @author Tin Phu
-     * @param theDoc
+     * @param theDoc The document to be added.
      */
-    public static void addDocument(Document theDoc){
+    public static void addDocument(final Document theDoc){
         documentRepository.addDocument(theDoc);
     }
 
     /**
-     * Deleting a Doc .
+     * Deletes a document from the database.
      * @author Tin Phu
-     * @param theDoc
+     * @param theDoc The document to be deleted.
      */
-    public static void deleteADocument(Document theDoc){
+    public static void deleteADocument(final Document theDoc){
         documentRepository.deleteDocument(theDoc.getId());
         String currentPath = System.getProperty("user.dir");
         File file = new File(currentPath + theDoc.getFilePath());
@@ -71,12 +73,12 @@ public class DocumentController {
     }
 
     /**
-     * find a Document by ID
-     * @Author Tin Phu
+     * Finds a document by it's ID.
+     * @author Tin Phu
+     * @param theID The ID of the project to be found.
+     * @return The document with the given ID.
      */
-    public static  Document findDocbyID(String theID){
+    public static Document findDocbyID(final String theID){
         return documentRepository.findDocumentById(theID);
     }
-
-
 }
