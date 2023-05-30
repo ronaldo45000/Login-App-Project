@@ -9,14 +9,9 @@ import repository.AboutAppRepository;
 
 /**
  * AppInfoController will help connect GUIs and Data Repository.
- * Message to Team Members:
- * Please call this class if you want to make any change to database.
- * GUIs are not allowed to directly Data Repository, because Data Repository potentially throws Exception
- * ,and we may want to handle them here.
- * this class's methods are STATIC
  * @author Tin Phu
  * @author Riley Bennett
- * @version 0.2
+ * @version 0.3
  *
  */
 public class AppInfoController {
@@ -27,17 +22,9 @@ public class AppInfoController {
     private final static AboutAppRepository aboutAppRepository = new AboutAppRepository();
 
     /**
-     * get App Information
+     * Get the app info object associated with the aboutAppRepository.
+     * @author Tin Phu
      * @return the Reference of the original data. NOT CLONE.
-     * The benefit of return reference: any change to the original data will automatically
-     * update to the GUI
-     * ForExample: In AboutScreen Class:
-     *
-     * Line 34: info = AppInfoController.getAppInfo();
-     *      35: AppInfoController.addNewDeveloper(new Account("Dummy", "Dummy@gmail.com"));
-     * adding new Developer to the original data, and info (bz info points to og data's address)
-     * so the GUI will automatically update.
-     * @Author Tin Phu
      */
     public static AppInfo getAppInfo() {
 
@@ -45,8 +32,8 @@ public class AppInfoController {
     }
 
     /**
-     * Set User to aboutAppRepository
-     * @Author Tin Phu
+     * Sets the user in the aboutAppRepository.
+     * @author Tin Phu
      */
     public static void setUser(User theUser){
 
@@ -55,8 +42,8 @@ public class AppInfoController {
     }
     
     /**
-     * Change User name in aboutAppRepository
-     * @Author Bairu Li
+     * Changes user's name in aboutAppRepository.
+     * @author Bairu Li
      */
     public static void changeUserName(String theName) {
         aboutAppRepository.getAppInfo().getUser().setName(theName);
@@ -64,8 +51,8 @@ public class AppInfoController {
     }
     
     /**
-     * Change User email in aboutAppRepository
-     * @Author Bairu Li
+     * Changes user's email in aboutAppRepository.
+     * @author Bairu Li
      */
     public static void changeUserEmail(String theEmail) {
         aboutAppRepository.getAppInfo().getUser().setEmail(theEmail);
@@ -73,8 +60,8 @@ public class AppInfoController {
     }
 
     /**
-     * Adding new developer and export current state to json file.
-     * @Author Tin Phu
+     * Adds new developer to the aboutAppRepository.
+     * @author Tin Phu
      */
     public static void addNewDeveloper(Account theDeveloper){
         aboutAppRepository.getAppInfo().addNewDeveloper(theDeveloper);
@@ -82,9 +69,8 @@ public class AppInfoController {
     }
 
     /**
-     * remove Devs
-     * this is created for testing of exportData()
-     * @Author Tin Phu
+     * Removes a developer from the aboutAppRepository.
+     * @author Tin Phu
      */
     public static void removeDeveloperByName(String theName){
        aboutAppRepository.getAppInfo().removeDevByName(theName);
@@ -102,7 +88,9 @@ public class AppInfoController {
     }
 
     /**
-     * @Author Tin Phu
+     * Sets the version of the app.
+     * @author Tin Phu
+     * @param theVer The version to set to.
      */
     public static void setVersion(double theVer){
         aboutAppRepository.getAppInfo().setVersionNumber(theVer);
@@ -110,8 +98,9 @@ public class AppInfoController {
     }
 
     /**
-     * @Author Tin Phu
-     * @return User
+     * Sets the current user of the app.
+     * @author Tin Phu
+     * @return The user that was set.
      */
     public static User getCurrentUser(){
         return aboutAppRepository.getAppInfo().getUser();
@@ -128,7 +117,6 @@ public class AppInfoController {
 
     /**
      * Exports app info to a JSON file.
-     *  
      * @author Riley Bennett
      */
     public static void exportData() {
@@ -137,7 +125,6 @@ public class AppInfoController {
 
     /**
      * Imports app info from a JSON file to the program.
-     *  
      * @author Riley Bennett
      */
     public static void importData() {
@@ -145,8 +132,8 @@ public class AppInfoController {
     }
 
     /**
-     * Log out
-     * @Author Tin Phu
+     * Logs the user out of the program.
+     * @author Tin Phu
      */
     public static void logout(){
         aboutAppRepository.getAppInfo().setUser(null);

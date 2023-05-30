@@ -11,12 +11,12 @@ import java.util.ArrayList;
  * @author Hassan Abbas
  * @author Riley Bennett
  * @author Tin Phu
- * @version 0.2
+ * @version 0.3
  */
 public class AppInfo implements Jsonable {
 
     /** The version number of the app. */
-    private  double versionNumber;
+    private double versionNumber;
     
     /** The developers' team name. */
     private final String teamName = "Team Mauve";

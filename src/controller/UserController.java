@@ -8,9 +8,13 @@ import repository.UserRepository;
  * A controller for the user accounts between the UI and repository.
  * 
  * @author Riley Bennett
- * @version 0.2
+ * @version 0.3
  */
 public class UserController {
+    
+    /**
+     * User repository, which has access to UserProfile.json
+     */
     private final static UserRepository userRepository = new UserRepository();
 
     /**

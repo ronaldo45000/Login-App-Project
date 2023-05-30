@@ -2,18 +2,17 @@ package model;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsonable;
-
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.UUID;
 import java.io.Writer;
+import java.util.UUID;
 
 /**
  * A class to store information about accounts in the FileNtro app.
  *
  * @author Thinh Le
  * @author Riley Bennett
- * @version 0.2
+ * @version 0.3
  */
 public class Account implements Jsonable {
 	/** The id of this account. */
@@ -30,6 +29,8 @@ public class Account implements Jsonable {
 	 * @author Riley Bennett
 	 * @author Thinh Le
 	 * @author Tin Phu
+	 * @param name The name of the user.
+	 * @param email The email of the user.
 	 */
 	public Account(String name, String email) {
 		this.name = name;
@@ -51,13 +52,11 @@ public class Account implements Jsonable {
 		this.id = theId;
 	}
 
-
-
-  /**
-   * A getter for the name associated with this account.
-   * @author Thinh Le
-   * @return The name of this account.
-   */
+  	/**
+   	* A getter for the name associated with this account.
+   	* @author Thinh Le
+   	* @return The name of this account.
+   	*/
 	public String getName(){
 		return name;
 	}

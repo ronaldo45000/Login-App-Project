@@ -2,9 +2,6 @@ package model;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsonable;
-import controller.DocumentController;
-import repository.DocumentRepository;
-
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +10,6 @@ import java.io.Writer;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -21,7 +17,7 @@ import java.util.UUID;
  *
  * @author Thinh Le
  * @author Tin Phu
- * @version 0.2
+ * @version 0.3
  */
 public class Document implements Jsonable {
 
@@ -34,28 +30,35 @@ public class Document implements Jsonable {
      * This is the file path to open.
      */
     private String filePath ="not yet";
+
     /**
-        This is description about document.
+     * This is description about the document.
      */
     private String documentDescription;
+
     /**
-     * Total cost of anything that comes with this documents.
+     * Cost associated with the document.
      */
     private BigDecimal totalCost;
+
     /**
-     * this is the projectID which this document belongs to.
+     * This is the projectID which this document belongs to.
      */
     private final String projectID;
 
     /**
-     * this is the User Id which this document belongs to.
+     * This is the User Id which this document belongs to.
      */
     private final String userID;
+
     /**
-        This is the id for document
+     * This is the id for the document.
      */
     private final String id;
 
+    /**
+     * This is the date of the document.
+     */
     private final LocalDate date;
 
     /**
@@ -68,7 +71,7 @@ public class Document implements Jsonable {
      * @param theUserID The id of the user this document belongs to
      * @param theTotalCost The cost associated with this document 
      */
-    public Document( String documentName, String documentDescription, String theProjectId, String theUserID, BigDecimal theTotalCost){
+    public Document(String documentName, String documentDescription, String theProjectId, String theUserID, BigDecimal theTotalCost){
     this.documentName = documentName;
     this.documentDescription = documentDescription;
     this.id =   UUID.randomUUID().toString();
@@ -276,7 +279,7 @@ public class Document implements Jsonable {
      * Copy a file from user input to a dest location.
      * This Model could throw except straight to GUIs.
      * @Author Tin Phu
-     * @param srcString
+     * @param srcString File path string.
      * @throws IOException
      */
     private String copyFileToAppRep(String srcString) throws IOException {
@@ -298,8 +301,9 @@ public class Document implements Jsonable {
     }
 
     /**
-     * @Author
-     * @return boolean, false indicate that the file does not exist.
+     * Opens a file associated with a document.
+     * @author Tin Phu
+     * @return True if the file exists, false otherwise.
      */
     public boolean openDoc(){
         String currentPath = System.getProperty("user.dir");
@@ -318,6 +322,10 @@ public class Document implements Jsonable {
         return false;
     }
 
+    /**
+     * Returns the file path of this document.
+     * @return The file path of this document.
+     */
     public String getFilePath() {
         return filePath;
     }
