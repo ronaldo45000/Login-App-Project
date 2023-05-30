@@ -16,7 +16,7 @@ import model.Document;
  * The budget tab for a project in the FileNtro program.
  * @author Thinh Le
  * @author Riley Bennett
- * @author Tin Phu
+ * @author Tin Phu (fixing bugs only)
  * @version 0.3
  */
 public class BudgetTab extends JPanel {
