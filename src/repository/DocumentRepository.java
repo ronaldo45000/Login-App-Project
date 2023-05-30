@@ -100,7 +100,7 @@ public class DocumentRepository {
                 this.getListOfDocument().put(theDoc.getId(), theDoc);
 
             }
-            System.out.println("Import Data from DocumentList.json");
+//            System.out.println("Import Data from DocumentList.json");
         } catch (IOException | JsonException e) {
             throw new RuntimeException(e);
         }
@@ -113,7 +113,7 @@ public class DocumentRepository {
     public void exportData(){
         try (FileWriter fileWriter = new FileWriter(this.FILEPATH)) {
             Jsoner.serialize(this.listOfDocument, fileWriter);
-            System.out.println("Export Data to DocumentList.json");
+//            System.out.println("Export Data to DocumentList.json");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

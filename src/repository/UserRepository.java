@@ -75,7 +75,7 @@ public class UserRepository {
                 this.listOfuserProfile.put(id, new User(name, email, id));
             }
 
-        System.out.println("Import Data from UserProfile.json");
+//        System.out.println("Import Data from UserProfile.json");
         } catch (IOException | JsonException e){
             throw new RuntimeException(e);
         }
@@ -88,7 +88,7 @@ public class UserRepository {
     public void exportData(){
         try (FileWriter fileWriter = new FileWriter(this.FILEPATH)) {
             Jsoner.serialize(this.listOfuserProfile, fileWriter);
-            System.out.println("Export Data to UserProfile.json");
+//            System.out.println("Export Data to UserProfile.json");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

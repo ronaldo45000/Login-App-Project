@@ -145,7 +145,7 @@ public class AppUI {
 
         if(AppInfoController.getCurrentUser() != null){
             cardPanel.add(new HomeScreen(AppInfoController.getCurrentUser(), cardPanel, cardLayout), "HomeScreen");
-            System.out.println(AppInfoController.getCurrentUser().getId());
+//            System.out.println(AppInfoController.getCurrentUser().getId());
             cardLayout.show(cardPanel, "HomeScreen");
         }
     }

@@ -70,7 +70,7 @@ public class AboutAppRepository {
         } catch (IOException | JsonException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Import Data from AppInfo.json");
+//        System.out.println("Import Data from AppInfo.json");
     }
 
     /**
@@ -83,7 +83,7 @@ public class AboutAppRepository {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Export Data to AppInfo.json");
+//        System.out.println("Export Data to AppInfo.json");
     }
 
     /**
