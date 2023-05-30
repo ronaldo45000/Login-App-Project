@@ -123,5 +123,10 @@ public class ProjectController {
         return totaLCost;
     }
 
+    public static void setTotalBudgetByID(String theID, BigDecimal theTotalBudget){
+        projectRepository.findProjectbyId(theID).setBudget(theTotalBudget);
+        projectRepository.exportData();
+    }
+
 
 }
