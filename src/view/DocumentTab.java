@@ -86,7 +86,9 @@ public class DocumentTab extends JPanel {
 
         // Create the table and set the model
         table = new JTable(model);
-        table.setPreferredScrollableViewportSize( new Dimension(800,250));
+
+
+        table.setPreferredScrollableViewportSize( new Dimension(700, 300));
         // Set a cell editor for the ID column to lock it from being edited
         TableColumn lockedColumn = table.getColumnModel().getColumn(0);
         lockedColumn.setCellEditor(new LockedColumnEditor());
@@ -234,6 +236,10 @@ public class DocumentTab extends JPanel {
         deleteDocument.addActionListener(new deleteDocActionListener());
 
         add(buttonPanel,c);
+
+
+
+
     }
 
     /**
