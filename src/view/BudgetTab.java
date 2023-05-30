@@ -29,12 +29,12 @@ public class BudgetTab extends JPanel {
     /**
      * The total cost of this project.
      */
-    private double theTotalCost;
+    public double theTotalCost;
 
     /**
      * The total budget of this project.
      */
-    private double totalBudget;
+    public double totalBudget;
 
     /**
      * The label to display the total cost with.
@@ -59,7 +59,7 @@ public class BudgetTab extends JPanel {
     /**
      * Mapping of Document ID/Document object pairs.
      */
-    private HashMap<String, Document> myDoc;
+    public HashMap<String, Document> myDoc;
 
     /**
      * The model used to implement the table.
@@ -300,12 +300,13 @@ public class BudgetTab extends JPanel {
             String currentID = (String) table.getValueAt(selectedRow, 0); //CURRENT ID
             String currentName = (String) table.getValueAt(selectedRow, 1); //CURRENT Name
             String newMessage = JOptionPane.showInputDialog(this, "Enter New Name:", currentName); //NEW name
+            String currentDecription = DocumentController.findDocbyID(currentID).getDocumentDescription();
 
             if (newMessage == null) {
                 return;
             }
 
-            Document doc2 = new Document(newMessage, "", theProjectID, "", 
+            Document doc2 = new Document(newMessage, currentDecription, theProjectID, "",
                                          myDoc.get(currentID).getTotalCost());
 
             DocumentController.deleteADocument(myDoc.get(currentID));
@@ -350,8 +351,9 @@ public class BudgetTab extends JPanel {
 
             //Update the price in the table
             theTotalCost -= myDoc.get(currentID).getTotalCost().doubleValue();
+            String currentDecription = DocumentController.findDocbyID(currentID).getDocumentDescription();
 
-            Document newDoc2 = new Document(myDoc.get(currentID).getDocumentName(), "", 
+            Document newDoc2 = new Document(myDoc.get(currentID).getDocumentName(), currentDecription,
                                             theProjectID, "", new BigDecimal(newPrice));
 
             DocumentController.deleteADocument(myDoc.get(currentID));
@@ -429,22 +431,22 @@ public class BudgetTab extends JPanel {
      * @author Tin Phu
      * @author Riley Bennett
      */
-    private class DocumentCreationFormPopUp extends JPanel{
+    public class DocumentCreationFormPopUp extends JPanel{
 
         /**
          * Name field of the popup.
          */
-        private final JTextField documentNameField;
+        public final JTextField documentNameField;
 
         /**
          * Description field of the popup.
          */
-        private final JTextField documentDescriptionField;
+        public final JTextField documentDescriptionField;
 
         /**
          * Cost field of the popup.
          */
-        private final JTextField totalCostField;
+        public final JTextField totalCostField;
 
         /**
          * File path associated with this document (if any)
@@ -454,7 +456,7 @@ public class BudgetTab extends JPanel {
         /**
          * Dialog to create this popup with.
          */
-        private final JDialog dialog = new JDialog();
+        public final JDialog dialog = new JDialog();
 
         /**
          * Constructor to create the popup.
