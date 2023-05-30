@@ -34,7 +34,7 @@ import model.User;
  * A class to set up the Project Screen.
  * 
  * @author Hassan Abbas
- * @version 0.1
+ * @version 0.3
  */
 public class ProjectScreen extends JPanel {
     private JTabbedPane projectTab;

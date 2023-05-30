@@ -171,7 +171,7 @@ public class AppInfo implements Jsonable {
     public void removeDevByName(final String theName){
         for(int i = 0; i < this.teamMembers.size(); i++){
             if(this.teamMembers.get(i).getName().equals(theName)){
-                System.out.println("remove" + this.teamMembers.get(i).getName() );
+//                System.out.println("remove" + this.teamMembers.get(i).getName() );
                 this.teamMembers.remove(i);
 
             }

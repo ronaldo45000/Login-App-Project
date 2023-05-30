@@ -275,7 +275,7 @@ public class BudgetTab extends JPanel {
             if (row >= 0) {
 
                 String name = model.getValueAt(row, 1).toString();
-                System.out.println("Deleting " + name);
+//                System.out.println("Deleting " + name);
                 String id = (String) table.getValueAt(row, 0);
                 theTotalCost -= myDoc.get(id).getTotalCost().doubleValue();
                 totalLabel.setText("CurrentCost:$" + theTotalCost); 

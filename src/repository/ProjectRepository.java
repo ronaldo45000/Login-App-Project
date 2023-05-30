@@ -82,7 +82,7 @@ public class ProjectRepository {
 
             }
 
-            System.out.println("Import Data from ProjectList.json");
+//            System.out.println("Import Data from ProjectList.json");
 
         } catch (IOException | JsonException e){
             throw new RuntimeException(e);
@@ -96,7 +96,7 @@ public class ProjectRepository {
     public void exportData(){
         try (FileWriter fileWriter = new FileWriter(this.FILEPATH)) {
             Jsoner.serialize(this.listOfProject, fileWriter);
-            System.out.println("Export Data to ProjectList.json");
+//            System.out.println("Export Data to ProjectList.json");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
