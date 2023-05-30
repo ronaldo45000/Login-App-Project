@@ -9,6 +9,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.text.DecimalFormat;
@@ -364,7 +365,7 @@ public class BudgetTab extends JPanel {
             String currentPath = DocumentController.findDocbyID(currentID).getFilePath();
 
             Document newDoc2 = new Document(currentName, currentDecription,
-                                            theProjectID, "", new BigDecimal(newPrice),currentID,currentDate,currentPath);
+                                            theProjectID, "", new BigDecimal(newPrice).setScale(2, RoundingMode.CEILING),currentID,currentDate,currentPath);
 
             //DocumentController.deleteADocument(myDoc.get(currentID));
             //myDoc.remove(currentID);
@@ -404,7 +405,7 @@ public class BudgetTab extends JPanel {
         myDoc.forEach((k, e) -> {
             addRowToTable(k, e.getDocumentName(), df.format(e.getTotalCost()));
         });
-        BigDecimal pTotalCost= ProjectController.updateTotalCostByID(this.theProjectID);
+        BigDecimal pTotalCost= ProjectController.updateTotalCostByID(this.theProjectID).setScale(2, RoundingMode.CEILING);
         theTotalCost = Double.valueOf(pTotalCost.doubleValue());
         totalLabel.setText("Current Cost: $" + theTotalCost);
 
