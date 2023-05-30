@@ -51,10 +51,12 @@ public class AboutAppRepository {
                 if(o.get("versionNumber") != null){
                     appInfo.setVersionNumber(Double.parseDouble(o.get("versionNumber").toString()));
                 }
+
+
                 //Mapping CurrentUser
                  if(o.get("user") != null){
                     JsonObject currentUserJObject =  (JsonObject) o.get("user");
-                    appInfo.setUser(new User(currentUserJObject.get("name").toString(),currentUserJObject.get("email").toString()));
+                    appInfo.setUser(new User(currentUserJObject.get("name").toString(),currentUserJObject.get("email").toString(), currentUserJObject.get("id").toString()));
                 }
                 JsonArray  arr = (JsonArray)o.get("teamMembers");
                 appInfo.clearDevelopers();

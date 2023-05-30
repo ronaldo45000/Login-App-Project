@@ -16,6 +16,14 @@ import java.awt.event.ActionListener;
  * @version 0.2
  */
 public class AppUI {
+    /** Constant for the default width of the frame.*/
+    private static final int WIDTH = 400;
+
+    /** Constant for the default height of the frame.*/
+    private static final int HEIGHT = 300;
+
+    /** Constant for the scale of the frame.*/
+    private static final int SCALE = 3;
     private JFrame frame;
     /**
      * Panel containing every JPanel of the app.
@@ -40,9 +48,7 @@ public class AppUI {
         JLabel label = new JLabel("Hello World");
         frame.getContentPane().add(label);
         // Set the size of the frame to medium
-        int width = 400;
-        int height = 300;
-        frame.setSize(2 * width, 2 * height);
+        frame.setSize(SCALE * WIDTH, SCALE * HEIGHT);
         //Setup cardLayout and carPanel.
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
@@ -66,10 +72,12 @@ public class AppUI {
         //Adding Import Menu Item
         JMenuItem importMenuItem = new JMenuItem("Import");
         JMenuItem exportMenuItem = new JMenuItem("Export");
+        importMenuItem.setAccelerator(KeyStroke.getKeyStroke("control I"));
+        exportMenuItem.setAccelerator(KeyStroke.getKeyStroke("control E"));
         importMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int confirm = JOptionPane.showConfirmDialog(frame, "While importing data, you will be logged out to Home Screen.\nContinue?",
+                int confirm = JOptionPane.showConfirmDialog(frame, "While importing data, you will be logged out to Project Screen.\nContinue?",
                 "Warning", JOptionPane.YES_NO_OPTION);
 
                 if (confirm == JOptionPane.YES_OPTION) {
@@ -82,6 +90,7 @@ public class AppUI {
                         cardLayout.show(cardPanel, "LogInScreen");
                     } else {
                         cardPanel.add(new HomeScreen(AppInfoController.getCurrentUser(), cardPanel, cardLayout), "HomeScreen");
+//                        System.out.println(AppInfoController.getCurrentUser().getId());
                         cardLayout.show(cardPanel, "HomeScreen");
                     }
                     frame.dispose();
@@ -123,7 +132,7 @@ public class AppUI {
         // Set the menu bar to the frame
         frame.setJMenuBar(menuBar);
 
-
+        frame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
         // Pack and center the frame
         //frame.pack();
         frame.setLocationRelativeTo(null);
@@ -133,6 +142,7 @@ public class AppUI {
 
         if(AppInfoController.getCurrentUser() != null){
             cardPanel.add(new HomeScreen(AppInfoController.getCurrentUser(), cardPanel, cardLayout), "HomeScreen");
+            System.out.println(AppInfoController.getCurrentUser().getId());
             cardLayout.show(cardPanel, "HomeScreen");
         }
     }
