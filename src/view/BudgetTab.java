@@ -13,6 +13,8 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.text.DecimalFormat;
 import model.Document;
+import model.Project;
+
 /**
  * The budget tab for a project in the FileNtro program.
  * @author Thinh Le
@@ -369,10 +371,10 @@ public class BudgetTab extends JPanel {
 
             DocumentController.addDocument(newDoc2);
             myDoc.put(currentID, newDoc2);
-            theTotalCost += myDoc.get(currentID).getTotalCost().doubleValue();
-
-            theTotalCost = Double.valueOf(df.format(theTotalCost));
-            totalLabel.setText("Current Cost: $" + theTotalCost);
+//            theTotalCost += myDoc.get(currentID).getTotalCost().doubleValue();
+//
+//            theTotalCost = Double.valueOf(df.format(theTotalCost));
+//            totalLabel.setText("Current Cost: $" + theTotalCost);
 
             updateTable();
         });
@@ -402,6 +404,9 @@ public class BudgetTab extends JPanel {
         myDoc.forEach((k, e) -> {
             addRowToTable(k, e.getDocumentName(), df.format(e.getTotalCost()));
         });
+        BigDecimal pTotalCost= ProjectController.updateTotalCostByID(this.theProjectID);
+        theTotalCost = Double.valueOf(pTotalCost.doubleValue());
+        totalLabel.setText("Current Cost: $" + theTotalCost);
 
     }
 
