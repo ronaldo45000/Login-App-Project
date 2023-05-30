@@ -9,6 +9,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.text.DecimalFormat;
 import model.Document;
@@ -303,16 +304,17 @@ public class BudgetTab extends JPanel {
             String currentName = (String) table.getValueAt(selectedRow, 1); //CURRENT Name
             String newMessage = JOptionPane.showInputDialog(this, "Enter New Name:", currentName); //NEW name
             String currentDecription = DocumentController.findDocbyID(currentID).getDocumentDescription();
-
+            LocalDate currentDate =  DocumentController.findDocbyID(currentID).getDate();
+            String currentPath = DocumentController.findDocbyID(currentID).getFilePath();
             if (newMessage == null) {
                 return;
             }
 
             Document doc2 = new Document(newMessage, currentDecription, theProjectID, "",
-                                         myDoc.get(currentID).getTotalCost());
+                                         myDoc.get(currentID).getTotalCost(),currentID, currentDate, currentPath  );
 
-            DocumentController.deleteADocument(myDoc.get(currentID));
-            myDoc.remove(currentID);
+            //DocumentController.deleteADocument(myDoc.get(currentID));
+            //myDoc.remove(currentID);
 
             DocumentController.addDocument(doc2);
             myDoc.put(currentID, doc2);
@@ -352,14 +354,18 @@ public class BudgetTab extends JPanel {
             newPrice = Double.valueOf(df.format(newPrice));
 
             //Update the price in the table
-            theTotalCost -= myDoc.get(currentID).getTotalCost().doubleValue();
+            //theTotalCost -= myDoc.get(currentID).getTotalCost().doubleValue();
+            String currentName = DocumentController.findDocbyID(currentID).getDocumentName();
+
             String currentDecription = DocumentController.findDocbyID(currentID).getDocumentDescription();
+            LocalDate currentDate =  DocumentController.findDocbyID(currentID).getDate();
+            String currentPath = DocumentController.findDocbyID(currentID).getFilePath();
 
-            Document newDoc2 = new Document(myDoc.get(currentID).getDocumentName(), currentDecription,
-                                            theProjectID, "", new BigDecimal(newPrice));
+            Document newDoc2 = new Document(currentName, currentDecription,
+                                            theProjectID, "", new BigDecimal(newPrice),currentID,currentDate,currentPath);
 
-            DocumentController.deleteADocument(myDoc.get(currentID));
-            myDoc.remove(currentID);
+            //DocumentController.deleteADocument(myDoc.get(currentID));
+            //myDoc.remove(currentID);
 
             DocumentController.addDocument(newDoc2);
             myDoc.put(currentID, newDoc2);
