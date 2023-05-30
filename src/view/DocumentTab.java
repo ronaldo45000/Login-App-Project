@@ -27,6 +27,11 @@ import java.util.zip.GZIPInputStream;
 public class DocumentTab extends JPanel {
 
     /**
+     * The ID of the project this document tab belongs to.
+     */
+    private String projectID;
+
+    /**
      * The list of documents belonging to a certain project.
      */
     private HashMap<String, Document> listOfDocs;
@@ -54,6 +59,8 @@ public class DocumentTab extends JPanel {
      */
     public DocumentTab(final String theProjectID){
 
+        projectID = theProjectID;
+
         // Get documents already associated with this project (if any)
         listOfDocs = DocumentController.getDocsByProjectID(theProjectID);
         DefaultListModel<String> listModel = new DefaultListModel<>();
@@ -66,7 +73,7 @@ public class DocumentTab extends JPanel {
         model.addColumn("Name");
         model.addColumn("Description");
         model.addColumn("Date");
-        model.addColumn("Total Cost");
+        model.addColumn("Total Cost ($)");
 
         // Create the table and set the model
         table = new JTable(model);
@@ -105,7 +112,15 @@ public class DocumentTab extends JPanel {
                     String totalCost = model.getValueAt(row, 4).toString();     // Cost of changed document
 
                     // Set cost, formatted to 2 decimal places
-                    double totalCostRound = Double.valueOf(totalCost);
+                    double totalCostRound;
+                    try {
+                        totalCostRound = Double.valueOf(totalCost);
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(DocumentTab.this, "Invalid Price!", "Error", JOptionPane.ERROR_MESSAGE);
+                        model.setValueAt(listOfDocs.get(id).getTotalCost(), row, e.getColumn());
+                        return;
+                    }
+
                     listOfDocs.get(id).setTotalCost(BigDecimal.valueOf(Double.valueOf(df.format(totalCostRound))));
                     listOfDocs.get(id).setDocumentName(name);               // Set name
                     listOfDocs.get(id).setDocumentDescription(description); // Set Description
@@ -127,48 +142,13 @@ public class DocumentTab extends JPanel {
         JMenuItem readItem = new JMenuItem("Read");
 
         // Add action listener to openItem
-        openItem.addActionListener(e -> {
-            int row = table.getSelectedRow();
-
-            if (row >= 0) {
-                String id = (String) table.getValueAt(row, 0);
-                
-                // Check if document has file attached
-                if(!listOfDocs.get(id).openDoc()){
-                    JOptionPane.showMessageDialog(DocumentTab.this, "This document does not have an attached file !");
-                };
-        }
-        });
+        openItem.addActionListener(new openDocActionListener());
 
         // Add action listener to readItem
-        readItem.addActionListener(e-> {
-            int row = table.getSelectedRow();
-
-            if (row >= 0) {
-                String id = (String) table.getValueAt(row, 0);
-                new DocumentTabRead(listOfDocs.get(id));    // Displays item information in a new popup
-            }
-        });
+        readItem.addActionListener(new readDocActionListener());
 
         // Add action listener to deleteItem
-        deleteItem.addActionListener(e -> {
-            int row = table.getSelectedRow();
-
-            if (row >= 0) {
-                int result = JOptionPane.showConfirmDialog(DocumentTab.this, "Are you sure you want to Delete the document?",
-                "Confirmation", JOptionPane.YES_NO_OPTION);
-
-                if (result == JOptionPane.YES_OPTION) {
-                    String name = model.getValueAt(row, 1).toString();
-//                    System.out.println("Deleting " + name);
-                    String id = (String) table.getValueAt(row, 0);
-
-                    DocumentController.deleteADocument(listOfDocs.get(id));     // Delete the specified document from the database
-                    listOfDocs.remove(id);                                      // Remove document from the list
-                    updateTable(theProjectID);                                  // Update table
-                } 
-            }
-        });
+        deleteItem.addActionListener(new deleteDocActionListener());
 
         // Add the menu items to the popup menu
         popupMenu.add(openItem);
@@ -192,18 +172,23 @@ public class DocumentTab extends JPanel {
                 }
             }
         });
+
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(5,5,5,5);
-        JScrollPane scrollPane = new JScrollPane(table);
-        c.gridx =0;
-        c.gridy=1;
+        JScrollPane scrollPane = new JScrollPane(table);    // Make table scrollable
+        c.gridx = 0;
+        c.gridy = 1;
 
         add(scrollPane, c);
 
+        // Add document button
         JButton addButton = new JButton("Add Document");
-        c.gridx =0;
-        c.gridy=2;
+        c.gridx = 0;
+        c.gridy = 2;
 
+        /**
+         * Action listener for the add document button.
+         */
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -212,23 +197,33 @@ public class DocumentTab extends JPanel {
         });
 
         add(addButton,c);
-        //This is button to open document
+
+        // Open document button
         JButton openDocument = new JButton("Open Document");
-        c.gridx =0;
-        c.gridy=3;
+        c.gridx = 0;
+        c.gridy = 3;
+
+        openDocument.addActionListener(new openDocActionListener());
+
         add(openDocument,c);
-        //This is button to read document
+
+        // Read document button
         JButton readDocument = new JButton("Read Document");
-        c.gridx =0;
-        c.gridy=4;
+        c.gridx = 0;
+        c.gridy = 4;
+
+        readDocument.addActionListener(new readDocActionListener());
         add(readDocument,c);
-        //This is button to delete document
+
+        // Delete document button
         JButton deleteDocument = new JButton("Delete Document");
-        c.gridx =0;
-        c.gridy=5;
+        c.gridx = 0;
+        c.gridy = 5;
+
+        deleteDocument.addActionListener(new deleteDocActionListener());
+
         add(deleteDocument,c);
     }
-
 
     /**
      * Adds a document in a new row to the table.
@@ -441,12 +436,13 @@ public class DocumentTab extends JPanel {
 
                     } else {
 
-                        double totalCost = Double.parseDouble(totalCostField.getText());
-
-                        // Round to 2 decimal places
-                        totalCost = Double.valueOf(df.format(totalCost));
+                        double totalCost;
 
                         try {
+                            // Round to 2 decimal places
+                            totalCost = Double.parseDouble(totalCostField.getText());
+                            totalCost = Double.valueOf(df.format(totalCost));
+
                             // Create new document with no file if no file selected
                             if(srcFileString.isEmpty()){
                                 newDoc = new Document(documentName,documentDescription,theProjectID,"", 
@@ -465,6 +461,9 @@ public class DocumentTab extends JPanel {
                         } catch (IOException ex) {
                             JOptionPane.showMessageDialog(DocumentTab.this, 
                             "Something went wrong! The File could not be copied.");
+                        } catch (NumberFormatException ex2) {
+                            JOptionPane.showMessageDialog(DocumentTab.this, "Invalid Price!", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
                         }
                     }
                 }
@@ -479,6 +478,68 @@ public class DocumentTab extends JPanel {
             dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             dialog.setVisible(true);
 
+        }
+    }
+
+    /**
+     * Action listener for the Open Document buttons.
+     * @author Tin Phu
+     * @author Riley Bennett
+     */
+    private class openDocActionListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            int row = table.getSelectedRow();
+
+            if (row >= 0) {
+                String id = (String) table.getValueAt(row, 0);
+                
+                // Check if document has file attached
+                if(!listOfDocs.get(id).openDoc()) {
+                    JOptionPane.showMessageDialog(DocumentTab.this, "This document does not have an attached file !");
+                }
+            }
+        }
+    }
+
+    /**
+     * Action listener for the Read Document buttons.
+     * @author Tin Phu
+     * @author Riley Bennett
+     */
+    private class readDocActionListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            int row = table.getSelectedRow();
+
+            if (row >= 0) {
+                String id = (String) table.getValueAt(row, 0);
+                new DocumentTabRead(listOfDocs.get(id));    // Displays item information in a new popup
+            }
+        }
+    }
+
+    /**
+     * Action listener for the Delete Document buttons.
+     * @author Tin Phu
+     * @author Riley Bennett
+     */
+    private class deleteDocActionListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            int row = table.getSelectedRow();
+
+            if (row >= 0) {
+                int result = JOptionPane.showConfirmDialog(DocumentTab.this, "Are you sure you want to Delete the document?",
+                "Confirmation", JOptionPane.YES_NO_OPTION);
+
+                if (result == JOptionPane.YES_OPTION) {
+//                    String name = model.getValueAt(row, 1).toString();
+//                    System.out.println("Deleting " + name);
+                    String id = (String) table.getValueAt(row, 0);
+
+                    DocumentController.deleteADocument(listOfDocs.get(id));     // Delete the specified document from the database
+                    listOfDocs.remove(id);                                      // Remove document from the list
+                    updateTable(projectID);                                     // Update table
+                } 
+            }
         }
     }
 }
