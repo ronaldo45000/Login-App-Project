@@ -72,7 +72,7 @@ public class DocumentTab extends JPanel {
         model.addColumn("Name");
         model.addColumn("Description");
         model.addColumn("Date");
-        model.addColumn("Total Cost ($)");
+        model.addColumn("Cost ($)");
 
         // Create the table and set the model
         table = new JTable(model);
@@ -114,16 +114,18 @@ public class DocumentTab extends JPanel {
                     double totalCostRound;
                     try {
                         totalCostRound = Double.valueOf(totalCost);
+                        totalCostRound = Double.valueOf(df.format(totalCostRound));
                     } catch (NumberFormatException ex) {
                         JOptionPane.showMessageDialog(DocumentTab.this, "Invalid Price!", "Error", JOptionPane.ERROR_MESSAGE);
                         model.setValueAt(listOfDocs.get(id).getTotalCost(), row, e.getColumn());
                         return;
                     }
 
-                    listOfDocs.get(id).setTotalCost(BigDecimal.valueOf(Double.valueOf(df.format(totalCostRound))));
+                    listOfDocs.get(id).setTotalCost(BigDecimal.valueOf(totalCostRound));
                     listOfDocs.get(id).setDocumentName(name);               // Set name
                     listOfDocs.get(id).setDocumentDescription(description); // Set Description
-
+                    
+                    
                     DocumentController.addDocument(listOfDocs.get(id));     // Add document to list of documents
                 }
             }

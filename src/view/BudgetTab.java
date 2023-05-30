@@ -97,13 +97,13 @@ public class BudgetTab extends JPanel {
         // Add Name column
         model.addColumn("Name");
         // Add Total cost column
-        model.addColumn("Cost");
+        model.addColumn("Cost ($)");
 
         // Create the table and set the model
         table = new JTable(model);
         table.setPreferredScrollableViewportSize(new Dimension(350, 350));
 
-        totalLabel = new JLabel("CurrentCost:$0.00");
+        totalLabel = new JLabel("Current Cost: $0.00");
         totalLabel.setFont(new Font("Verdana", Font.PLAIN, 18));
 
         updateTotalCost();
@@ -218,7 +218,9 @@ public class BudgetTab extends JPanel {
                 myDoc.put(doc.id(), doc);
 
                 theTotalCost += myDoc.get(doc.id()).getTotalCost().doubleValue();
-                totalLabel.setText("CurrentCost:$" + theTotalCost);
+
+                theTotalCost = Double.valueOf(df.format(theTotalCost));
+                totalLabel.setText("Current Cost: $" + theTotalCost);
 
                 updateTable();
 
@@ -238,9 +240,6 @@ public class BudgetTab extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new DocumentCreationFormPopUp(theProjectID);
-
-
-
             }
         });
 
@@ -275,11 +274,13 @@ public class BudgetTab extends JPanel {
             int row = table.getSelectedRow();
             if (row >= 0) {
 
-                String name = model.getValueAt(row, 1).toString();
 //                System.out.println("Deleting " + name);
                 String id = (String) table.getValueAt(row, 0);
                 theTotalCost -= myDoc.get(id).getTotalCost().doubleValue();
-                totalLabel.setText("CurrentCost:$" + theTotalCost); 
+
+                // Round to 2 decimal places
+                theTotalCost = Double.valueOf(df.format(theTotalCost));
+                totalLabel.setText("Current Cost: $" + theTotalCost); 
                 DocumentController.deleteADocument(myDoc.get(id));
 
                 myDoc.remove(id);
@@ -362,7 +363,8 @@ public class BudgetTab extends JPanel {
             myDoc.put(currentID, newDoc2);
             theTotalCost += myDoc.get(currentID).getTotalCost().doubleValue();
 
-            totalLabel.setText("CurrentCost:$" + theTotalCost);
+            theTotalCost = Double.valueOf(df.format(theTotalCost));
+            totalLabel.setText("Current Cost: $" + theTotalCost);
 
             updateTable();
         });
@@ -422,7 +424,7 @@ public class BudgetTab extends JPanel {
         // Round to 2 decimal places
         theTotalCost = Double.valueOf(df.format(theTotalCost));
 
-        totalLabel.setText("CurrentCost:$" + String.format("%.2f", theTotalCost));
+        totalLabel.setText("Current Cost: $" + String.format("%.2f", theTotalCost));
     }
 
     /**
@@ -559,13 +561,13 @@ public class BudgetTab extends JPanel {
                         JOptionPane.showMessageDialog(BudgetTab.this, "The Description is too long!");
 
                     } else {
-                        double totalCost = Double.parseDouble(totalCostField.getText());
-                        DecimalFormat df = new DecimalFormat("#.##");
-                        
-                        // Round to 2 decimal places
-                        totalCost = Double.valueOf(df.format(totalCost));
 
                         try {
+                            double totalCost = Double.parseDouble(totalCostField.getText());
+                        
+                            // Round to 2 decimal places
+                            totalCost = Double.valueOf(df.format(totalCost));
+
                             if(srcFileString.isEmpty()){
                                 newDoc = new Document(documentName,documentDescription,theProjectID,"", 
                                 BigDecimal.valueOf(totalCost));
@@ -588,6 +590,8 @@ public class BudgetTab extends JPanel {
                             updateTable();
                         } catch (IOException ex) {
                             JOptionPane.showMessageDialog(BudgetTab.this, "Something went wrong! The File could not be coppied");
+                        } catch (NumberFormatException ex2) {
+                            JOptionPane.showMessageDialog(BudgetTab.this, "Invalid Price!", "Error", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 }
