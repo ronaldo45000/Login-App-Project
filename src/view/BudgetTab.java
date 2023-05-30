@@ -1,6 +1,7 @@
 package view;
 
 import controller.DocumentController;
+import controller.ProjectController;
 import model.Document;
 
 import java.io.File;
@@ -24,6 +25,7 @@ import java.text.DecimalFormat;
  */
 public class BudgetTab extends JPanel {
 
+    public String theProjectID;
     public double theTotalCost;
     public double totalBudget;
     public JLabel totalLabel;
@@ -60,6 +62,8 @@ public class BudgetTab extends JPanel {
      * @author Thinh Le
      */
     public BudgetTab(String theProjectID) {
+
+        this.theProjectID = theProjectID;
 
         //Initialize my doc from Document controller
         myDoc = DocumentController.getDocsByProjectID(theProjectID);
@@ -220,7 +224,7 @@ public class BudgetTab extends JPanel {
                     // Round to 2 decimal places
                     newBudget = Double.valueOf(df.format(newBudget));
                    // doc = new Document("Total Budget:$", "", theProjectID, "", BigDecimal.valueOf(newBudget));
-
+                    ProjectController.setTotalBudgetByID(theProjectID, BigDecimal.valueOf(newBudget));
                     setTotalBudget(newBudget);
 
                 } catch (NumberFormatException ex) {
@@ -387,7 +391,7 @@ public class BudgetTab extends JPanel {
      */
     public void updateTotalBudgetLabel() {
 
-        setBudgetField.setText("" + totalBudget);
+        setBudgetField.setText("" + ProjectController.findProjectByID(theProjectID).getBudget());
 
     }
     /**
@@ -412,11 +416,11 @@ public class BudgetTab extends JPanel {
      *
      */
     public class DocumentCreationFormPopUp extends JPanel{
-        private final JTextField documentNameField;
-        private final JTextField documentDescriptionField;
-        private final JTextField totalCostField;
+        public final JTextField documentNameField;
+        public final JTextField documentDescriptionField;
+        public final JTextField totalCostField;
         private String srcFileString = "";
-        private final JDialog dialog = new JDialog();
+        public final JDialog dialog = new JDialog();
 
         /**
          * @Author Tin Phu
