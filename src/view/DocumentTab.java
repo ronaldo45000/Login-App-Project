@@ -177,7 +177,7 @@ public class DocumentTab extends JPanel {
         JScrollPane scrollPane = new JScrollPane(table);    // Make table scrollable
         c.gridx = 0;
         c.gridy = 1;
-
+        scrollPane.setMinimumSize(new Dimension(800,500));
         add(scrollPane, c);
 
         // Add document button
