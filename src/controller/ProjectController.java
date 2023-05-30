@@ -98,7 +98,7 @@ public class ProjectController {
         projectRepository.deleteProject(theID);
         String currentPath = System.getProperty("user.dir");
 
-        File file = new File(currentPath + "\\" +  theID);
+        File file = new File(currentPath + "\\projects\\" +  theID);
 
         Files.delete(file.toPath());
 

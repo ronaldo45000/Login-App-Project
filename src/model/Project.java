@@ -215,7 +215,7 @@ public class Project implements Jsonable {
      */
     private void createProjectFolder(){
         String currentPath = System.getProperty("user.dir");
-        File theDir = new File(currentPath + "\\"+ this.id);
+        File theDir = new File(currentPath + "\\projects\\"+ this.id);
         if (!theDir.exists()){
             theDir.mkdirs();
         }

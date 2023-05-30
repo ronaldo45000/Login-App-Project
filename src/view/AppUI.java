@@ -139,6 +139,11 @@ public class AppUI {
         // Pack and center the frame
         //frame.pack();
         frame.setLocationRelativeTo(null);
+        //set logo
+        String currentPath = System.getProperty("user.dir");
+
+        ImageIcon icon = new ImageIcon(currentPath + "/logo.png");
+        frame.setIconImage(icon.getImage());
 
         // Show the frame
         frame.setVisible(true);

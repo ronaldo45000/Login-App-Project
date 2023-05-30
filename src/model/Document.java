@@ -307,7 +307,7 @@ public class Document implements Jsonable {
             }
         }
         String currentPath = System.getProperty("user.dir");
-        String destString = "\\" + this.projectID + "\\" + this.id + fileType;
+        String destString = "\\projects\\" + this.projectID + "\\" + this.id + fileType;
         File dest = new File(currentPath + destString);
         Files.copy(src.toPath(), dest.toPath());
         return destString;
