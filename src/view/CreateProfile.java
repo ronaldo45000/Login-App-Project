@@ -1,22 +1,21 @@
 package view;
 
-import model.User;
-
+import controller.AppInfoController;
+import controller.UserController;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import controller.AppInfoController;
-import controller.UserController;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import model.User;
 
 /**
  * CreateProfile JPanel allows the user to create a profile.
  * BorderLayout and GridBagLayout are used in this JPanel.
  * @author Tin Phu
  * @author Riley Bennett
- * @version 0.2
+ * @version 0.3
  */
 public class CreateProfile extends JPanel {
     /**

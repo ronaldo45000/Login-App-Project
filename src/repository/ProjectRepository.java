@@ -15,23 +15,21 @@ import model.Project;
 /**
  * A repository for a user's projects.
  * @author Tin Phu
- * @version 0.2
+ * @version 0.3
  */
 public class ProjectRepository {
     /**
-     * File name
+     * File path to ProjectList.json.
      */
     private final String FILEPATH="ProjectList.json";
 
     /**
-     * Hashmap<Srting, Project> to hold importData();
-     * Keep in mind that the key id.
+     * Mapping of Project ID/Project object pairs.
      */
     private final HashMap<String, Project> listOfProject = new HashMap<String, Project>();
 
     /**
-     * no-arg constructor
-     * which automatically importData()
+     * No-arg constructor, which automatically imports data.
      * @author Tin Phu
      */
     public ProjectRepository(){
@@ -39,7 +37,7 @@ public class ProjectRepository {
     }
 
     /**
-     * Import data from ProjectList.json and map to hashMap.
+     * Import data from ProjectList.json and map to the hashmap.
      * @author Tin Phu
      */
     public void importData(){
@@ -92,7 +90,7 @@ public class ProjectRepository {
     }
 
     /**
-     * Export the hashmap to ProjectList.json file.
+     * Export the hashmap to ProjectList.json.
      * @author Tin Phu
      */
     public void exportData(){
@@ -104,30 +102,30 @@ public class ProjectRepository {
         }
     }
     /**
-     * Return the reference of the hashmap.
+     * Returns the reference of the hashmap.
      * @author Tin Phu
-     * @return A hashmap of id/project pairs
+     * @return A hashmap of ID/project pairs.
      */
     public HashMap<String, Project> getListOfProject() {
         return listOfProject;
     }
 
     /**
-     * Add a project to the list
+     * Adds a project to the list.
      * @author Tin Phu
-     * @param theProject The project to be added
+     * @param theProject The project to be added.
      */
-    public void addProject(Project theProject){
+    public void addProject(final Project theProject){
         this.listOfProject.put(theProject.getId(), theProject);
         this.exportData();
     }
 
     /**
-     * Deletes project by id
+     * Deletes a project by it's ID.
      * @author Tin Phu
-     * @param id The id of the project to be deleted
+     * @param id The ID of the project to be deleted.
      */
-    public void deleteProject(String id){
+    public void deleteProject(final String id){
         this.listOfProject.remove(id);
         this.exportData();
     }
@@ -135,9 +133,9 @@ public class ProjectRepository {
     /**
      * Deletes the specified project.
      * @author Tin Phu
-     * @param theProject The project to be deleted
+     * @param theProject The project to be deleted.
      */
-    public void deleteProject(Project theProject){
+    public void deleteProject(final Project theProject){
         this.listOfProject.remove(theProject.getId());
         this.exportData();
     }
@@ -145,10 +143,10 @@ public class ProjectRepository {
     /**
      * Returns the project associated with the given id.
      * @author Tin Phu
-     * @param theId The id of the project to be searched for
-     * @return The project associated with the id
+     * @param theId The id of the project to be searched for.
+     * @return The project associated with the id.
      */
-    public Project findProjectbyId(String theId){
+    public Project findProjectbyId(final String theId){
         return this.listOfProject.get(theId);
     }
 }

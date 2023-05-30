@@ -16,7 +16,6 @@ import java.math.BigDecimal;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.text.DecimalFormat;
-import java.util.zip.GZIPInputStream;
 
 /**
  * The "Documents" tab of a project, which allows users to add and view documents to their project.
@@ -235,7 +234,9 @@ public class DocumentTab extends JPanel {
      * @param date The date of the document to be added.
      * @param totalCost The cost of the document to be added.
      */
-    private void addRow(String id, String name, String description, String date,  String totalCost) {
+    private void addRow(final String id, final String name, final String description, final String date, 
+                        final String totalCost) {
+
         Object[] rowData = {id, name, description, date,totalCost};
         model.addRow(rowData);
     }
@@ -245,7 +246,7 @@ public class DocumentTab extends JPanel {
      * @author Tin Phu
      * @param theProjectID The ID of the project this table belongs to.
      */
-    public void updateTable(String theProjectID) {
+    public void updateTable(final String theProjectID) {
 //        System.out.println("Total Cost: " +ProjectController.updateTotalCostByID(theProjectID).toString());
 
         // Clear existing rows
@@ -333,7 +334,7 @@ public class DocumentTab extends JPanel {
          * @author Riley Bennett
          * @param theProjectID The ID of the project to add a document to.
          */
-        public DocumentCreationFormPopUp(String theProjectID) {
+        public DocumentCreationFormPopUp(final String theProjectID) {
 
             // Create components
             JLabel documentNameLabel = new JLabel("Document Name:");
@@ -450,7 +451,8 @@ public class DocumentTab extends JPanel {
 
                             // Create new document with file if user selected file
                             } else {
-                                newDoc = new Document(documentName,documentDescription,theProjectID,"", BigDecimal.valueOf(totalCost), srcFileString );
+                                newDoc = new Document(documentName,documentDescription,theProjectID,"", 
+                                BigDecimal.valueOf(totalCost), srcFileString );
 
                             }
 
@@ -495,8 +497,10 @@ public class DocumentTab extends JPanel {
                 
                 // Check if document has file attached
                 if(!listOfDocs.get(id).openDoc()) {
-                    JOptionPane.showMessageDialog(DocumentTab.this, "This document does not have an attached file !");
+                    JOptionPane.showMessageDialog(DocumentTab.this, "This document does not have an attached file!");
                 }
+            } else {
+                JOptionPane.showMessageDialog(DocumentTab.this, "No document selected.");
             }
         }
     }
@@ -513,6 +517,8 @@ public class DocumentTab extends JPanel {
             if (row >= 0) {
                 String id = (String) table.getValueAt(row, 0);
                 new DocumentTabRead(listOfDocs.get(id));    // Displays item information in a new popup
+            } else {
+                JOptionPane.showMessageDialog(DocumentTab.this, "No document selected.");
             }
         }
     }
@@ -538,7 +544,9 @@ public class DocumentTab extends JPanel {
                     DocumentController.deleteADocument(listOfDocs.get(id));     // Delete the specified document from the database
                     listOfDocs.remove(id);                                      // Remove document from the list
                     updateTable(projectID);                                     // Update table
-                } 
+                }
+            } else {
+                JOptionPane.showMessageDialog(DocumentTab.this, "No document selected.");
             }
         }
     }
