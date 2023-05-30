@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.text.DecimalFormat;
+import java.util.zip.GZIPInputStream;
 
 /**
  * The "Documents" tab of a project, which allows users to add and view documents to their project.
@@ -57,7 +58,7 @@ public class DocumentTab extends JPanel {
         listOfDocs = DocumentController.getDocsByProjectID(theProjectID);
         DefaultListModel<String> listModel = new DefaultListModel<>();
         JList<String> itemList = new JList<>(listModel);    // List of documents/items
-        setLayout(new BorderLayout());
+        setLayout(new GridBagLayout());
     
         // Create the table model
         model = new DefaultTableModel();
@@ -69,7 +70,7 @@ public class DocumentTab extends JPanel {
 
         // Create the table and set the model
         table = new JTable(model);
-
+        table.setPreferredScrollableViewportSize( new Dimension(800,500));
         // Set a cell editor for the ID column to lock it from being edited
         TableColumn lockedColumn = table.getColumnModel().getColumn(0);
         lockedColumn.setCellEditor(new LockedColumnEditor());
@@ -79,7 +80,7 @@ public class DocumentTab extends JPanel {
 
         // Set column widths
         TableColumn column = table.getColumnModel().getColumn(2); // Description column
-        column.setPreferredWidth(350);
+        column.setPreferredWidth(150);
         column = table.getColumnModel().getColumn(0); // Date column
         column.setPreferredWidth(10);
         column = table.getColumnModel().getColumn(3); // Date column
@@ -127,6 +128,7 @@ public class DocumentTab extends JPanel {
         });
 
         JPopupMenu popupMenu = new JPopupMenu();
+
         JMenuItem openItem = new JMenuItem("Open");
         JMenuItem deleteItem = new JMenuItem("Delete");
         JMenuItem readItem = new JMenuItem("Read");
@@ -197,11 +199,18 @@ public class DocumentTab extends JPanel {
                 }
             }
         });
-
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(5,5,5,5);
         JScrollPane scrollPane = new JScrollPane(table);
-        add(scrollPane, BorderLayout.CENTER);
+        c.gridx =0;
+        c.gridy=1;
+
+        add(scrollPane, c);
 
         JButton addButton = new JButton("Add Document");
+        c.gridx =0;
+        c.gridy=2;
+
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -209,7 +218,22 @@ public class DocumentTab extends JPanel {
             }
         });
 
-        add(addButton, BorderLayout.SOUTH);
+        add(addButton,c);
+        //This is button to open document
+        JButton openDocument = new JButton("Open Document");
+        c.gridx =0;
+        c.gridy=3;
+        add(openDocument,c);
+        //This is button to read document
+        JButton readDocument = new JButton("Read Document");
+        c.gridx =0;
+        c.gridy=4;
+        add(readDocument,c);
+        //This is button to delete document
+        JButton deleteDocument = new JButton("Delete Document");
+        c.gridx =0;
+        c.gridy=5;
+        add(deleteDocument,c);
     }
 
 
