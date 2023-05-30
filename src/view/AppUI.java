@@ -40,6 +40,8 @@ public class AppUI {
      * @author Riley Bennett
      */
     public void createAndShowGUI() {
+
+
         // Create the frame
         frame = new JFrame("FileNtro");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -135,7 +137,9 @@ public class AppUI {
         // Set the menu bar to the frame
         frame.setJMenuBar(menuBar);
 
-        frame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
+        //frame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
+        // Set the frame to full screen
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         // Pack and center the frame
         //frame.pack();
         frame.setLocationRelativeTo(null);

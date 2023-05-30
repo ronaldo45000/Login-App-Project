@@ -50,6 +50,16 @@ public class DocumentTab extends JPanel {
      */
     private final DecimalFormat df = new DecimalFormat("#.##");
 
+
+    JButton openDocument = new JButton("Open Document");
+    JPanel buttonPanel = new JPanel();
+    JButton addButton = new JButton("Add Document");
+
+    JButton deleteDocument = new JButton("Delete Document");
+
+    JButton readDocument = new JButton("Read Document");
+
+
     /**
      * Constructor for the documents tab.
      * @author Tin Phu
@@ -76,7 +86,9 @@ public class DocumentTab extends JPanel {
 
         // Create the table and set the model
         table = new JTable(model);
-        table.setPreferredScrollableViewportSize( new Dimension(800,500));
+
+
+        table.setPreferredScrollableViewportSize( new Dimension(700, 300));
         // Set a cell editor for the ID column to lock it from being edited
         TableColumn lockedColumn = table.getColumnModel().getColumn(0);
         lockedColumn.setCellEditor(new LockedColumnEditor());
@@ -183,12 +195,12 @@ public class DocumentTab extends JPanel {
         add(scrollPane, c);
 
         // Add document button
-        JButton addButton = new JButton("Add Document");
         c.gridx = 0;
         c.gridy = 2;
 
         /**
          * Action listener for the add document button.
+         *  @author Tin Phu
          */
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -196,34 +208,40 @@ public class DocumentTab extends JPanel {
                 new DocumentCreationFormPopUp(theProjectID) ;
             }
         });
+        buttonPanel.setLayout(new FlowLayout());
+        buttonPanel.add(addButton);
+        buttonPanel.add(openDocument);
+        buttonPanel.add(readDocument);
+        buttonPanel.add(deleteDocument);
 
-        add(addButton,c);
+        //add(addButton,c);
 
         // Open document button
-        JButton openDocument = new JButton("Open Document");
         c.gridx = 0;
         c.gridy = 3;
 
         openDocument.addActionListener(new openDocActionListener());
 
-        add(openDocument,c);
+        //add(openDocument,c);
 
         // Read document button
-        JButton readDocument = new JButton("Read Document");
         c.gridx = 0;
         c.gridy = 4;
 
         readDocument.addActionListener(new readDocActionListener());
-        add(readDocument,c);
+        //add(openDocument,c);
 
         // Delete document button
-        JButton deleteDocument = new JButton("Delete Document");
         c.gridx = 0;
         c.gridy = 5;
 
         deleteDocument.addActionListener(new deleteDocActionListener());
 
-        add(deleteDocument,c);
+        add(buttonPanel,c);
+
+
+
+
     }
 
     /**

@@ -16,9 +16,9 @@ public class TabsPanels extends JTabbedPane {
     public TabsPanels(final String theProjectID){
         DocumentController.getDocsByProjectID(theProjectID);
 
-        addTab("Document Tab", new DocumentTab(theProjectID));
+        addTab("Document Tab", new JScrollPane(new DocumentTab(theProjectID)));
 
-        addTab("Budget Tab", new BudgetTab(theProjectID));
+        addTab("Budget Tab", new JScrollPane(new BudgetTab(theProjectID)));
 
         /**
          * This Change Listener helps Budget Tab and Document Tab
@@ -32,10 +32,10 @@ public class TabsPanels extends JTabbedPane {
 
                 if (selectedTabTitle.equals("Budget Tab")) {
 
-                    setComponentAt(1,new BudgetTab(theProjectID) );
+                    setComponentAt(1,new JScrollPane(new BudgetTab(theProjectID)) );
 
                 } else if(selectedTabTitle.equals("Document Tab")){
-                    setComponentAt(0,new DocumentTab(theProjectID) );
+                    setComponentAt(0,new JScrollPane(new DocumentTab(theProjectID)) );
                 }
             }
         });
