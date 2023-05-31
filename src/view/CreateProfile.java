@@ -157,6 +157,12 @@ public class CreateProfile extends JPanel {
         return matcher.matches();
     }
 
+    /**
+     *  Username Validation using regex Expression
+     *  @author Tin Phu
+     * @param theUsername
+     * @return
+     */
     public static boolean userNameValidation(String theUsername){
         String regex = "^(?=.{6,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$";
         Pattern pattern = Pattern.compile(regex);
