@@ -467,22 +467,28 @@ public class DocumentTab extends JPanel {
                             totalCost = Double.parseDouble(totalCostField.getText());
                             totalCost = Double.valueOf(df.format(totalCost));
 
-                            // Create new document with no file if no file selected
-                            if(srcFileString.isEmpty()){
-                                newDoc = new Document(documentName,documentDescription,theProjectID,"", 
-                                BigDecimal.valueOf(totalCost));
+                            if(totalCost < 0){
+                                JOptionPane.showMessageDialog(DocumentTab.this, "The Total cost can not be negative!");
+                            }else {
+                                // Create new document with no file if no file selected
+                                if(srcFileString.isEmpty()){
+                                    newDoc = new Document(documentName,documentDescription,theProjectID,"",
+                                            BigDecimal.valueOf(totalCost));
 
-                            // Create new document with file if user selected file
-                            } else {
-                                newDoc = new Document(documentName,documentDescription,theProjectID,"", 
-                                BigDecimal.valueOf(totalCost), srcFileString );
+                                    // Create new document with file if user selected file
+                                } else {
+                                    newDoc = new Document(documentName,documentDescription,theProjectID,"",
+                                            BigDecimal.valueOf(totalCost), srcFileString );
 
+                                }
+
+                                DocumentController.addDocument(newDoc);     // Add document to database
+                                listOfDocs.put(newDoc.id(), newDoc);        // Add document to list
+                                dialog.setVisible(false);                 // Close dialog
+                                updateTable(theProjectID);
                             }
 
-                            DocumentController.addDocument(newDoc);     // Add document to database
-                            listOfDocs.put(newDoc.id(), newDoc);        // Add document to list
-                            dialog.setVisible(false);                 // Close dialog
-                            updateTable(theProjectID);
+
                         } catch (IOException ex) {
                             JOptionPane.showMessageDialog(DocumentTab.this, 
                             "Something went wrong! The File could not be copied.");

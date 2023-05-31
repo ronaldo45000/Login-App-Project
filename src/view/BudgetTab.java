@@ -215,24 +215,30 @@ public class BudgetTab extends JPanel {
                     return;
                 }
 
-                Document doc = null;
+                if(price < 0){
+                    JOptionPane.showMessageDialog(BudgetTab.this, "The Price can not be negative!");
+                } else {
+                    Document doc = null;
 
-                doc = new Document(itemName, "", theProjectID, "", BigDecimal.valueOf(price));
-                DocumentController.addDocument(doc);
-                myDoc.put(doc.id(), doc);
+                    doc = new Document(itemName, "", theProjectID, "", BigDecimal.valueOf(price));
+                    DocumentController.addDocument(doc);
+                    myDoc.put(doc.id(), doc);
 
-                theTotalCost += myDoc.get(doc.id()).getTotalCost().doubleValue();
+                    theTotalCost += myDoc.get(doc.id()).getTotalCost().doubleValue();
 
-                theTotalCost = Double.valueOf(df.format(theTotalCost));
-                totalLabel.setText("Current Cost: $" + theTotalCost);
+                    theTotalCost = Double.valueOf(df.format(theTotalCost));
+                    totalLabel.setText("Current Cost: $" + theTotalCost);
 
-                updateTable();
+                    updateTable();
 
-                //This is a warning message when it is over your budget.
-                if(theTotalCost>totalBudget){
+                    //This is a warning message when it is over your budget.
+                    if(theTotalCost>totalBudget){
 
-                    JOptionPane.showMessageDialog(BudgetTab.this,"You are over your budget!","Reminder",JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(BudgetTab.this,"You are over your budget!","Reminder",JOptionPane.WARNING_MESSAGE);
+                    }
                 }
+
+
             }
         });
 
@@ -257,12 +263,16 @@ public class BudgetTab extends JPanel {
                 String input = JOptionPane.showInputDialog("Enter new budget:");
                 try {
                     double newBudget = Double.parseDouble(input);
+                    if(newBudget < 0){
+                        JOptionPane.showMessageDialog(BudgetTab.this, "The Budget can not be negative!");
+                    } else {
+                        // Round to 2 decimal places
+                        newBudget = Double.valueOf(df.format(newBudget));
 
-                    // Round to 2 decimal places
-                    newBudget = Double.valueOf(df.format(newBudget));
+                        ProjectController.setTotalBudgetByID(theProjectID, BigDecimal.valueOf(newBudget));
+                        setTotalBudget(newBudget);
+                    }
 
-                    ProjectController.setTotalBudgetByID(theProjectID, BigDecimal.valueOf(newBudget));
-                    setTotalBudget(newBudget);
 
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(BudgetTab.this, "Please enter a numeric value.");
@@ -355,29 +365,24 @@ public class BudgetTab extends JPanel {
 
             //Round to 2 decimal places
             newPrice = Double.valueOf(df.format(newPrice));
+            if(newPrice < 0) {
+                JOptionPane.showMessageDialog(BudgetTab.this, "The New Price can not be negative!");
+            } else {
+                String currentName = DocumentController.findDocbyID(currentID).getDocumentName();
 
-            //Update the price in the table
-            //theTotalCost -= myDoc.get(currentID).getTotalCost().doubleValue();
-            String currentName = DocumentController.findDocbyID(currentID).getDocumentName();
+                String currentDecription = DocumentController.findDocbyID(currentID).getDocumentDescription();
+                LocalDate currentDate =  DocumentController.findDocbyID(currentID).getDate();
+                String currentPath = DocumentController.findDocbyID(currentID).getFilePath();
 
-            String currentDecription = DocumentController.findDocbyID(currentID).getDocumentDescription();
-            LocalDate currentDate =  DocumentController.findDocbyID(currentID).getDate();
-            String currentPath = DocumentController.findDocbyID(currentID).getFilePath();
+                Document newDoc2 = new Document(currentName, currentDecription,
+                        theProjectID, "", new BigDecimal(newPrice).setScale(2, RoundingMode.CEILING),currentID,currentDate,currentPath);
 
-            Document newDoc2 = new Document(currentName, currentDecription,
-                                            theProjectID, "", new BigDecimal(newPrice).setScale(2, RoundingMode.CEILING),currentID,currentDate,currentPath);
+                DocumentController.addDocument(newDoc2);
+                myDoc.put(currentID, newDoc2);
+                updateTable();
+            }
 
-            //DocumentController.deleteADocument(myDoc.get(currentID));
-            //myDoc.remove(currentID);
 
-            DocumentController.addDocument(newDoc2);
-            myDoc.put(currentID, newDoc2);
-//            theTotalCost += myDoc.get(currentID).getTotalCost().doubleValue();
-//
-//            theTotalCost = Double.valueOf(df.format(theTotalCost));
-//            totalLabel.setText("Current Cost: $" + theTotalCost);
-
-            updateTable();
         });
     }
 
@@ -584,26 +589,32 @@ public class BudgetTab extends JPanel {
                             // Round to 2 decimal places
                             totalCost = Double.valueOf(df.format(totalCost));
 
-                            if(srcFileString.isEmpty()){
-                                newDoc = new Document(documentName,documentDescription,theProjectID,"", 
-                                BigDecimal.valueOf(totalCost));
-
+                            if(totalCost < 0){
+                                JOptionPane.showMessageDialog(BudgetTab.this, "The Total cost can not be negative!");
                             } else {
-                                newDoc = new Document(documentName,documentDescription,theProjectID,"", 
-                                BigDecimal.valueOf(totalCost), srcFileString );
+                                if(srcFileString.isEmpty()){
+                                    newDoc = new Document(documentName,documentDescription,theProjectID,"",
+                                            BigDecimal.valueOf(totalCost));
+
+                                } else {
+                                    newDoc = new Document(documentName,documentDescription,theProjectID,"",
+                                            BigDecimal.valueOf(totalCost), srcFileString );
+                                }
+
+                                DocumentController.addDocument(newDoc);
+                                myDoc.put(newDoc.id(), newDoc);
+                                dialog.setVisible(false);
+
+                                theTotalCost += myDoc.get(newDoc.id()).getTotalCost().doubleValue();
+
+                                // Round to 2 decimal places
+                                theTotalCost = Double.valueOf(df.format(theTotalCost));
+                                totalLabel.setText("Current Cost: $" + theTotalCost);
+
+                                updateTable();
                             }
 
-                            DocumentController.addDocument(newDoc);
-                            myDoc.put(newDoc.id(), newDoc);
-                            dialog.setVisible(false);
-                            
-                            theTotalCost += myDoc.get(newDoc.id()).getTotalCost().doubleValue();
 
-                            // Round to 2 decimal places
-                            theTotalCost = Double.valueOf(df.format(theTotalCost));
-                            totalLabel.setText("Current Cost: $" + theTotalCost);
-
-                            updateTable();
                         } catch (IOException ex) {
                             JOptionPane.showMessageDialog(BudgetTab.this, "Something went wrong! The File could not be coppied");
                         } catch (NumberFormatException ex2) {
