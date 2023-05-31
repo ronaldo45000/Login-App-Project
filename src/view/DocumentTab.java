@@ -331,7 +331,7 @@ public class DocumentTab extends JPanel {
         /**
          * Text box for the document description.
          */
-        private final JTextField documentDescriptionField;
+        private final JTextArea documentDescriptionField;
 
         /**
          * Text box for the document cost.
@@ -361,8 +361,9 @@ public class DocumentTab extends JPanel {
             documentNameField = new JTextField(20);
 
             JLabel documentDescriptionLabel = new JLabel("Document Description:");
-            documentDescriptionField = new JTextField(20);
-
+            documentDescriptionField = new JTextArea(7,40);
+            documentDescriptionField.setWrapStyleWord(true);
+            documentDescriptionField.setLineWrap(true);
             JLabel totalCostLabel = new JLabel("Total Cost:");
             totalCostField = new JTextField(10);
 
@@ -395,7 +396,9 @@ public class DocumentTab extends JPanel {
             panel.add(documentDescriptionLabel, constraints);
 
             constraints.gridx = 1;
-            panel.add(documentDescriptionField, constraints);
+            JScrollPane scrollPane = new JScrollPane(documentDescriptionField);
+
+            panel.add(scrollPane, constraints);
 
             constraints.gridx = 0;
             constraints.gridy = 2;
@@ -495,7 +498,7 @@ public class DocumentTab extends JPanel {
             dialog.setLocationRelativeTo(DocumentTab.this);
             dialog.setContentPane(panel);
             dialog.setTitle("Document Creation Form");
-            dialog.setSize(500, 400);
+            dialog.setSize(700, 500);
             dialog.setLocationRelativeTo(null); // Center the dialog on the screen
             dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             dialog.setVisible(true);
