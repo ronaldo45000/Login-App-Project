@@ -5,6 +5,8 @@ import controller.UserController;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.*;
 import model.User;
 
@@ -62,6 +64,18 @@ public class LogInScreen extends JPanel {
                     "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+
+                if(!emailValidation(email)){
+                    JOptionPane.showMessageDialog(LogInScreen.this, "Invalid Email", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                if(!userNameValidation(name)){
+                    JOptionPane.showMessageDialog(LogInScreen.this, "Invalid Username " +
+                            "\n 6-20 characters, no special characters are allowed ", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
 
                 User theUser = UserController.findUser(name, email);
 
@@ -145,5 +159,29 @@ public class LogInScreen extends JPanel {
         gbc.gridy = 5;
         add(createAcct, gbc);
 
+    }
+    /**
+     * Email Validation using regex Expression
+     * @author Tin Phu
+     * @param emailString The email to check
+     * @return boolean Whether the given email is valid
+     */
+    public static boolean emailValidation(String emailString){
+        String regex = "^[\\w!#$%&amp;'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&amp;'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(emailString);
+        return matcher.matches();
+    }
+    /**
+     *  Username Validation using regex Expression
+     *  @author Tin Phu
+     * @param theUsername
+     * @return
+     */
+    public static boolean userNameValidation(String theUsername){
+        String regex = "^(?=.{6,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(theUsername);
+        return matcher.matches();
     }
 }
