@@ -1,13 +1,13 @@
 package view;
 
-import model.Document;
-
 import javax.swing.*;
 import java.awt.*;
+import model.Document;
 
 /**
- * A Dialog to read a document.
- * @Author Tin Phu
+ * A dialog to read a document.
+ * @author Tin Phu
+ * @version 0.3
  */
 public class DocumentTabRead extends JPanel {
 
@@ -71,26 +71,25 @@ public class DocumentTabRead extends JPanel {
         dialog.setLocationRelativeTo(null); // Center the dialog on the screen
         dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         dialog.setVisible(true);
-
-
     }
 
     /**
-     * Label Helper.
-     * @param text
-     *  @Author Tin Phu
-     * @return
+     * Creates a label with the given text.
+     * @author Tin Phu
+     * @param text The text to be given to the label.
+     * @return The label with the given text.
      */
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(label.getFont().deriveFont(Font.BOLD));
         return label;
     }
+
     /**
-     * Detail JLabel Helper.
-     * @param text
-     *  @Author Tin Phu
-     * @return
+     * Creates a detail label with the given text.
+     * @author Tin Phu
+     * @param text The text to be given to the label.
+     * @return The label with the given text.
      */
     private JLabel createDetailLabel(String text) {
         JLabel label = new JLabel(text);
@@ -99,10 +98,10 @@ public class DocumentTabRead extends JPanel {
     }
 
     /**
-     * TextArea Helper.
-     * @param text
-     * @Author Tin Phu
-     * @return
+     * Creates the text area for the description.
+     * @author Tin Phu
+     * @param text The description text.
+     * @return The text area for the description.
      */
     private JTextArea createDescriptionTextArea(String text) {
         JTextArea textArea = new JTextArea(text);

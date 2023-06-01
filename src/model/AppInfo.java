@@ -11,12 +11,12 @@ import java.util.ArrayList;
  * @author Hassan Abbas
  * @author Riley Bennett
  * @author Tin Phu
- * @version 0.2
+ * @version 0.3
  */
 public class AppInfo implements Jsonable {
 
     /** The version number of the app. */
-    private  double versionNumber;
+    private double versionNumber;
     
     /** The developers' team name. */
     private final String teamName = "Team Mauve";
@@ -31,7 +31,7 @@ public class AppInfo implements Jsonable {
      * Constructor to create an AppInfo object with the current user
      * @param user The current user of the app
      */
-    public AppInfo(User user) {
+    public AppInfo(final User user) {
         this.user = user;
     }
 
@@ -40,7 +40,7 @@ public class AppInfo implements Jsonable {
      * @param versionNumber The version number of the app
      * @param user The current user of the app
      */
-    public AppInfo(double versionNumber, final User user) {
+    public AppInfo(final double versionNumber, final User user) {
         this.versionNumber = versionNumber;
         this.user = user;
     }
@@ -48,7 +48,7 @@ public class AppInfo implements Jsonable {
     /**
      * Constructor to create an AppInfo object with the version number of the app.
      */
-    public AppInfo(double versionNumber) {
+    public AppInfo(final double versionNumber) {
 
         this.versionNumber = versionNumber;
     }
@@ -101,7 +101,7 @@ public class AppInfo implements Jsonable {
      * Adds an account to the developers list.
      * @param theAccount The account to be added
      */
-    public void addNewDeveloper(Account theAccount){
+    public void addNewDeveloper(final Account theAccount){
         this.teamMembers.add(theAccount);
     }
 
@@ -118,7 +118,7 @@ public class AppInfo implements Jsonable {
      * Sets the current user to the specified user.
      * @param user The current user to be set
      */
-    public void setUser(User user) {
+    public void setUser(final User user) {
         this.user = user;
     }
 
@@ -140,20 +140,20 @@ public class AppInfo implements Jsonable {
 
     /**
      * Sets the version number of the app.
-     * @param versionNumber The version number to be set to
+     * @param versionNumber The version number to be set to.
      */
-    public void setVersionNumber(double versionNumber) {
+    public void setVersionNumber(final double versionNumber) {
         this.versionNumber = versionNumber;
     }
 
     /**
      * Converts this account to JSON formatted stream.
      * @author Tin Phu
-     * @param writer Writer to write to stream with
+     * @param writer Writer to write to stream with.
      * @throws IOException
      */
     @Override
-    public void toJson(Writer writer) throws IOException {
+    public void toJson(final Writer writer) throws IOException {
         final JsonObject json = new JsonObject();
         json.put("versionNumber", this.versionNumber);
         json.put("teamName", this.teamName);
@@ -168,14 +168,13 @@ public class AppInfo implements Jsonable {
      * @author Tin Phu
      * @param theName The name of the developer to be removed
      */
-    public void removeDevByName(String theName){
+    public void removeDevByName(final String theName){
         for(int i = 0; i < this.teamMembers.size(); i++){
             if(this.teamMembers.get(i).getName().equals(theName)){
-                System.out.println("remove" + this.teamMembers.get(i).getName() );
+//                System.out.println("remove" + this.teamMembers.get(i).getName() );
                 this.teamMembers.remove(i);
 
             }
         }
     }
-
 }

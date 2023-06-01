@@ -10,10 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * AppUI is the main class of the FileNtro application.
+ * The main frame of the FileNtro program.
  * @author Tin Phu
  * @author Riley Bennett
- * @version 0.2
+ * @version 0.3
  */
 public class AppUI {
     /** Constant for the default width of the frame.*/
@@ -40,6 +40,8 @@ public class AppUI {
      * @author Riley Bennett
      */
     public void createAndShowGUI() {
+
+
         // Create the frame
         frame = new JFrame("FileNtro");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,12 +55,6 @@ public class AppUI {
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
-        //Tin Phu:
-        //cardPanel, cardLayout are passed to OwnerProfileForm because the button need to access them to switch
-        //to AboutScreen()
-
-
-
         JPanel mainPanel = new LogInScreen(cardPanel, cardLayout);
         cardPanel.add(mainPanel, "LogInScreen");
 
@@ -69,17 +65,21 @@ public class AppUI {
 
         // Create the "File" menu
         JMenu fileMenu = new JMenu("File");
+        
         //Adding Import Menu Item
         JMenuItem importMenuItem = new JMenuItem("Import");
         JMenuItem exportMenuItem = new JMenuItem("Export");
         importMenuItem.setAccelerator(KeyStroke.getKeyStroke("control I"));
         exportMenuItem.setAccelerator(KeyStroke.getKeyStroke("control E"));
+
+        // Action listener for import item
         importMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int confirm = JOptionPane.showConfirmDialog(frame, "While importing data, you will be logged out to Project Screen.\nContinue?",
-                "Warning", JOptionPane.YES_NO_OPTION);
+                int confirm = JOptionPane.showConfirmDialog(frame, "While importing data," 
+                + "you will be logged out to Project Screen.\nContinue?","Warning", JOptionPane.YES_NO_OPTION);
 
+                // Check if user confirmed
                 if (confirm == JOptionPane.YES_OPTION) {
                     AppInfoController.importData();
                     UserController.importData();
@@ -100,7 +100,10 @@ public class AppUI {
                 }
             }
         });
-       fileMenu.add(importMenuItem);
+
+        fileMenu.add(importMenuItem);
+
+        // Action listener for export item
         exportMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -111,6 +114,7 @@ public class AppUI {
                 JOptionPane.showMessageDialog(frame, "Check program folder for exported JSON files.");
             }
         });
+
         fileMenu.add(exportMenuItem);
 
         // Create the "About" menu
@@ -125,6 +129,7 @@ public class AppUI {
             }
         });
         aboutMenu.add(aboutMenuItem);
+        
         // Add menus to the menu bar
         menuBar.add(fileMenu);
         menuBar.add(aboutMenu);
@@ -132,17 +137,24 @@ public class AppUI {
         // Set the menu bar to the frame
         frame.setJMenuBar(menuBar);
 
-        frame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
+        //frame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
+        // Set the frame to full screen
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         // Pack and center the frame
         //frame.pack();
         frame.setLocationRelativeTo(null);
+        //set logo
+        String currentPath = System.getProperty("user.dir");
+
+        ImageIcon icon = new ImageIcon(currentPath + "/logo.png");
+        frame.setIconImage(icon.getImage());
 
         // Show the frame
         frame.setVisible(true);
 
         if(AppInfoController.getCurrentUser() != null){
             cardPanel.add(new HomeScreen(AppInfoController.getCurrentUser(), cardPanel, cardLayout), "HomeScreen");
-            System.out.println(AppInfoController.getCurrentUser().getId());
+//            System.out.println(AppInfoController.getCurrentUser().getId());
             cardLayout.show(cardPanel, "HomeScreen");
         }
     }

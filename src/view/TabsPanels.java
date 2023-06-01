@@ -1,30 +1,24 @@
 package view;
 
 import controller.DocumentController;
-import model.Document;
-
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.*;
-import java.util.HashMap;
+
 
 /**
- * @Author  Tin Phu
- * @version 0.1
+ * Creates tabs for documents and budget screens.
+ * @Author Tin Phu
+ * @version 0.3
  */
 public class TabsPanels extends JTabbedPane {
-    private HashMap<String, Document> listOfDocs;
-    public TabsPanels(String theProjectID){
+
+    public TabsPanels(final String theProjectID){
         DocumentController.getDocsByProjectID(theProjectID);
 
-        JPanel panel1 = new JPanel();
+        addTab("Document Tab", new JScrollPane(new DocumentTab(theProjectID)));
 
-
-        addTab("Document Tab", new DocumentTab(theProjectID));
-        JPanel panel2 = new JPanel();
-
-        addTab("Budget Tab", new BudgetTab(theProjectID));
+        addTab("Budget Tab", new JScrollPane(new BudgetTab(theProjectID)));
 
         /**
          * This Change Listener helps Budget Tab and Document Tab
@@ -38,10 +32,10 @@ public class TabsPanels extends JTabbedPane {
 
                 if (selectedTabTitle.equals("Budget Tab")) {
 
-                    setComponentAt(1,new BudgetTab(theProjectID) );
+                    setComponentAt(1,new JScrollPane(new BudgetTab(theProjectID)) );
 
                 } else if(selectedTabTitle.equals("Document Tab")){
-                    setComponentAt(0,new DocumentTab(theProjectID) );
+                    setComponentAt(0,new JScrollPane(new DocumentTab(theProjectID)) );
                 }
             }
         });

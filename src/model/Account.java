@@ -2,18 +2,17 @@ package model;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsonable;
-
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.UUID;
 import java.io.Writer;
+import java.util.UUID;
 
 /**
  * A class to store information about accounts in the FileNtro app.
  *
  * @author Thinh Le
  * @author Riley Bennett
- * @version 0.2
+ * @version 0.3
  */
 public class Account implements Jsonable {
 	/** The id of this account. */
@@ -30,8 +29,10 @@ public class Account implements Jsonable {
 	 * @author Riley Bennett
 	 * @author Thinh Le
 	 * @author Tin Phu
+	 * @param name The name of the user.
+	 * @param email The email of the user.
 	 */
-	public Account(String name, String email) {
+	public Account(final String name, final String email) {
 		this.name = name;
 		this.email = email;
 		this.id = UUID.randomUUID().toString();
@@ -45,19 +46,17 @@ public class Account implements Jsonable {
 	 * @param theId The id of the account
 	 */
 
-	public Account(String name, String email, String theId) {
+	public Account(final String name, final String email, final String theId) {
 		this.name = name;
 		this.email = email;
 		this.id = theId;
 	}
 
-
-
-  /**
-   * A getter for the name associated with this account.
-   * @author Thinh Le
-   * @return The name of this account.
-   */
+  	/**
+   	* A getter for the name associated with this account.
+   	* @author Thinh Le
+   	* @return The name of this account.
+   	*/
 	public String getName(){
 		return name;
 	}
@@ -102,7 +101,7 @@ public class Account implements Jsonable {
 	 * @throws IOException
 	 */
 	@Override
-	public void toJson(Writer writer) throws IOException {
+	public void toJson(final Writer writer) throws IOException {
 		final JsonObject json = new JsonObject();
 		json.put("id", this.id);
 		json.put("name", this.name);
@@ -121,6 +120,3 @@ public class Account implements Jsonable {
 		return "id:" + this.id + "|name:" + this.name + "|email:" + this.email + "\n";
 	}
 }
-
-
-
