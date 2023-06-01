@@ -16,23 +16,22 @@ import model.User;
  * Repository for the users of the FileNtro app.
  * @author Tin Phu
  * @author Riley Bennett
- * @version 0.2
+ * @version 0.3
  */
 public class UserRepository {
 
     /**
-     * File path.
+     * File path of UserProfile.json.
      */
     private final String FILEPATH="UserProfile.json";
 
     /**
-     * Hashmap to be mapped with json data.
+     * Mapping of User ID/User object pairs.
      */
     private final HashMap<String, User> listOfuserProfile = new HashMap<String, User>();
 
     /**
-     * no-arg constructor
-     * which automatically importData()
+     * No-arg constructor, which automatically imports data.
      * @author Tin Phu
      */
     public UserRepository(){
@@ -42,14 +41,14 @@ public class UserRepository {
     /**
      * Returns the list of userprofile.
      * @author Tin Phu
-     * @return The hashmap of id/user pairs
+     * @return The hashmap of ID/user pairs.
      */
     public HashMap<String, User> getListOfuserProfile(){
         return this.listOfuserProfile;
     }
 
     /**
-     * Import data from UserProfile.json and map to this.userProfiles hashmap.
+     * Imports data from UserProfile.json and maps to the hashmap.
      * @author Tin Phu
      */
     public void importData(){
@@ -76,34 +75,33 @@ public class UserRepository {
                 this.listOfuserProfile.put(id, new User(name, email, id));
             }
 
-        System.out.println("Import Data from UserProfile.json");
+//        System.out.println("Import Data from UserProfile.json");
         } catch (IOException | JsonException e){
             throw new RuntimeException(e);
         }
     }
 
     /**
-     * Export this.userProfiles hashmap to UserProfile.json.
+     * Exports the data in the hashmap to UserProfile.json.
      * @author Tin Phu
      */
     public void exportData(){
         try (FileWriter fileWriter = new FileWriter(this.FILEPATH)) {
             Jsoner.serialize(this.listOfuserProfile, fileWriter);
-            System.out.println("Export Data to UserProfile.json");
+//            System.out.println("Export Data to UserProfile.json");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     /**
-     * Finds and returns the user with the specified name
-     *
+     * Finds and returns the user with the specified name.
      * @author Riley Bennett
-     * @param theName The name of the user to be searched for
-     * @param theEmail The email of the user to be searched for
-     * @return The user with the given name and email
+     * @param theName The name of the user to be searched for.
+     * @param theEmail The email of the user to be searched for.
+     * @return The user with the given name and email.
      */
-    public User findUserByName(String theName, String theEmail){
+    public User findUserByName(final String theName, final String theEmail){
         Iterator<User> itr = this.listOfuserProfile.values().iterator();
         while (itr.hasNext()) {
             User tempUser = itr.next();
@@ -115,16 +113,15 @@ public class UserRepository {
     }
     
     /**
-     * Changes the user information in the databse with specified new information
-     *
+     * Changes the user information in the databse with specified new information.
      * @author Bairu Li
-     * @param theOldName The old name of the user to be changed
-     * @param theOldEmail The old email of the user to be changed
-     * @param theName The new name of the user to be changed
-     * @param theEmail The new email of the user to be changed
+     * @param theOldName The old name of the user to be changed.
+     * @param theOldEmail The old email of the user to be changed.
+     * @param theName The new name of the user to be changed.
+     * @param theEmail The new email of the user to be changed.
      */
-    public void changeUserInfo(String theOldName, String theOldEmail, 
-    		                   String theName, String theEmail){
+    public void changeUserInfo(final String theOldName, final String theOldEmail, 
+    		                   final String theName, final String theEmail){
         User tempUser = findUserByName(theOldName, theOldEmail);
         
         listOfuserProfile.get(tempUser.getId()).setName(theName);
@@ -136,8 +133,8 @@ public class UserRepository {
      * Deletes the specified User from the hashmap and then exports data.
      * @author Tin Phu
      * @author Riley Bennett
-     * @param theName The name of the user to be deleted
-     * @param theEmail The email of the user to be deleted
+     * @param theName The name of the user to be deleted.
+     * @param theEmail The email of the user to be deleted.
      */
     public void deleteUser(final String theName, final String theEmail){
         Map<String, User> tempMap = (Map<String, User>) this.listOfuserProfile.clone();
@@ -155,12 +152,12 @@ public class UserRepository {
      * Adds the given User to the hashmap and then exports data.
      * @author Tin Phu
      * @author Riley Bennett
-     * @param theUser The user to be added
+     * @param theUser The user to be added.
+     * @return The user that was added.
      */
-    public User addUser(User theUser){
+    public User addUser(final User theUser){
         this.listOfuserProfile.put(theUser.getId(), theUser);
         this.exportData();
         return theUser;
     }
-
 }

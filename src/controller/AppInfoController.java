@@ -35,7 +35,7 @@ public class AppInfoController {
      * Sets the user in the aboutAppRepository.
      * @author Tin Phu
      */
-    public static void setUser(User theUser){
+    public static void setUser(final User theUser){
 
         aboutAppRepository.getAppInfo().setUser(theUser);
         aboutAppRepository.exportData();
@@ -45,7 +45,7 @@ public class AppInfoController {
      * Changes user's name in aboutAppRepository.
      * @author Bairu Li
      */
-    public static void changeUserName(String theName) {
+    public static void changeUserName(final String theName) {
         aboutAppRepository.getAppInfo().getUser().setName(theName);
         aboutAppRepository.exportData();
     }
@@ -54,7 +54,7 @@ public class AppInfoController {
      * Changes user's email in aboutAppRepository.
      * @author Bairu Li
      */
-    public static void changeUserEmail(String theEmail) {
+    public static void changeUserEmail(final String theEmail) {
         aboutAppRepository.getAppInfo().getUser().setEmail(theEmail);
         aboutAppRepository.exportData();
     }
@@ -63,7 +63,7 @@ public class AppInfoController {
      * Adds new developer to the aboutAppRepository.
      * @author Tin Phu
      */
-    public static void addNewDeveloper(Account theDeveloper){
+    public static void addNewDeveloper(final Account theDeveloper){
         aboutAppRepository.getAppInfo().addNewDeveloper(theDeveloper);
         aboutAppRepository.exportData();
     }
@@ -72,7 +72,7 @@ public class AppInfoController {
      * Removes a developer from the aboutAppRepository.
      * @author Tin Phu
      */
-    public static void removeDeveloperByName(String theName){
+    public static void removeDeveloperByName(final String theName){
        aboutAppRepository.getAppInfo().removeDevByName(theName);
        aboutAppRepository.exportData();
 
@@ -92,7 +92,7 @@ public class AppInfoController {
      * @author Tin Phu
      * @param theVer The version to set to.
      */
-    public static void setVersion(double theVer){
+    public static void setVersion(final double theVer){
         aboutAppRepository.getAppInfo().setVersionNumber(theVer);
         aboutAppRepository.exportData();
     }

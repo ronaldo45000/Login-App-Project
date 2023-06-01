@@ -14,7 +14,7 @@ import repository.ProjectRepository;
 /**
  * A controller for the list of projects a user has.
  * @author Riley Bennett
- * @author Tin Phu
+ * @author TIn Phu
  * @version 0.3
  */
 public class ProjectController {
@@ -43,9 +43,10 @@ public class ProjectController {
     /**
      * Gets the list of projects.
      * @author Hassan Abbas
+     * @param theUID The ID of the user.
      * @return Hashmap of project ID/project object pairs.
      */
-    public static HashMap<String, Project> getProjectsByUserID(String theUID) {
+    public static HashMap<String, Project> getProjectsByUserID(final String theUID) {
         HashMap<String, Project> listOfProjects = new HashMap<String, Project>();
         projectRepository.getListOfProject().forEach((k,e)->{
             if(e.getUserID().equals(theUID)) {
@@ -60,7 +61,7 @@ public class ProjectController {
      * @author Hassan Abbas
      * @param theProject The project to be added.
      */
-    public static void addProject(Project theProject) {
+    public static void addProject(final Project theProject) {
         projectRepository.addProject(theProject);
     }
     
@@ -69,7 +70,7 @@ public class ProjectController {
      * @author Hassan Abbas
      * @param theProject The project to be deleted.
      */
-    public static void deleteProject(Project theProject) {
+    public static void deleteProject(final Project theProject) {
         projectRepository.deleteProject(theProject);
     }
     
@@ -79,7 +80,7 @@ public class ProjectController {
      * @param theID The ID of the project.
      * @return The associated project.
      */
-    public static Project findProjectByID(String theID) {
+    public static Project findProjectByID(final String theID) {
         return projectRepository.findProjectbyId(theID);
     }
 
@@ -88,7 +89,7 @@ public class ProjectController {
      * @author Bairu Li
      * @param theID The ID of the project to be deleted.
      */
-    public static void deleteProjectByID(String theID) throws IOException {
+    public static void deleteProjectByID(final String theID) throws IOException {
         DocumentController.getDocsByProjectID(theID).forEach((documentId, document) -> {
             DocumentController.deleteADocument(document);
         });
@@ -97,7 +98,7 @@ public class ProjectController {
         projectRepository.deleteProject(theID);
         String currentPath = System.getProperty("user.dir");
 
-        File file = new File(currentPath + "\\" +  theID);
+        File file = new File(currentPath + "\\projects\\" +  theID);
 
         Files.delete(file.toPath());
 
@@ -109,7 +110,7 @@ public class ProjectController {
      * @param theID The ID of the project to be updated.
      * @return The new total cost.
      */
-    public static BigDecimal updateTotalCostByID(String theID) {
+    public static BigDecimal updateTotalCostByID(final String theID) {
         BigDecimal totaLCost = new BigDecimal(0);
 
         HashMap<String, Document> loopDoc =  DocumentController.getDocsByProjectID(theID);
@@ -121,5 +122,15 @@ public class ProjectController {
         projectRepository.findProjectbyId(theID).setTotalCost(totaLCost);
         projectRepository.exportData();
         return totaLCost;
+    }
+
+    /**
+     * Sets a project's total budget by it's ID.
+     * @param theID The ID of the project to be updated.
+     * @param theTotalBudget The new budget of the project.
+     */
+    public static void setTotalBudgetByID(final String theID, final BigDecimal theTotalBudget){
+        projectRepository.findProjectbyId(theID).setBudget(theTotalBudget);
+        projectRepository.exportData();
     }
 }

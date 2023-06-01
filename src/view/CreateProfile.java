@@ -1,22 +1,21 @@
 package view;
 
-import model.User;
-
+import controller.AppInfoController;
+import controller.UserController;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import controller.AppInfoController;
-import controller.UserController;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import model.User;
 
 /**
  * CreateProfile JPanel allows the user to create a profile.
  * BorderLayout and GridBagLayout are used in this JPanel.
  * @author Tin Phu
  * @author Riley Bennett
- * @version 0.2
+ * @version 0.3
  */
 public class CreateProfile extends JPanel {
     /**
@@ -64,6 +63,13 @@ public class CreateProfile extends JPanel {
                     JOptionPane.showMessageDialog(CreateProfile.this, "Invalid Email", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+
+                if(!userNameValidation(name)){
+                    JOptionPane.showMessageDialog(CreateProfile.this, "Invalid Username " +
+                            "\n 6-20 characters, no special characters are allowed ", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
 
                 if (UserController.userExists(name, email)) {
                     JOptionPane.showMessageDialog(CreateProfile.this, "User already exists!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -148,6 +154,19 @@ public class CreateProfile extends JPanel {
         String regex = "^[\\w!#$%&amp;'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&amp;'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(emailString);
+        return matcher.matches();
+    }
+
+    /**
+     *  Username Validation using regex Expression
+     *  @author Tin Phu
+     * @param theUsername
+     * @return
+     */
+    public static boolean userNameValidation(String theUsername){
+        String regex = "^(?=.{6,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(theUsername);
         return matcher.matches();
     }
 }

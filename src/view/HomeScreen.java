@@ -29,7 +29,7 @@ public class HomeScreen extends JPanel {
     /**
      * A mapping of project IDs to project objects.
      */
-    private HashMap<String, Project> listOfProjects = new HashMap<String, Project>();
+    HashMap<String, Project> listOfProjects = new HashMap<String, Project>();
 
     /**
      * A table model used to implement the project table.
@@ -69,7 +69,7 @@ public class HomeScreen extends JPanel {
      * @param cardPanel The panels to swap to/from.
      * @param cardLayout The layout used to swap to/from panels.
      */
-    public HomeScreen(User user, JPanel cardPanel, CardLayout cardLayout) {
+    public HomeScreen(final User user, final JPanel cardPanel, final CardLayout cardLayout) {
    
         User thisUser = user;
 
@@ -135,7 +135,7 @@ public class HomeScreen extends JPanel {
         topPanel.add(buttonPanel, BorderLayout.EAST);
 
         add(topPanel, BorderLayout.NORTH);
-
+                
         // Action listener for the open project button
         openButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -145,7 +145,7 @@ public class HomeScreen extends JPanel {
                 // Check if selected row is in the table
                 if (selectedRow != -1) {
                     String projectID = projectTable.getValueAt(selectedRow, 0).toString();
-                    String projectName = projectTable.getValueAt(selectedRow, 1).toString();
+//                    String projectName = projectTable.getValueAt(selectedRow, 1).toString();
 //                    System.out.println("Opening project ID: " + projectID);
 
                     // Open project screen

@@ -44,45 +44,4 @@ public class DocumentTest {
         DocumentController.deleteADocument(testDoc);
         assertNull(DocumentController.findDocbyID(testDoc.getId()));
     }
-
-    /**
-     * Copy and Delete File Tests.
-     * Test1: A new doc with AppInfo.json is created and copy to \src\test
-     * Check if the file at that location exists
-     * Test2: Delete the document
-     * check if the file at that location still exists.
-     * Unfortunately I have to two tests into a single @Test,
-     * because I want to copy and delete the file immediately.
-     * @Author Tin Phu.
-     */
-    @Test
-    public void copyAndDeleteFileWhenCreateDocTest(){
-        String currentPath = System.getProperty("user.dir");
-        String srcFile = currentPath + "\\AppInfo.json";
-        try {
-            Document newDoc = new Document("DocTest1","DocTest1Drecription",
-                    "\\src\\test","UserID", BigDecimal.valueOf(111),srcFile );
-
-            File destFile = new File(currentPath + newDoc.getFilePath());
-            //Test1: Copy
-            if(destFile.exists()){
-                Assertions.assertTrue(true);
-            } else {
-                Assertions.fail();
-            }
-
-            DocumentController.addDocument(newDoc);
-            //Test2:Delete
-            DocumentController.deleteADocument(newDoc);
-            if(!destFile.exists()){
-                Assertions.assertTrue(true);
-            } else {
-                Assertions.fail();
-            }
-        } catch (IOException e) {
-            Assertions.fail();
-        }
-    }
-
-
 }

@@ -15,22 +15,21 @@ import model.User;
  * AboutAppRepository reads and writes to/from AppInfo.json file
  * com.github.cliftonlabs.json_simple library is used to work with Json.
  * @author Tin Phu
- * @version 0.2
+ * @version 0.3
  */
 public class AboutAppRepository {
 
     /**
-     * Path to the AppInfo.json
+     * Path to the AppInfo.json.
      */
      private final String FILEPATH="AppInfo.json";
     /**
-     * appInfo holds data.
+     * AppInfo object to hold app data.
      */
-    private  AppInfo appInfo = new AppInfo();
+    private AppInfo appInfo = new AppInfo();
 
     /**
-     * No-arg constructor.
-     * which will simply importData() and populate data from json file to this.appInfo.
+     * No-arg constructor, which will simply import data and populate data from AppInfo.json to the appInfo object.
      * @author Tin Phu
      */
     public AboutAppRepository()  {
@@ -38,7 +37,7 @@ public class AboutAppRepository {
     }
 
     /**
-     * Data is imported and then mapped to this.appInfo
+     * Data is imported and then mapped to the appInfo object.
      * @author Tin Phu
      */
     public void importData() {
@@ -71,11 +70,11 @@ public class AboutAppRepository {
         } catch (IOException | JsonException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Import Data from AppInfo.json");
+//        System.out.println("Import Data from AppInfo.json");
     }
 
     /**
-     * Exporting or serialize this.appInfo to AppInfo.json.
+     * Exporting or serialize the appInfo object to AppInfo.json.
      * @author Tin Phu
      */
     public void exportData(){
@@ -84,13 +83,13 @@ public class AboutAppRepository {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Export Data to AppInfo.json");
+//        System.out.println("Export Data to AppInfo.json");
     }
 
     /**
-     * Returns the AppInfo object this repository is associated with
+     * Returns the AppInfo object this repository is associated with.
      * @author Tin Phu
-     * @return The AppInfo object this repository is associated with
+     * @return The AppInfo object this repository is associated with.
      */
     public AppInfo getAppInfo() {
         return appInfo;

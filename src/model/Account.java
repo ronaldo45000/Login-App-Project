@@ -32,7 +32,7 @@ public class Account implements Jsonable {
 	 * @param name The name of the user.
 	 * @param email The email of the user.
 	 */
-	public Account(String name, String email) {
+	public Account(final String name, final String email) {
 		this.name = name;
 		this.email = email;
 		this.id = UUID.randomUUID().toString();
@@ -46,7 +46,7 @@ public class Account implements Jsonable {
 	 * @param theId The id of the account
 	 */
 
-	public Account(String name, String email, String theId) {
+	public Account(final String name, final String email, final String theId) {
 		this.name = name;
 		this.email = email;
 		this.id = theId;
@@ -101,7 +101,7 @@ public class Account implements Jsonable {
 	 * @throws IOException
 	 */
 	@Override
-	public void toJson(Writer writer) throws IOException {
+	public void toJson(final Writer writer) throws IOException {
 		final JsonObject json = new JsonObject();
 		json.put("id", this.id);
 		json.put("name", this.name);
@@ -120,6 +120,3 @@ public class Account implements Jsonable {
 		return "id:" + this.id + "|name:" + this.name + "|email:" + this.email + "\n";
 	}
 }
-
-
-

@@ -39,7 +39,7 @@ public class DocumentController {
      * @param thePID The ID of the project
      * @return A copy of HashMap of the list.
      */
-    public static HashMap<String, Document> getDocsByProjectID(String thePID){
+    public static HashMap<String, Document> getDocsByProjectID(final String thePID){
         HashMap<String, Document> listOfDoc = new HashMap<String, Document>();
         documentRepository.getListOfDocument().forEach((k,e)->{
             if(e.getProjectID().equals(thePID)){
@@ -55,7 +55,7 @@ public class DocumentController {
      * @author Tin Phu
      * @param theDoc The document to be added.
      */
-    public static void addDocument(Document theDoc){
+    public static void addDocument(final Document theDoc){
         documentRepository.addDocument(theDoc);
     }
 
@@ -64,7 +64,7 @@ public class DocumentController {
      * @author Tin Phu
      * @param theDoc The document to be deleted.
      */
-    public static void deleteADocument(Document theDoc){
+    public static void deleteADocument(final Document theDoc){
         documentRepository.deleteDocument(theDoc.getId());
         String currentPath = System.getProperty("user.dir");
         File file = new File(currentPath + theDoc.getFilePath());
@@ -78,9 +78,7 @@ public class DocumentController {
      * @param theID The ID of the project to be found.
      * @return The document with the given ID.
      */
-    public static Document findDocbyID(String theID){
+    public static Document findDocbyID(final String theID){
         return documentRepository.findDocumentById(theID);
     }
-
-
 }

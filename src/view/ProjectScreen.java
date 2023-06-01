@@ -29,7 +29,6 @@ import model.User;
 /**
  * A class to set up the Project Screen.
  * @author Hassan Abbas
- * @author Riley Bennett
  * @version 0.3
  */
 public class ProjectScreen extends JPanel {
