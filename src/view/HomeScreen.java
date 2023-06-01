@@ -106,6 +106,27 @@ public class HomeScreen extends JPanel {
 
         add(scrollPane, BorderLayout.CENTER);
 
+        projectTableModel.addTableModelListener(new TableModelListener() {
+            public void tableChanged(TableModelEvent e) {
+
+                if (e.getType() == TableModelEvent.UPDATE && e.getColumn() >= 0 && e.getFirstRow() >= 0) {
+                    int row = e.getFirstRow();
+                    String id = projectTableModel.getValueAt(row, 0).toString();
+                    String name = projectTableModel.getValueAt(row, 1).toString();
+
+                    // Check if name is empty
+                    if (name.equals("")) {
+                        JOptionPane.showMessageDialog(HomeScreen.this, "Name cannot be empty!", 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                        projectTableModel.setValueAt(listOfProjects.get(id).getProjectName(), row, 1);
+                        return;
+                    }
+
+                    listOfProjects.get(id).setProjectName(name);
+                }
+            }
+        });
+
         // Make action buttons
         openButton = new JButton("Open Project");
         createButton = new JButton("Create");

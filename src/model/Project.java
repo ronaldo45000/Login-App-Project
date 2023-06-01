@@ -229,4 +229,13 @@ public class Project implements Jsonable {
     public String getProjectName() {
         return projectName;
     }
+
+    /**
+     * Sets this project's name to the specified name.
+     * @author Riley Bennett
+     * @param theName String new name of the project.
+     */
+    public void setProjectName(String theName) {
+        projectName = theName;
+    }
 }
