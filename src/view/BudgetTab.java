@@ -131,15 +131,15 @@ public class BudgetTab extends JPanel {
         add(totalBudgetLabel, c);
 
         // Add budget field
-        setBudgetField = new JTextField();
-        setBudgetField.setText("");
-        setBudgetField.setEditable(false);
-        c.gridx = 1;
-        c.gridy = 0;
+        // setBudgetField = new JTextField();
+        // setBudgetField.setText("");
+        // setBudgetField.setEditable(false);
+        // c.gridx = 1;
+        // c.gridy = 0;
 
-        setBudgetField.setColumns(5);
+        // setBudgetField.setColumns(5);
 
-        add(setBudgetField, c);
+        // add(setBudgetField, c);
         c.gridx = 2;
         c.gridy = 2;
 
