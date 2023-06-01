@@ -128,13 +128,6 @@ public class DocumentTab extends JPanel {
                         "Error", JOptionPane.ERROR_MESSAGE);
                         model.setValueAt(listOfDocs.get(id).getDocumentName(), row, e.getColumn());
                         return;
-
-                    // Error if description is empty
-                    } else if (description.equals("")) {
-                        JOptionPane.showMessageDialog(DocumentTab.this, "Description cannot be empty!", 
-                        "Error", JOptionPane.ERROR_MESSAGE);
-                        model.setValueAt(listOfDocs.get(id).getDocumentDescription(), row, e.getColumn());
-                        return;
                     }
 
                     // Set cost, formatted to 2 decimal places

@@ -14,7 +14,6 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.text.DecimalFormat;
 import model.Document;
-import model.Project;
 
 /**
  * The budget tab for a project in the FileNtro program.
@@ -91,6 +90,7 @@ public class BudgetTab extends JPanel {
 
         // Get documents associated with the project.
         myDoc = DocumentController.getDocsByProjectID(theProjectID);
+        totalBudget = ProjectController.getTotalBudgetByID(theProjectID).doubleValue();
 
         setLayout(new GridBagLayout());
 
@@ -124,7 +124,8 @@ public class BudgetTab extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(15, 15, 15, 15);
-        totalBudgetLabel = new JLabel("Total Budget:$");
+        totalBudgetLabel = new JLabel("Total Budget: $" + totalBudget);
+        totalBudgetLabel.setFont(new Font("Verdana", Font.PLAIN, 18));
 
         add(totalBudgetLabel, c);
 
@@ -287,19 +288,23 @@ public class BudgetTab extends JPanel {
         deleteButton.addActionListener(e -> {
             int row = table.getSelectedRow();
             if (row >= 0) {
+                int result = JOptionPane.showConfirmDialog(BudgetTab.this, "Are you sure you want to delete this item?",
+                "Confirmation", JOptionPane.YES_NO_OPTION);
 
-//                System.out.println("Deleting " + name);
-                String id = (String) table.getValueAt(row, 0);
-                theTotalCost -= myDoc.get(id).getTotalCost().doubleValue();
+                if (result == JOptionPane.YES_OPTION) {
+//                  System.out.println("Deleting " + name);
+                    String id = (String) table.getValueAt(row, 0);
+                    theTotalCost -= myDoc.get(id).getTotalCost().doubleValue();
 
-                // Round to 2 decimal places
-                theTotalCost = Double.valueOf(df.format(theTotalCost));
-                totalLabel.setText("Current Cost: $" + theTotalCost); 
-                DocumentController.deleteADocument(myDoc.get(id));
+                    // Round to 2 decimal places
+                    theTotalCost = Double.valueOf(df.format(theTotalCost));
+                    totalLabel.setText("Current Cost: $" + theTotalCost); 
+                    DocumentController.deleteADocument(myDoc.get(id));
 
-                myDoc.remove(id);
+                    myDoc.remove(id);
 
-                updateTable();
+                    updateTable();
+                }
             }
         });
 
@@ -429,7 +434,7 @@ public class BudgetTab extends JPanel {
      * Updates the label of the total budget.
      */
     public void updateTotalBudgetLabel() {
-        setBudgetField.setText("" + ProjectController.findProjectByID(theProjectID).getBudget());
+        totalBudgetLabel.setText("Total Budget: $" + totalBudget);
     }
 
     /**

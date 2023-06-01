@@ -126,11 +126,22 @@ public class ProjectController {
 
     /**
      * Sets a project's total budget by it's ID.
+     * @author Tin Phu
      * @param theID The ID of the project to be updated.
      * @param theTotalBudget The new budget of the project.
      */
     public static void setTotalBudgetByID(final String theID, final BigDecimal theTotalBudget){
         projectRepository.findProjectbyId(theID).setBudget(theTotalBudget);
         projectRepository.exportData();
+    }
+
+    /**
+     * Returns the budget of the project with the specified ID.
+     * @author Riley Bennett
+     * @param theID The ID of the project.
+     * @return The budget of the project.
+     */
+    public static BigDecimal getTotalBudgetByID(final String theID) {
+        return projectRepository.findProjectbyId(theID).getBudget();
     }
 }
