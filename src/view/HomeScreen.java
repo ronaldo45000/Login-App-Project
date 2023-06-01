@@ -21,6 +21,7 @@ import model.User;
 /**
  * A class to create the Home screen of the FileNtro project.
  * @author Riley Bennett
+ * @author Tin Phu
  * @version 0.3
  */
 public class HomeScreen extends JPanel {
@@ -64,9 +65,9 @@ public class HomeScreen extends JPanel {
      * Constructor to create the Home screen.
      * @author Tin Phu
      * @author Riley Bennett
-     * @param user The user of the app
-     * @param cardPanel The panels to swap to/from
-     * @param cardLayout The layout used to swap to/from panels
+     * @param user The user of the app.
+     * @param cardPanel The panels to swap to/from.
+     * @param cardLayout The layout used to swap to/from panels.
      */
     public HomeScreen(final User user, final JPanel cardPanel, final CardLayout cardLayout) {
    
@@ -91,7 +92,7 @@ public class HomeScreen extends JPanel {
         lockedColumn =  projectTable.getColumnModel().getColumn(2);
         lockedColumn.setCellEditor(new LockedColumnEditor());
 
-        //Load List to table here
+        // Load project list into the table
         setProjects(listOfProjects);
         
         // Set size of table columns
@@ -100,10 +101,31 @@ public class HomeScreen extends JPanel {
         columnModel.getColumn(1).setPreferredWidth(150);
         columnModel.getColumn(2).setPreferredWidth(200);
 
-        JScrollPane scrollPane = new JScrollPane(projectTable);
+        JScrollPane scrollPane = new JScrollPane(projectTable);     // Make table scrollable
         scrollPane.setPreferredSize(new Dimension(400, 200));
 
         add(scrollPane, BorderLayout.CENTER);
+
+        projectTableModel.addTableModelListener(new TableModelListener() {
+            public void tableChanged(TableModelEvent e) {
+
+                if (e.getType() == TableModelEvent.UPDATE && e.getColumn() >= 0 && e.getFirstRow() >= 0) {
+                    int row = e.getFirstRow();
+                    String id = projectTableModel.getValueAt(row, 0).toString();
+                    String name = projectTableModel.getValueAt(row, 1).toString();
+
+                    // Check if name is empty
+                    if (name.equals("")) {
+                        JOptionPane.showMessageDialog(HomeScreen.this, "Name cannot be empty!", 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                        projectTableModel.setValueAt(listOfProjects.get(id).getProjectName(), row, 1);
+                        return;
+                    }
+
+                    listOfProjects.get(id).setProjectName(name);
+                }
+            }
+        });
 
         // Make action buttons
         openButton = new JButton("Open Project");
@@ -125,7 +147,7 @@ public class HomeScreen extends JPanel {
         buttonPanel.add(deleteButton);
         buttonPanel.add(logoutButton);
 
-        JLabel welcomeLabel = new JLabel("Welcome Back, "+user.getName()+"!");
+        JLabel welcomeLabel = new JLabel("Welcome Back, " + user.getName()+"!");
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         // Top panel for welcome label and buttons

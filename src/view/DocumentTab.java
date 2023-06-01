@@ -72,8 +72,8 @@ public class DocumentTab extends JPanel {
 
         // Get documents already associated with this project (if any)
         listOfDocs = DocumentController.getDocsByProjectID(theProjectID);
-        DefaultListModel<String> listModel = new DefaultListModel<>();
-        JList<String> itemList = new JList<>(listModel);    // List of documents/items
+//        DefaultListModel<String> listModel = new DefaultListModel<>();
+//        JList<String> itemList = new JList<>(listModel);    // List of documents/items
         setLayout(new GridBagLayout());
     
         // Create the table model
@@ -122,13 +122,28 @@ public class DocumentTab extends JPanel {
                     String description = model.getValueAt(row, 2).toString();   // Description of changed document
                     String totalCost = model.getValueAt(row, 4).toString();     // Cost of changed document
 
+                    // Error if name is empty
+                    if (name.equals("")) {
+                        JOptionPane.showMessageDialog(DocumentTab.this, "Name cannot be empty!", 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                        model.setValueAt(listOfDocs.get(id).getDocumentName(), row, e.getColumn());
+                        return;
+                    }
+
                     // Set cost, formatted to 2 decimal places
                     double totalCostRound;
                     try {
                         totalCostRound = Double.valueOf(totalCost);
                         totalCostRound = Double.valueOf(df.format(totalCostRound));
+
+                        // If cost negative, display error message
+                        if (totalCostRound < 0) {
+                            throw new NumberFormatException();
+                        }
+
                     } catch (NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(DocumentTab.this, "Invalid Price!", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(DocumentTab.this, "Invalid Price!", "Error", 
+                        JOptionPane.ERROR_MESSAGE);
                         model.setValueAt(listOfDocs.get(id).getTotalCost(), row, e.getColumn());
                         return;
                     }
