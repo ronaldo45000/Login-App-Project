@@ -83,6 +83,7 @@ public class BudgetTab extends JPanel {
      *
      * @param theProjectID The ID of the project
      * @author Thinh Le
+     * @author Riley Bennett
      */
     public BudgetTab(final String theProjectID) {
 
@@ -232,11 +233,11 @@ public class BudgetTab extends JPanel {
 
                     updateTable();
 
-                    //This is a warning message when it is over your budget.
-                    if(theTotalCost>totalBudget){
+                    // //This is a warning message when it is over your budget.
+                    // if(theTotalCost>totalBudget){
 
-                        JOptionPane.showMessageDialog(BudgetTab.this,"You are over your budget!","Reminder",JOptionPane.WARNING_MESSAGE);
-                    }
+                    //     JOptionPane.showMessageDialog(BudgetTab.this,"You are over your budget!","Reminder",JOptionPane.WARNING_MESSAGE);
+                    // }
                 }
 
 
@@ -272,6 +273,7 @@ public class BudgetTab extends JPanel {
 
                         ProjectController.setTotalBudgetByID(theProjectID, BigDecimal.valueOf(newBudget));
                         setTotalBudget(newBudget);
+                        updateTable();
                     }
 
 
@@ -393,7 +395,7 @@ public class BudgetTab extends JPanel {
 
     /**
      * Adds a row to the table.
-     *
+     * @author Thinh Le
      * @param id The ID of the item to be added.
      * @param name The name of the item to be added.
      * @param totalCost The cost of the item to be added.
@@ -406,6 +408,8 @@ public class BudgetTab extends JPanel {
 
     /**
      * Updates the table with new data.
+     * @author Thinh Le
+     * @author Riley Bennett
      */
     public void updateTable() {
         // Clear the rows
@@ -415,14 +419,16 @@ public class BudgetTab extends JPanel {
         myDoc.forEach((k, e) -> {
             addRowToTable(k, e.getDocumentName(), df.format(e.getTotalCost()));
         });
+
         BigDecimal pTotalCost= ProjectController.updateTotalCostByID(this.theProjectID).setScale(2, RoundingMode.CEILING);
         theTotalCost = Double.valueOf(pTotalCost.doubleValue());
-        totalLabel.setText("Current Cost: $" + theTotalCost);
-
+        
+        setCostLabel();
     }
 
     /**
      * Sets the total budget of the project.
+     * @author Thinh Le
      * @param budget The budget to set to.
      */
     public void setTotalBudget(double budget) {
@@ -432,6 +438,7 @@ public class BudgetTab extends JPanel {
 
     /**
      * Updates the label of the total budget.
+     * @author Thinh Le
      */
     public void updateTotalBudgetLabel() {
         totalBudgetLabel.setText("Total Budget: $" + totalBudget);
@@ -439,6 +446,8 @@ public class BudgetTab extends JPanel {
 
     /**
      * Updates the total cost of this project.
+     * @author Thinh Le
+     * @author Riley Bennett
      */
     public void updateTotalCost() {
         myDoc.forEach((k, b) -> {
@@ -447,8 +456,21 @@ public class BudgetTab extends JPanel {
 
         // Round to 2 decimal places
         theTotalCost = Double.valueOf(df.format(theTotalCost));
+        setCostLabel();
+    }
 
-        totalLabel.setText("Current Cost: $" + String.format("%.2f", theTotalCost));
+    /**
+     * Sets the cost label to red if the current cost is over budget, or black if cost is less than budget.
+     * @author Riley Bennett
+     */
+    public void setCostLabel() {
+        if (theTotalCost > totalBudget) {
+            totalLabel.setText("Current Cost (Over budget!): $" + theTotalCost);
+            totalLabel.setForeground(Color.RED);
+        } else {
+            totalLabel.setText("Current Cost: $" + theTotalCost);
+            totalLabel.setForeground(Color.BLACK);
+        }
     }
 
     /**
@@ -614,7 +636,6 @@ public class BudgetTab extends JPanel {
 
                                 // Round to 2 decimal places
                                 theTotalCost = Double.valueOf(df.format(theTotalCost));
-                                totalLabel.setText("Current Cost: $" + theTotalCost);
 
                                 updateTable();
                             }
