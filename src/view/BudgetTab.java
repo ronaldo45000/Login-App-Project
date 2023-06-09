@@ -9,9 +9,12 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.text.DecimalFormat;
 import model.Document;
+
 /**
  * The budget tab for a project in the FileNtro program.
  * @author Thinh Le
@@ -80,6 +83,7 @@ public class BudgetTab extends JPanel {
      *
      * @param theProjectID The ID of the project
      * @author Thinh Le
+     * @author Riley Bennett
      */
     public BudgetTab(final String theProjectID) {
 
@@ -87,6 +91,7 @@ public class BudgetTab extends JPanel {
 
         // Get documents associated with the project.
         myDoc = DocumentController.getDocsByProjectID(theProjectID);
+        totalBudget = ProjectController.getTotalBudgetByID(theProjectID).doubleValue();
 
         setLayout(new GridBagLayout());
 
@@ -97,13 +102,13 @@ public class BudgetTab extends JPanel {
         // Add Name column
         model.addColumn("Name");
         // Add Total cost column
-        model.addColumn("Cost");
+        model.addColumn("Cost ($)");
 
         // Create the table and set the model
         table = new JTable(model);
         table.setPreferredScrollableViewportSize(new Dimension(350, 350));
 
-        totalLabel = new JLabel("CurrentCost:$0.00");
+        totalLabel = new JLabel("Current Cost: $0.00");
         totalLabel.setFont(new Font("Verdana", Font.PLAIN, 18));
 
         updateTotalCost();
@@ -120,20 +125,11 @@ public class BudgetTab extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(15, 15, 15, 15);
-        totalBudgetLabel = new JLabel("Total Budget:$");
+        totalBudgetLabel = new JLabel("Total Budget: $" + totalBudget);
+        totalBudgetLabel.setFont(new Font("Verdana", Font.PLAIN, 18));
 
         add(totalBudgetLabel, c);
 
-        // Add budget field
-        setBudgetField = new JTextField();
-        setBudgetField.setText("");
-        setBudgetField.setEditable(false);
-        c.gridx = 1;
-        c.gridy = 0;
-
-        setBudgetField.setColumns(5);
-
-        add(setBudgetField, c);
         c.gridx = 2;
         c.gridy = 2;
 
@@ -147,6 +143,7 @@ public class BudgetTab extends JPanel {
         JScrollPane scrollPane = new JScrollPane(table);
         c.gridx = 0;
         c.gridy = 2;
+        scrollPane.setMinimumSize(new Dimension(350, 350));
         add(scrollPane, c);
 
         // Add document button
@@ -210,22 +207,30 @@ public class BudgetTab extends JPanel {
                     return;
                 }
 
-                Document doc = null;
+                if(price < 0){
+                    JOptionPane.showMessageDialog(BudgetTab.this, "The Price can not be negative!");
+                } else {
+                    Document doc = null;
 
-                doc = new Document(itemName, "", theProjectID, "", BigDecimal.valueOf(price));
-                DocumentController.addDocument(doc);
-                myDoc.put(doc.id(), doc);
+                    doc = new Document(itemName, "", theProjectID, "", BigDecimal.valueOf(price));
+                    DocumentController.addDocument(doc);
+                    myDoc.put(doc.id(), doc);
 
-                theTotalCost += myDoc.get(doc.id()).getTotalCost().doubleValue();
-                totalLabel.setText("CurrentCost:$" + theTotalCost);
+                    theTotalCost += myDoc.get(doc.id()).getTotalCost().doubleValue();
 
-                updateTable();
+                    theTotalCost = Double.valueOf(df.format(theTotalCost));
+                    totalLabel.setText("Current Cost: $" + theTotalCost);
 
-                //This is a warning message when it is over your budget.
-                if(theTotalCost>totalBudget){
+                    updateTable();
 
-                    JOptionPane.showMessageDialog(BudgetTab.this,"You are over your budget!","Reminder",JOptionPane.WARNING_MESSAGE);
+                    // //This is a warning message when it is over your budget.
+                    // if(theTotalCost>totalBudget){
+
+                    //     JOptionPane.showMessageDialog(BudgetTab.this,"You are over your budget!","Reminder",JOptionPane.WARNING_MESSAGE);
+                    // }
                 }
+
+
             }
         });
 
@@ -237,9 +242,6 @@ public class BudgetTab extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new DocumentCreationFormPopUp(theProjectID);
-
-
-
             }
         });
 
@@ -253,12 +255,17 @@ public class BudgetTab extends JPanel {
                 String input = JOptionPane.showInputDialog("Enter new budget:");
                 try {
                     double newBudget = Double.parseDouble(input);
+                    if(newBudget < 0){
+                        JOptionPane.showMessageDialog(BudgetTab.this, "The Budget can not be negative!");
+                    } else {
+                        // Round to 2 decimal places
+                        newBudget = Double.valueOf(df.format(newBudget));
 
-                    // Round to 2 decimal places
-                    newBudget = Double.valueOf(df.format(newBudget));
+                        ProjectController.setTotalBudgetByID(theProjectID, BigDecimal.valueOf(newBudget));
+                        setTotalBudget(newBudget);
+                        updateTable();
+                    }
 
-                    ProjectController.setTotalBudgetByID(theProjectID, BigDecimal.valueOf(newBudget));
-                    setTotalBudget(newBudget);
 
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(BudgetTab.this, "Please enter a numeric value.");
@@ -273,17 +280,23 @@ public class BudgetTab extends JPanel {
         deleteButton.addActionListener(e -> {
             int row = table.getSelectedRow();
             if (row >= 0) {
+                int result = JOptionPane.showConfirmDialog(BudgetTab.this, "Are you sure you want to delete this item?",
+                "Confirmation", JOptionPane.YES_NO_OPTION);
 
-                String name = model.getValueAt(row, 1).toString();
-//                System.out.println("Deleting " + name);
-                String id = (String) table.getValueAt(row, 0);
-                theTotalCost -= myDoc.get(id).getTotalCost().doubleValue();
-                totalLabel.setText("CurrentCost:$" + theTotalCost); 
-                DocumentController.deleteADocument(myDoc.get(id));
+                if (result == JOptionPane.YES_OPTION) {
+//                  System.out.println("Deleting " + name);
+                    String id = (String) table.getValueAt(row, 0);
+                    theTotalCost -= myDoc.get(id).getTotalCost().doubleValue();
 
-                myDoc.remove(id);
+                    // Round to 2 decimal places
+                    theTotalCost = Double.valueOf(df.format(theTotalCost));
+                    totalLabel.setText("Current Cost: $" + theTotalCost); 
+                    DocumentController.deleteADocument(myDoc.get(id));
 
-                updateTable();
+                    myDoc.remove(id);
+
+                    updateTable();
+                }
             }
         });
 
@@ -301,16 +314,17 @@ public class BudgetTab extends JPanel {
             String currentName = (String) table.getValueAt(selectedRow, 1); //CURRENT Name
             String newMessage = JOptionPane.showInputDialog(this, "Enter New Name:", currentName); //NEW name
             String currentDecription = DocumentController.findDocbyID(currentID).getDocumentDescription();
-
+            LocalDate currentDate =  DocumentController.findDocbyID(currentID).getDate();
+            String currentPath = DocumentController.findDocbyID(currentID).getFilePath();
             if (newMessage == null) {
                 return;
             }
 
             Document doc2 = new Document(newMessage, currentDecription, theProjectID, "",
-                                         myDoc.get(currentID).getTotalCost());
+                                         myDoc.get(currentID).getTotalCost(),currentID, currentDate, currentPath  );
 
-            DocumentController.deleteADocument(myDoc.get(currentID));
-            myDoc.remove(currentID);
+            //DocumentController.deleteADocument(myDoc.get(currentID));
+            //myDoc.remove(currentID);
 
             DocumentController.addDocument(doc2);
             myDoc.put(currentID, doc2);
@@ -348,30 +362,30 @@ public class BudgetTab extends JPanel {
 
             //Round to 2 decimal places
             newPrice = Double.valueOf(df.format(newPrice));
+            if(newPrice < 0) {
+                JOptionPane.showMessageDialog(BudgetTab.this, "The New Price can not be negative!");
+            } else {
+                String currentName = DocumentController.findDocbyID(currentID).getDocumentName();
 
-            //Update the price in the table
-            theTotalCost -= myDoc.get(currentID).getTotalCost().doubleValue();
-            String currentDecription = DocumentController.findDocbyID(currentID).getDocumentDescription();
+                String currentDecription = DocumentController.findDocbyID(currentID).getDocumentDescription();
+                LocalDate currentDate =  DocumentController.findDocbyID(currentID).getDate();
+                String currentPath = DocumentController.findDocbyID(currentID).getFilePath();
 
-            Document newDoc2 = new Document(myDoc.get(currentID).getDocumentName(), currentDecription,
-                                            theProjectID, "", new BigDecimal(newPrice));
+                Document newDoc2 = new Document(currentName, currentDecription,
+                        theProjectID, "", new BigDecimal(newPrice).setScale(2, RoundingMode.CEILING),currentID,currentDate,currentPath);
 
-            DocumentController.deleteADocument(myDoc.get(currentID));
-            myDoc.remove(currentID);
+                DocumentController.addDocument(newDoc2);
+                myDoc.put(currentID, newDoc2);
+                updateTable();
+            }
 
-            DocumentController.addDocument(newDoc2);
-            myDoc.put(currentID, newDoc2);
-            theTotalCost += myDoc.get(currentID).getTotalCost().doubleValue();
 
-            totalLabel.setText("CurrentCost:$" + theTotalCost);
-
-            updateTable();
         });
     }
 
     /**
      * Adds a row to the table.
-     *
+     * @author Thinh Le
      * @param id The ID of the item to be added.
      * @param name The name of the item to be added.
      * @param totalCost The cost of the item to be added.
@@ -384,6 +398,8 @@ public class BudgetTab extends JPanel {
 
     /**
      * Updates the table with new data.
+     * @author Thinh Le
+     * @author Riley Bennett
      */
     public void updateTable() {
         // Clear the rows
@@ -394,10 +410,15 @@ public class BudgetTab extends JPanel {
             addRowToTable(k, e.getDocumentName(), df.format(e.getTotalCost()));
         });
 
+        BigDecimal pTotalCost= ProjectController.updateTotalCostByID(this.theProjectID).setScale(2, RoundingMode.CEILING);
+        theTotalCost = Double.valueOf(pTotalCost.doubleValue());
+        
+        setCostLabel();
     }
 
     /**
      * Sets the total budget of the project.
+     * @author Thinh Le
      * @param budget The budget to set to.
      */
     public void setTotalBudget(double budget) {
@@ -407,13 +428,16 @@ public class BudgetTab extends JPanel {
 
     /**
      * Updates the label of the total budget.
+     * @author Thinh Le
      */
     public void updateTotalBudgetLabel() {
-        setBudgetField.setText("" + ProjectController.findProjectByID(theProjectID).getBudget());
+        totalBudgetLabel.setText("Total Budget: $" + totalBudget);
     }
 
     /**
      * Updates the total cost of this project.
+     * @author Thinh Le
+     * @author Riley Bennett
      */
     public void updateTotalCost() {
         myDoc.forEach((k, b) -> {
@@ -422,8 +446,21 @@ public class BudgetTab extends JPanel {
 
         // Round to 2 decimal places
         theTotalCost = Double.valueOf(df.format(theTotalCost));
+        setCostLabel();
+    }
 
-        totalLabel.setText("CurrentCost:$" + String.format("%.2f", theTotalCost));
+    /**
+     * Sets the cost label to red if the current cost is over budget, or black if cost is less than budget.
+     * @author Riley Bennett
+     */
+    public void setCostLabel() {
+        if (theTotalCost > totalBudget) {
+            totalLabel.setText("Current Cost (Over budget!): $" + theTotalCost);
+            totalLabel.setForeground(Color.RED);
+        } else {
+            totalLabel.setText("Current Cost: $" + theTotalCost);
+            totalLabel.setForeground(Color.BLACK);
+        }
     }
 
     /**
@@ -441,7 +478,7 @@ public class BudgetTab extends JPanel {
         /**
          * Description field of the popup.
          */
-        public final JTextField documentDescriptionField;
+        public final JTextArea documentDescriptionField;
 
         /**
          * Cost field of the popup.
@@ -471,7 +508,7 @@ public class BudgetTab extends JPanel {
             documentNameField = new JTextField(20);
 
             JLabel documentDescriptionLabel = new JLabel("Document Description:");
-            documentDescriptionField = new JTextField(20);
+            documentDescriptionField = new JTextArea(7,40);
 
             JLabel totalCostLabel = new JLabel("Total Cost:");
             totalCostField = new JTextField(10);
@@ -505,7 +542,9 @@ public class BudgetTab extends JPanel {
             panel.add(documentDescriptionLabel, constraints);
 
             constraints.gridx = 1;
-            panel.add(documentDescriptionField, constraints);
+            JScrollPane scrollPane = new JScrollPane(documentDescriptionField);
+
+            panel.add(scrollPane, constraints);
 
             constraints.gridx = 0;
             constraints.gridy = 2;
@@ -560,35 +599,42 @@ public class BudgetTab extends JPanel {
                         JOptionPane.showMessageDialog(BudgetTab.this, "The Description is too long!");
 
                     } else {
-                        double totalCost = Double.parseDouble(totalCostField.getText());
-                        DecimalFormat df = new DecimalFormat("#.##");
-                        
-                        // Round to 2 decimal places
-                        totalCost = Double.valueOf(df.format(totalCost));
 
                         try {
-                            if(srcFileString.isEmpty()){
-                                newDoc = new Document(documentName,documentDescription,theProjectID,"", 
-                                BigDecimal.valueOf(totalCost));
+                            double totalCost = Double.parseDouble(totalCostField.getText());
+                        
+                            // Round to 2 decimal places
+                            totalCost = Double.valueOf(df.format(totalCost));
 
+                            if(totalCost < 0){
+                                JOptionPane.showMessageDialog(BudgetTab.this, "The Total cost can not be negative!");
                             } else {
-                                newDoc = new Document(documentName,documentDescription,theProjectID,"", 
-                                BigDecimal.valueOf(totalCost), srcFileString );
+                                if(srcFileString.isEmpty()){
+                                    newDoc = new Document(documentName,documentDescription,theProjectID,"",
+                                            BigDecimal.valueOf(totalCost));
+
+                                } else {
+                                    newDoc = new Document(documentName,documentDescription,theProjectID,"",
+                                            BigDecimal.valueOf(totalCost), srcFileString );
+                                }
+
+                                DocumentController.addDocument(newDoc);
+                                myDoc.put(newDoc.id(), newDoc);
+                                dialog.setVisible(false);
+
+                                theTotalCost += myDoc.get(newDoc.id()).getTotalCost().doubleValue();
+
+                                // Round to 2 decimal places
+                                theTotalCost = Double.valueOf(df.format(theTotalCost));
+
+                                updateTable();
                             }
 
-                            DocumentController.addDocument(newDoc);
-                            myDoc.put(newDoc.id(), newDoc);
-                            dialog.setVisible(false);
-                            
-                            theTotalCost += myDoc.get(newDoc.id()).getTotalCost().doubleValue();
 
-                            // Round to 2 decimal places
-                            theTotalCost = Double.valueOf(df.format(theTotalCost));
-                            totalLabel.setText("Current Cost: $" + theTotalCost);
-
-                            updateTable();
                         } catch (IOException ex) {
                             JOptionPane.showMessageDialog(BudgetTab.this, "Something went wrong! The File could not be coppied");
+                        } catch (NumberFormatException ex2) {
+                            JOptionPane.showMessageDialog(BudgetTab.this, "Invalid Price!", "Error", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 }
@@ -596,7 +642,7 @@ public class BudgetTab extends JPanel {
             dialog.setLocationRelativeTo(BudgetTab.this);
             dialog.setContentPane(panel);
             dialog.setTitle("Document Creation Form");
-            dialog.setSize(500, 400);
+            dialog.setSize(700, 500);
             dialog.setLocationRelativeTo(null); // Center the dialog on the screen
             dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             dialog.setVisible(true);

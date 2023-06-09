@@ -50,6 +50,16 @@ public class DocumentTab extends JPanel {
      */
     private final DecimalFormat df = new DecimalFormat("#.##");
 
+
+    JButton openDocument = new JButton("Open Document");
+    JPanel buttonPanel = new JPanel();
+    JButton addButton = new JButton("Add Document");
+
+    JButton deleteDocument = new JButton("Delete Document");
+
+    JButton readDocument = new JButton("Read Document");
+
+
     /**
      * Constructor for the documents tab.
      * @author Tin Phu
@@ -62,8 +72,8 @@ public class DocumentTab extends JPanel {
 
         // Get documents already associated with this project (if any)
         listOfDocs = DocumentController.getDocsByProjectID(theProjectID);
-        DefaultListModel<String> listModel = new DefaultListModel<>();
-        JList<String> itemList = new JList<>(listModel);    // List of documents/items
+//        DefaultListModel<String> listModel = new DefaultListModel<>();
+//        JList<String> itemList = new JList<>(listModel);    // List of documents/items
         setLayout(new GridBagLayout());
     
         // Create the table model
@@ -72,11 +82,13 @@ public class DocumentTab extends JPanel {
         model.addColumn("Name");
         model.addColumn("Description");
         model.addColumn("Date");
-        model.addColumn("Total Cost ($)");
+        model.addColumn("Cost ($)");
 
         // Create the table and set the model
         table = new JTable(model);
-        table.setPreferredScrollableViewportSize( new Dimension(800,500));
+
+
+        table.setPreferredScrollableViewportSize( new Dimension(700, 300));
         // Set a cell editor for the ID column to lock it from being edited
         TableColumn lockedColumn = table.getColumnModel().getColumn(0);
         lockedColumn.setCellEditor(new LockedColumnEditor());
@@ -110,20 +122,37 @@ public class DocumentTab extends JPanel {
                     String description = model.getValueAt(row, 2).toString();   // Description of changed document
                     String totalCost = model.getValueAt(row, 4).toString();     // Cost of changed document
 
+                    // Error if name is empty
+                    if (name.equals("")) {
+                        JOptionPane.showMessageDialog(DocumentTab.this, "Name cannot be empty!", 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                        model.setValueAt(listOfDocs.get(id).getDocumentName(), row, e.getColumn());
+                        return;
+                    }
+
                     // Set cost, formatted to 2 decimal places
                     double totalCostRound;
                     try {
                         totalCostRound = Double.valueOf(totalCost);
+                        totalCostRound = Double.valueOf(df.format(totalCostRound));
+
+                        // If cost negative, display error message
+                        if (totalCostRound < 0) {
+                            throw new NumberFormatException();
+                        }
+
                     } catch (NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(DocumentTab.this, "Invalid Price!", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(DocumentTab.this, "Invalid Price!", "Error", 
+                        JOptionPane.ERROR_MESSAGE);
                         model.setValueAt(listOfDocs.get(id).getTotalCost(), row, e.getColumn());
                         return;
                     }
 
-                    listOfDocs.get(id).setTotalCost(BigDecimal.valueOf(Double.valueOf(df.format(totalCostRound))));
+                    listOfDocs.get(id).setTotalCost(BigDecimal.valueOf(totalCostRound));
                     listOfDocs.get(id).setDocumentName(name);               // Set name
                     listOfDocs.get(id).setDocumentDescription(description); // Set Description
-
+                    
+                    
                     DocumentController.addDocument(listOfDocs.get(id));     // Add document to list of documents
                 }
             }
@@ -177,16 +206,16 @@ public class DocumentTab extends JPanel {
         JScrollPane scrollPane = new JScrollPane(table);    // Make table scrollable
         c.gridx = 0;
         c.gridy = 1;
-
+        scrollPane.setMinimumSize(new Dimension(800,500));
         add(scrollPane, c);
 
         // Add document button
-        JButton addButton = new JButton("Add Document");
         c.gridx = 0;
         c.gridy = 2;
 
         /**
          * Action listener for the add document button.
+         *  @author Tin Phu
          */
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -194,34 +223,40 @@ public class DocumentTab extends JPanel {
                 new DocumentCreationFormPopUp(theProjectID) ;
             }
         });
+        buttonPanel.setLayout(new FlowLayout());
+        buttonPanel.add(addButton);
+        buttonPanel.add(openDocument);
+        buttonPanel.add(readDocument);
+        buttonPanel.add(deleteDocument);
 
-        add(addButton,c);
+        //add(addButton,c);
 
         // Open document button
-        JButton openDocument = new JButton("Open Document");
         c.gridx = 0;
         c.gridy = 3;
 
         openDocument.addActionListener(new openDocActionListener());
 
-        add(openDocument,c);
+        //add(openDocument,c);
 
         // Read document button
-        JButton readDocument = new JButton("Read Document");
         c.gridx = 0;
         c.gridy = 4;
 
         readDocument.addActionListener(new readDocActionListener());
-        add(readDocument,c);
+        //add(openDocument,c);
 
         // Delete document button
-        JButton deleteDocument = new JButton("Delete Document");
         c.gridx = 0;
         c.gridy = 5;
 
         deleteDocument.addActionListener(new deleteDocActionListener());
 
-        add(deleteDocument,c);
+        add(buttonPanel,c);
+
+
+
+
     }
 
     /**
@@ -311,7 +346,7 @@ public class DocumentTab extends JPanel {
         /**
          * Text box for the document description.
          */
-        private final JTextField documentDescriptionField;
+        private final JTextArea documentDescriptionField;
 
         /**
          * Text box for the document cost.
@@ -341,8 +376,9 @@ public class DocumentTab extends JPanel {
             documentNameField = new JTextField(20);
 
             JLabel documentDescriptionLabel = new JLabel("Document Description:");
-            documentDescriptionField = new JTextField(20);
-
+            documentDescriptionField = new JTextArea(7,40);
+            documentDescriptionField.setWrapStyleWord(true);
+            documentDescriptionField.setLineWrap(true);
             JLabel totalCostLabel = new JLabel("Total Cost:");
             totalCostField = new JTextField(10);
 
@@ -375,7 +411,9 @@ public class DocumentTab extends JPanel {
             panel.add(documentDescriptionLabel, constraints);
 
             constraints.gridx = 1;
-            panel.add(documentDescriptionField, constraints);
+            JScrollPane scrollPane = new JScrollPane(documentDescriptionField);
+
+            panel.add(scrollPane, constraints);
 
             constraints.gridx = 0;
             constraints.gridy = 2;
@@ -403,8 +441,8 @@ public class DocumentTab extends JPanel {
             fileSelectorButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-
-                    JFileChooser fileChooser = new JFileChooser();
+                    String desktopPath = System.getProperty("user.home") + File.separator + "Desktop";
+                    JFileChooser fileChooser = new JFileChooser(desktopPath);
                     int result = fileChooser.showOpenDialog(panel);
 
                     // Check if user chose a file
@@ -444,22 +482,28 @@ public class DocumentTab extends JPanel {
                             totalCost = Double.parseDouble(totalCostField.getText());
                             totalCost = Double.valueOf(df.format(totalCost));
 
-                            // Create new document with no file if no file selected
-                            if(srcFileString.isEmpty()){
-                                newDoc = new Document(documentName,documentDescription,theProjectID,"", 
-                                BigDecimal.valueOf(totalCost));
+                            if(totalCost < 0){
+                                JOptionPane.showMessageDialog(DocumentTab.this, "The Total cost can not be negative!");
+                            }else {
+                                // Create new document with no file if no file selected
+                                if(srcFileString.isEmpty()){
+                                    newDoc = new Document(documentName,documentDescription,theProjectID,"",
+                                            BigDecimal.valueOf(totalCost));
 
-                            // Create new document with file if user selected file
-                            } else {
-                                newDoc = new Document(documentName,documentDescription,theProjectID,"", 
-                                BigDecimal.valueOf(totalCost), srcFileString );
+                                    // Create new document with file if user selected file
+                                } else {
+                                    newDoc = new Document(documentName,documentDescription,theProjectID,"",
+                                            BigDecimal.valueOf(totalCost), srcFileString );
 
+                                }
+
+                                DocumentController.addDocument(newDoc);     // Add document to database
+                                listOfDocs.put(newDoc.id(), newDoc);        // Add document to list
+                                dialog.setVisible(false);                 // Close dialog
+                                updateTable(theProjectID);
                             }
 
-                            DocumentController.addDocument(newDoc);     // Add document to database
-                            listOfDocs.put(newDoc.id(), newDoc);        // Add document to list
-                            dialog.setVisible(false);                 // Close dialog
-                            updateTable(theProjectID);
+
                         } catch (IOException ex) {
                             JOptionPane.showMessageDialog(DocumentTab.this, 
                             "Something went wrong! The File could not be copied.");
@@ -475,7 +519,7 @@ public class DocumentTab extends JPanel {
             dialog.setLocationRelativeTo(DocumentTab.this);
             dialog.setContentPane(panel);
             dialog.setTitle("Document Creation Form");
-            dialog.setSize(500, 400);
+            dialog.setSize(700, 500);
             dialog.setLocationRelativeTo(null); // Center the dialog on the screen
             dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             dialog.setVisible(true);
